@@ -88,8 +88,8 @@ func (self *OpaqueMemoryBuffer) CreateBinary(Context ContextRef, ErrorMessage **
 // The binary file does not own its backing buffer. It is the responsibility
 // of the caller to free it with \c LLVMDisposeMemoryBuffer.
 //
-// llgo:link (*OpaqueBinary).DisposeBinary C.LLVMDisposeBinary
-func (self *OpaqueBinary) DisposeBinary() {
+// llgo:link (*OpaqueBinary).Dispose C.LLVMDisposeBinary
+func (self *OpaqueBinary) Dispose() {
 }
 
 // Retrieves a copy of the memory buffer associated with this object file.
@@ -100,8 +100,8 @@ func (self *OpaqueBinary) DisposeBinary() {
 //
 // @see llvm::object::getMemoryBufferRef
 //
-// llgo:link (*OpaqueBinary).BinaryCopyMemoryBuffer C.LLVMBinaryCopyMemoryBuffer
-func (self *OpaqueBinary) BinaryCopyMemoryBuffer() MemoryBufferRef {
+// llgo:link (*OpaqueBinary).CopyMemoryBuffer C.LLVMBinaryCopyMemoryBuffer
+func (self *OpaqueBinary) CopyMemoryBuffer() MemoryBufferRef {
 	return nil
 }
 
@@ -109,8 +109,8 @@ func (self *OpaqueBinary) BinaryCopyMemoryBuffer() MemoryBufferRef {
 //
 // @see llvm::object::Binary::getType
 //
-// llgo:link (*OpaqueBinary).BinaryGetType C.LLVMBinaryGetType
-func (self *OpaqueBinary) BinaryGetType() BinaryType {
+// llgo:link (*OpaqueBinary).Type C.LLVMBinaryGetType
+func (self *OpaqueBinary) Type() BinaryType {
 	return 0
 }
 

@@ -46,15 +46,15 @@ func CreateDisasmCPUFeatures(Triple *c.Char, CPU *c.Char, Features *c.Char, DisI
 // Set the disassembler's options.  Returns 1 if it can set the Options and 0
 // otherwise.
 //
-// llgo:link DisasmContextRef.SetDisasmOptions C.LLVMSetDisasmOptions
-func (self DisasmContextRef) SetDisasmOptions(Options c.Uint64T) c.Int {
+// llgo:link DisasmContextRef.SetOptions C.LLVMSetDisasmOptions
+func (self DisasmContextRef) SetOptions(Options c.Uint64T) c.Int {
 	return 0
 }
 
 // Dispose of a disassembler context.
 //
-// llgo:link DisasmContextRef.DisasmDispose C.LLVMDisasmDispose
-func (self DisasmContextRef) DisasmDispose() {
+// llgo:link DisasmContextRef.Dispose C.LLVMDisasmDispose
+func (self DisasmContextRef) Dispose() {
 }
 
 // Disassemble a single instruction using the disassembler context specified in
@@ -66,7 +66,7 @@ func (self DisasmContextRef) DisasmDispose() {
 // function returns the number of bytes in the instruction or zero if there was
 // no valid instruction.
 //
-// llgo:link DisasmContextRef.DisasmInstruction C.LLVMDisasmInstruction
-func (self DisasmContextRef) DisasmInstruction(Bytes *c.Uint8T, BytesSize c.Uint64T, PC c.Uint64T, OutString *c.Char, OutStringSize c.SizeT) c.SizeT {
+// llgo:link DisasmContextRef.Instruction C.LLVMDisasmInstruction
+func (self DisasmContextRef) Instruction(Bytes *c.Uint8T, BytesSize c.Uint64T, PC c.Uint64T, OutString *c.Char, OutStringSize c.SizeT) c.SizeT {
 	return 0
 }
