@@ -29,8 +29,8 @@ type TargetLibraryInfoRef = *OpaqueTargetLibraryInfotData
 //
 // @see Module::getDataLayout()
 //
-// llgo:link ModuleRef.ModuleDataLayout C.LLVMGetModuleDataLayout
-func (self ModuleRef) ModuleDataLayout() TargetDataRef {
+// llgo:link ModuleRef.GetModuleDataLayout C.LLVMGetModuleDataLayout
+func (self ModuleRef) GetModuleDataLayout() TargetDataRef {
 	return nil
 }
 
@@ -51,24 +51,24 @@ func CreateTargetData(StringRep *c.Char) TargetDataRef
 // Deallocates a TargetData.
 // See the destructor llvm::DataLayout::~DataLayout.
 //
-// llgo:link TargetDataRef.DisposeTargetData C.LLVMDisposeTargetData
-func (self TargetDataRef) DisposeTargetData() {
+// llgo:link TargetDataRef.Dispose C.LLVMDisposeTargetData
+func (self TargetDataRef) Dispose() {
 }
 
 // Adds target library information to a pass manager. This does not take
 // ownership of the target library info.
 // See the method llvm::PassManagerBase::add.
 //
-// llgo:link TargetLibraryInfoRef.AddTargetLibraryInfo C.LLVMAddTargetLibraryInfo
-func (self TargetLibraryInfoRef) AddTargetLibraryInfo(PM PassManagerRef) {
+// llgo:link TargetLibraryInfoRef.Add C.LLVMAddTargetLibraryInfo
+func (self TargetLibraryInfoRef) Add(PM PassManagerRef) {
 }
 
 // Converts target data to a target layout string. The string must be disposed
 // with LLVMDisposeMessage.
 // See the constructor llvm::DataLayout::DataLayout.
 //
-// llgo:link TargetDataRef.CopyStringRepOfTargetData C.LLVMCopyStringRepOfTargetData
-func (self TargetDataRef) CopyStringRepOfTargetData() *c.Char {
+// llgo:link TargetDataRef.CopyStringRepOf C.LLVMCopyStringRepOfTargetData
+func (self TargetDataRef) CopyStringRepOf() *c.Char {
 	return nil
 }
 
@@ -118,8 +118,8 @@ func (self TargetDataRef) IntPtrTypeForAS(AS c.Uint) TypeRef {
 // Returns the integer type that is the same size as a pointer on a target.
 // See the method llvm::DataLayout::getIntPtrType.
 //
-// llgo:link ContextRef.IntPtrTypeInContext C.LLVMIntPtrTypeInContext
-func (self ContextRef) IntPtrTypeInContext(TD TargetDataRef) TypeRef {
+// llgo:link ContextRef.IntPtrTypeIn C.LLVMIntPtrTypeInContext
+func (self ContextRef) IntPtrTypeIn(TD TargetDataRef) TypeRef {
 	return nil
 }
 
@@ -127,8 +127,8 @@ func (self ContextRef) IntPtrTypeInContext(TD TargetDataRef) TypeRef {
 // This version allows the address space to be specified.
 // See the method llvm::DataLayout::getIntPtrType.
 //
-// llgo:link ContextRef.IntPtrTypeForASInContext C.LLVMIntPtrTypeForASInContext
-func (self ContextRef) IntPtrTypeForASInContext(TD TargetDataRef, AS c.Uint) TypeRef {
+// llgo:link ContextRef.IntPtrTypeForASIn C.LLVMIntPtrTypeForASInContext
+func (self ContextRef) IntPtrTypeForASIn(TD TargetDataRef, AS c.Uint) TypeRef {
 	return nil
 }
 

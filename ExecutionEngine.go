@@ -61,18 +61,18 @@ func (self TypeRef) CreateGenericValueOfFloat(N c.Double) GenericValueRef {
 	return nil
 }
 
-// llgo:link GenericValueRef.GenericValueIntWidth C.LLVMGenericValueIntWidth
-func (self GenericValueRef) GenericValueIntWidth() c.Uint {
+// llgo:link GenericValueRef.IntWidth C.LLVMGenericValueIntWidth
+func (self GenericValueRef) IntWidth() c.Uint {
 	return 0
 }
 
-// llgo:link GenericValueRef.GenericValueToInt C.LLVMGenericValueToInt
-func (self GenericValueRef) GenericValueToInt(IsSigned Bool) c.UlongLong {
+// llgo:link GenericValueRef.ToInt C.LLVMGenericValueToInt
+func (self GenericValueRef) ToInt(IsSigned Bool) c.UlongLong {
 	return 0
 }
 
-// llgo:link GenericValueRef.GenericValueToPointer C.LLVMGenericValueToPointer
-func (self GenericValueRef) GenericValueToPointer() unsafe.Pointer {
+// llgo:link GenericValueRef.ToPointer C.LLVMGenericValueToPointer
+func (self GenericValueRef) ToPointer() unsafe.Pointer {
 	return nil
 }
 
@@ -81,8 +81,8 @@ func (self TypeRef) GenericValueToFloat(GenVal GenericValueRef) c.Double {
 	return 0
 }
 
-// llgo:link GenericValueRef.DisposeGenericValue C.LLVMDisposeGenericValue
-func (self GenericValueRef) DisposeGenericValue() {
+// llgo:link GenericValueRef.Dispose C.LLVMDisposeGenericValue
+func (self GenericValueRef) Dispose() {
 }
 
 //go:linkname CreateExecutionEngineForModule C.LLVMCreateExecutionEngineForModule
@@ -117,8 +117,8 @@ func (self *MCJITCompilerOptions) Initialize(SizeOfOptions c.SizeT) {
 //go:linkname CreateMCJITCompilerForModule C.LLVMCreateMCJITCompilerForModule
 func CreateMCJITCompilerForModule(OutJIT *ExecutionEngineRef, M ModuleRef, Options *MCJITCompilerOptions, SizeOfOptions c.SizeT, OutError **c.Char) Bool
 
-// llgo:link ExecutionEngineRef.DisposeExecutionEngine C.LLVMDisposeExecutionEngine
-func (self ExecutionEngineRef) DisposeExecutionEngine() {
+// llgo:link ExecutionEngineRef.Dispose C.LLVMDisposeExecutionEngine
+func (self ExecutionEngineRef) Dispose() {
 }
 
 // llgo:link ExecutionEngineRef.RunStaticConstructors C.LLVMRunStaticConstructors
@@ -162,13 +162,13 @@ func (self ExecutionEngineRef) RecompileAndRelinkFunction(Fn ValueRef) unsafe.Po
 	return nil
 }
 
-// llgo:link ExecutionEngineRef.ExecutionEngineTargetData C.LLVMGetExecutionEngineTargetData
-func (self ExecutionEngineRef) ExecutionEngineTargetData() TargetDataRef {
+// llgo:link ExecutionEngineRef.TargetData C.LLVMGetExecutionEngineTargetData
+func (self ExecutionEngineRef) TargetData() TargetDataRef {
 	return nil
 }
 
-// llgo:link ExecutionEngineRef.ExecutionEngineTargetMachine C.LLVMGetExecutionEngineTargetMachine
-func (self ExecutionEngineRef) ExecutionEngineTargetMachine() TargetMachineRef {
+// llgo:link ExecutionEngineRef.TargetMachine C.LLVMGetExecutionEngineTargetMachine
+func (self ExecutionEngineRef) TargetMachine() TargetMachineRef {
 	return nil
 }
 
@@ -194,8 +194,8 @@ func (self ExecutionEngineRef) FunctionAddress(Name *c.Char) c.Uint64T {
 // Returns true on error, false on success. If true is returned then the error
 // message is copied to OutStr and cleared in the ExecutionEngine instance.
 //
-// llgo:link ExecutionEngineRef.ExecutionEngineGetErrMsg C.LLVMExecutionEngineGetErrMsg
-func (self ExecutionEngineRef) ExecutionEngineGetErrMsg(OutError **c.Char) Bool {
+// llgo:link ExecutionEngineRef.ErrMsg C.LLVMExecutionEngineGetErrMsg
+func (self ExecutionEngineRef) ErrMsg(OutError **c.Char) Bool {
 	return 0
 }
 
@@ -212,8 +212,8 @@ func (self ExecutionEngineRef) ExecutionEngineGetErrMsg(OutError **c.Char) Bool 
 //go:linkname CreateSimpleMCJITMemoryManager C.LLVMCreateSimpleMCJITMemoryManager
 func CreateSimpleMCJITMemoryManager(Opaque unsafe.Pointer, AllocateCodeSection MemoryManagerAllocateCodeSectionCallback, AllocateDataSection MemoryManagerAllocateDataSectionCallback, FinalizeMemory MemoryManagerFinalizeMemoryCallback, Destroy MemoryManagerDestroyCallback) MCJITMemoryManagerRef
 
-// llgo:link MCJITMemoryManagerRef.DisposeMCJITMemoryManager C.LLVMDisposeMCJITMemoryManager
-func (self MCJITMemoryManagerRef) DisposeMCJITMemoryManager() {
+// llgo:link MCJITMemoryManagerRef.Dispose C.LLVMDisposeMCJITMemoryManager
+func (self MCJITMemoryManagerRef) Dispose() {
 }
 
 //go:linkname CreateGDBRegistrationListener C.LLVMCreateGDBRegistrationListener

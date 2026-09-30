@@ -88,8 +88,8 @@ func (self MemoryBufferRef) CreateBinary(Context ContextRef, ErrorMessage **c.Ch
 // The binary file does not own its backing buffer. It is the responsibility
 // of the caller to free it with \c LLVMDisposeMemoryBuffer.
 //
-// llgo:link BinaryRef.DisposeBinary C.LLVMDisposeBinary
-func (self BinaryRef) DisposeBinary() {
+// llgo:link BinaryRef.Dispose C.LLVMDisposeBinary
+func (self BinaryRef) Dispose() {
 }
 
 // Retrieves a copy of the memory buffer associated with this object file.
@@ -100,8 +100,8 @@ func (self BinaryRef) DisposeBinary() {
 //
 // @see llvm::object::getMemoryBufferRef
 //
-// llgo:link BinaryRef.BinaryCopyMemoryBuffer C.LLVMBinaryCopyMemoryBuffer
-func (self BinaryRef) BinaryCopyMemoryBuffer() MemoryBufferRef {
+// llgo:link BinaryRef.CopyMemoryBuffer C.LLVMBinaryCopyMemoryBuffer
+func (self BinaryRef) CopyMemoryBuffer() MemoryBufferRef {
 	return nil
 }
 
@@ -109,8 +109,8 @@ func (self BinaryRef) BinaryCopyMemoryBuffer() MemoryBufferRef {
 //
 // @see llvm::object::Binary::getType
 //
-// llgo:link BinaryRef.BinaryGetType C.LLVMBinaryGetType
-func (self BinaryRef) BinaryGetType() BinaryType {
+// llgo:link BinaryRef.Type C.LLVMBinaryGetType
+func (self BinaryRef) Type() BinaryType {
 	return 0
 }
 
@@ -167,8 +167,8 @@ func (self BinaryRef) ObjectFileIsSymbolIteratorAtEnd(SI SymbolIteratorRef) Bool
 	return 0
 }
 
-// llgo:link SectionIteratorRef.DisposeSectionIterator C.LLVMDisposeSectionIterator
-func (self SectionIteratorRef) DisposeSectionIterator() {
+// llgo:link SectionIteratorRef.Dispose C.LLVMDisposeSectionIterator
+func (self SectionIteratorRef) Dispose() {
 }
 
 // llgo:link SectionIteratorRef.MoveToNextSection C.LLVMMoveToNextSection
@@ -179,8 +179,8 @@ func (self SectionIteratorRef) MoveToNextSection() {
 func (self SectionIteratorRef) MoveToContainingSection(Sym SymbolIteratorRef) {
 }
 
-// llgo:link SymbolIteratorRef.DisposeSymbolIterator C.LLVMDisposeSymbolIterator
-func (self SymbolIteratorRef) DisposeSymbolIterator() {
+// llgo:link SymbolIteratorRef.Dispose C.LLVMDisposeSymbolIterator
+func (self SymbolIteratorRef) Dispose() {
 }
 
 // llgo:link SymbolIteratorRef.MoveToNextSymbol C.LLVMMoveToNextSymbol
@@ -217,8 +217,8 @@ func (self SectionIteratorRef) Relocations() RelocationIteratorRef {
 	return nil
 }
 
-// llgo:link RelocationIteratorRef.DisposeRelocationIterator C.LLVMDisposeRelocationIterator
-func (self RelocationIteratorRef) DisposeRelocationIterator() {
+// llgo:link RelocationIteratorRef.Dispose C.LLVMDisposeRelocationIterator
+func (self RelocationIteratorRef) Dispose() {
 }
 
 // llgo:link SectionIteratorRef.IsRelocationIteratorAtEnd C.LLVMIsRelocationIteratorAtEnd
@@ -279,8 +279,8 @@ func (self MemoryBufferRef) CreateObjectFile() ObjectFileRef {
 
 // Deprecated: Use LLVMDisposeBinary instead.
 //
-// llgo:link ObjectFileRef.DisposeObjectFile C.LLVMDisposeObjectFile
-func (self ObjectFileRef) DisposeObjectFile() {
+// llgo:link ObjectFileRef.Dispose C.LLVMDisposeObjectFile
+func (self ObjectFileRef) Dispose() {
 }
 
 // Deprecated: Use LLVMObjectFileCopySectionIterator instead.

@@ -5,7 +5,7 @@ package llvm
 // Install the plugin that submits debug objects to the executor. Executors must
 // expose the llvm_orc_registerJITLoaderGDBAllocAction symbol.
 //
-// llgo:link OrcLLJITRef.OrcLLJITEnableDebugSupport C.LLVMOrcLLJITEnableDebugSupport
-func (self OrcLLJITRef) OrcLLJITEnableDebugSupport() ErrorRef {
+// llgo:link OrcLLJITRef.EnableDebugSupport C.LLVMOrcLLJITEnableDebugSupport
+func (self OrcLLJITRef) EnableDebugSupport() ErrorRef {
 	return nil
 }

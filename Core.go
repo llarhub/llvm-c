@@ -624,21 +624,21 @@ func GetGlobalContext() ContextRef
 
 // Set the diagnostic handler for this context.
 //
-// llgo:link ContextRef.ContextSetDiagnosticHandler C.LLVMContextSetDiagnosticHandler
-func (self ContextRef) ContextSetDiagnosticHandler(Handler DiagnosticHandler, DiagnosticContext unsafe.Pointer) {
+// llgo:link ContextRef.SetDiagnosticHandler C.LLVMContextSetDiagnosticHandler
+func (self ContextRef) SetDiagnosticHandler(Handler DiagnosticHandler, DiagnosticContext unsafe.Pointer) {
 }
 
 // Get the diagnostic handler of this context.
 //
-// llgo:link ContextRef.ContextGetDiagnosticHandler C.LLVMContextGetDiagnosticHandler
-func (self ContextRef) ContextGetDiagnosticHandler() DiagnosticHandler {
+// llgo:link ContextRef.DiagnosticHandler C.LLVMContextGetDiagnosticHandler
+func (self ContextRef) DiagnosticHandler() DiagnosticHandler {
 	return nil
 }
 
 // Get the diagnostic context of this context.
 //
-// llgo:link ContextRef.ContextGetDiagnosticContext C.LLVMContextGetDiagnosticContext
-func (self ContextRef) ContextGetDiagnosticContext() unsafe.Pointer {
+// llgo:link ContextRef.Diagnostic C.LLVMContextGetDiagnosticContext
+func (self ContextRef) Diagnostic() unsafe.Pointer {
 	return nil
 }
 
@@ -646,16 +646,16 @@ func (self ContextRef) ContextGetDiagnosticContext() unsafe.Pointer {
 //
 // @see LLVMContext::setYieldCallback()
 //
-// llgo:link ContextRef.ContextSetYieldCallback C.LLVMContextSetYieldCallback
-func (self ContextRef) ContextSetYieldCallback(Callback YieldCallback, OpaqueHandle unsafe.Pointer) {
+// llgo:link ContextRef.SetYieldCallback C.LLVMContextSetYieldCallback
+func (self ContextRef) SetYieldCallback(Callback YieldCallback, OpaqueHandle unsafe.Pointer) {
 }
 
 // Retrieve whether the given context is set to discard all value names.
 //
 // @see LLVMContext::shouldDiscardValueNames()
 //
-// llgo:link ContextRef.ContextShouldDiscardValueNames C.LLVMContextShouldDiscardValueNames
-func (self ContextRef) ContextShouldDiscardValueNames() Bool {
+// llgo:link ContextRef.ShouldDiscardValueNames C.LLVMContextShouldDiscardValueNames
+func (self ContextRef) ShouldDiscardValueNames() Bool {
 	return 0
 }
 
@@ -666,8 +666,8 @@ func (self ContextRef) ContextShouldDiscardValueNames() Bool {
 //
 // @see LLVMContext::setDiscardValueNames()
 //
-// llgo:link ContextRef.ContextSetDiscardValueNames C.LLVMContextSetDiscardValueNames
-func (self ContextRef) ContextSetDiscardValueNames(Discard Bool) {
+// llgo:link ContextRef.SetDiscardValueNames C.LLVMContextSetDiscardValueNames
+func (self ContextRef) SetDiscardValueNames(Discard Bool) {
 }
 
 // Destroy a context instance.
@@ -675,8 +675,8 @@ func (self ContextRef) ContextSetDiscardValueNames(Discard Bool) {
 // This should be called for every call to LLVMContextCreate() or memory
 // will be leaked.
 //
-// llgo:link ContextRef.ContextDispose C.LLVMContextDispose
-func (self ContextRef) ContextDispose() {
+// llgo:link ContextRef.Dispose C.LLVMContextDispose
+func (self ContextRef) Dispose() {
 }
 
 // Return a string representation of the DiagnosticInfo. Use
@@ -698,8 +698,8 @@ func (self DiagnosticInfoRef) DiagInfoSeverity() DiagnosticSeverity {
 	return 0
 }
 
-// llgo:link ContextRef.MDKindIDInContext C.LLVMGetMDKindIDInContext
-func (self ContextRef) MDKindIDInContext(Name *c.Char, SLen c.Uint) c.Uint {
+// llgo:link ContextRef.MDKindIDIn C.LLVMGetMDKindIDInContext
+func (self ContextRef) MDKindIDIn(Name *c.Char, SLen c.Uint) c.Uint {
 	return 0
 }
 
@@ -798,18 +798,18 @@ func (self AttributeRef) StringAttributeValue(Length *c.Uint) *c.Char {
 
 // Check for the different types of attributes.
 //
-// llgo:link AttributeRef.IsEnumAttribute C.LLVMIsEnumAttribute
-func (self AttributeRef) IsEnumAttribute() Bool {
+// llgo:link AttributeRef.IsEnum C.LLVMIsEnumAttribute
+func (self AttributeRef) IsEnum() Bool {
 	return 0
 }
 
-// llgo:link AttributeRef.IsStringAttribute C.LLVMIsStringAttribute
-func (self AttributeRef) IsStringAttribute() Bool {
+// llgo:link AttributeRef.IsString C.LLVMIsStringAttribute
+func (self AttributeRef) IsString() Bool {
 	return 0
 }
 
-// llgo:link AttributeRef.IsTypeAttribute C.LLVMIsTypeAttribute
-func (self AttributeRef) IsTypeAttribute() Bool {
+// llgo:link AttributeRef.IsType C.LLVMIsTypeAttribute
+func (self AttributeRef) IsType() Bool {
 	return 0
 }
 
@@ -841,8 +841,8 @@ func ModuleCreateWithNameInContext(ModuleID *c.Char, C ContextRef) ModuleRef
 
 // Return an exact copy of the specified module.
 //
-// llgo:link ModuleRef.CloneModule C.LLVMCloneModule
-func (self ModuleRef) CloneModule() ModuleRef {
+// llgo:link ModuleRef.Clone C.LLVMCloneModule
+func (self ModuleRef) Clone() ModuleRef {
 	return self
 }
 
@@ -851,8 +851,8 @@ func (self ModuleRef) CloneModule() ModuleRef {
 // This must be called for every created module or memory will be
 // leaked.
 //
-// llgo:link ModuleRef.DisposeModule C.LLVMDisposeModule
-func (self ModuleRef) DisposeModule() {
+// llgo:link ModuleRef.Dispose C.LLVMDisposeModule
+func (self ModuleRef) Dispose() {
 }
 
 // Soon to be deprecated.
@@ -883,8 +883,8 @@ func (self ModuleRef) SetIsNewDbgInfoFormat(UseNewFormat Bool) {
 // @return The identifier of M.
 // @see Module::getModuleIdentifier()
 //
-// llgo:link ModuleRef.ModuleIdentifier C.LLVMGetModuleIdentifier
-func (self ModuleRef) ModuleIdentifier(Len *c.SizeT) *c.Char {
+// llgo:link ModuleRef.Identifier C.LLVMGetModuleIdentifier
+func (self ModuleRef) Identifier(Len *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -1015,8 +1015,8 @@ func (self *ModuleFlagEntry) ModuleFlagEntriesGetMetadata(Index c.Uint) Metadata
 //
 // @see Module::getModuleFlag()
 //
-// llgo:link ModuleRef.ModuleFlag C.LLVMGetModuleFlag
-func (self ModuleRef) ModuleFlag(Key *c.Char, KeyLen c.SizeT) MetadataRef {
+// llgo:link ModuleRef.Flag C.LLVMGetModuleFlag
+func (self ModuleRef) Flag(Key *c.Char, KeyLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -1033,8 +1033,8 @@ func (self ModuleRef) AddModuleFlag(Behavior ModuleFlagBehavior, Key *c.Char, Ke
 //
 // @see Module::dump()
 //
-// llgo:link ModuleRef.DumpModule C.LLVMDumpModule
-func (self ModuleRef) DumpModule() {
+// llgo:link ModuleRef.Dump C.LLVMDumpModule
+func (self ModuleRef) Dump() {
 }
 
 // Print a representation of a module to a file. The ErrorMessage needs to be
@@ -1061,8 +1061,8 @@ func (self ModuleRef) PrintModuleToString() *c.Char {
 //
 // @see Module::getModuleInlineAsm()
 //
-// llgo:link ModuleRef.ModuleInlineAsm C.LLVMGetModuleInlineAsm
-func (self ModuleRef) ModuleInlineAsm(Len *c.SizeT) *c.Char {
+// llgo:link ModuleRef.InlineAsm C.LLVMGetModuleInlineAsm
+func (self ModuleRef) InlineAsm(Len *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -1147,8 +1147,8 @@ func (self ValueRef) InlineAsmCanUnwind() Bool {
 //
 // @see Module::getContext()
 //
-// llgo:link ModuleRef.ModuleContext C.LLVMGetModuleContext
-func (self ModuleRef) ModuleContext() ContextRef {
+// llgo:link ModuleRef.Context C.LLVMGetModuleContext
+func (self ModuleRef) Context() ContextRef {
 	return nil
 }
 
@@ -1398,8 +1398,8 @@ func (self ModuleRef) SetModuleInlineAsm(Asm *c.Char) {
 //
 // @see llvm::Type:getTypeID()
 //
-// llgo:link TypeRef.TypeKind C.LLVMGetTypeKind
-func (self TypeRef) TypeKind() TypeKind {
+// llgo:link TypeRef.Kind C.LLVMGetTypeKind
+func (self TypeRef) Kind() TypeKind {
 	return 0
 }
 
@@ -1409,8 +1409,8 @@ func (self TypeRef) TypeKind() TypeKind {
 //
 // @see llvm::Type::isSized()
 //
-// llgo:link TypeRef.TypeIsSized C.LLVMTypeIsSized
-func (self TypeRef) TypeIsSized() Bool {
+// llgo:link TypeRef.IsSized C.LLVMTypeIsSized
+func (self TypeRef) IsSized() Bool {
 	return 0
 }
 
@@ -1418,8 +1418,8 @@ func (self TypeRef) TypeIsSized() Bool {
 //
 // @see llvm::Type::getContext()
 //
-// llgo:link TypeRef.TypeContext C.LLVMGetTypeContext
-func (self TypeRef) TypeContext() ContextRef {
+// llgo:link TypeRef.Context C.LLVMGetTypeContext
+func (self TypeRef) Context() ContextRef {
 	return nil
 }
 
@@ -1427,8 +1427,8 @@ func (self TypeRef) TypeContext() ContextRef {
 //
 // @see llvm::Type::dump()
 //
-// llgo:link TypeRef.DumpType C.LLVMDumpType
-func (self TypeRef) DumpType() {
+// llgo:link TypeRef.Dump C.LLVMDumpType
+func (self TypeRef) Dump() {
 }
 
 // Return a string representation of the type. Use
@@ -1443,38 +1443,38 @@ func (self TypeRef) PrintTypeToString() *c.Char {
 
 // Obtain an integer type from a context with specified bit width.
 //
-// llgo:link ContextRef.Int1TypeInContext C.LLVMInt1TypeInContext
-func (self ContextRef) Int1TypeInContext() TypeRef {
+// llgo:link ContextRef.Int1TypeIn C.LLVMInt1TypeInContext
+func (self ContextRef) Int1TypeIn() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.Int8TypeInContext C.LLVMInt8TypeInContext
-func (self ContextRef) Int8TypeInContext() TypeRef {
+// llgo:link ContextRef.Int8TypeIn C.LLVMInt8TypeInContext
+func (self ContextRef) Int8TypeIn() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.Int16TypeInContext C.LLVMInt16TypeInContext
-func (self ContextRef) Int16TypeInContext() TypeRef {
+// llgo:link ContextRef.Int16TypeIn C.LLVMInt16TypeInContext
+func (self ContextRef) Int16TypeIn() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.Int32TypeInContext C.LLVMInt32TypeInContext
-func (self ContextRef) Int32TypeInContext() TypeRef {
+// llgo:link ContextRef.Int32TypeIn C.LLVMInt32TypeInContext
+func (self ContextRef) Int32TypeIn() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.Int64TypeInContext C.LLVMInt64TypeInContext
-func (self ContextRef) Int64TypeInContext() TypeRef {
+// llgo:link ContextRef.Int64TypeIn C.LLVMInt64TypeInContext
+func (self ContextRef) Int64TypeIn() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.Int128TypeInContext C.LLVMInt128TypeInContext
-func (self ContextRef) Int128TypeInContext() TypeRef {
+// llgo:link ContextRef.Int128TypeIn C.LLVMInt128TypeInContext
+func (self ContextRef) Int128TypeIn() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.IntTypeInContext C.LLVMIntTypeInContext
-func (self ContextRef) IntTypeInContext(NumBits c.Uint) TypeRef {
+// llgo:link ContextRef.IntTypeIn C.LLVMIntTypeInContext
+func (self ContextRef) IntTypeIn(NumBits c.Uint) TypeRef {
 	return nil
 }
 
@@ -1509,51 +1509,51 @@ func (self TypeRef) IntTypeWidth() c.Uint {
 
 // Obtain a 16-bit floating point type from a context.
 //
-// llgo:link ContextRef.HalfTypeInContext C.LLVMHalfTypeInContext
-func (self ContextRef) HalfTypeInContext() TypeRef {
+// llgo:link ContextRef.HalfTypeIn C.LLVMHalfTypeInContext
+func (self ContextRef) HalfTypeIn() TypeRef {
 	return nil
 }
 
 // Obtain a 16-bit brain floating point type from a context.
 //
-// llgo:link ContextRef.BFloatTypeInContext C.LLVMBFloatTypeInContext
-func (self ContextRef) BFloatTypeInContext() TypeRef {
+// llgo:link ContextRef.BFloatTypeIn C.LLVMBFloatTypeInContext
+func (self ContextRef) BFloatTypeIn() TypeRef {
 	return nil
 }
 
 // Obtain a 32-bit floating point type from a context.
 //
-// llgo:link ContextRef.FloatTypeInContext C.LLVMFloatTypeInContext
-func (self ContextRef) FloatTypeInContext() TypeRef {
+// llgo:link ContextRef.FloatTypeIn C.LLVMFloatTypeInContext
+func (self ContextRef) FloatTypeIn() TypeRef {
 	return nil
 }
 
 // Obtain a 64-bit floating point type from a context.
 //
-// llgo:link ContextRef.DoubleTypeInContext C.LLVMDoubleTypeInContext
-func (self ContextRef) DoubleTypeInContext() TypeRef {
+// llgo:link ContextRef.DoubleTypeIn C.LLVMDoubleTypeInContext
+func (self ContextRef) DoubleTypeIn() TypeRef {
 	return nil
 }
 
 // Obtain a 80-bit floating point type (X87) from a context.
 //
-// llgo:link ContextRef.X86FP80TypeInContext C.LLVMX86FP80TypeInContext
-func (self ContextRef) X86FP80TypeInContext() TypeRef {
+// llgo:link ContextRef.X86FP80TypeIn C.LLVMX86FP80TypeInContext
+func (self ContextRef) X86FP80TypeIn() TypeRef {
 	return nil
 }
 
 // Obtain a 128-bit floating point type (112-bit mantissa) from a
 // context.
 //
-// llgo:link ContextRef.FP128TypeInContext C.LLVMFP128TypeInContext
-func (self ContextRef) FP128TypeInContext() TypeRef {
+// llgo:link ContextRef.FP128TypeIn C.LLVMFP128TypeInContext
+func (self ContextRef) FP128TypeIn() TypeRef {
 	return nil
 }
 
 // Obtain a 128-bit floating point type (two 64-bits) from a context.
 //
-// llgo:link ContextRef.PPCFP128TypeInContext C.LLVMPPCFP128TypeInContext
-func (self ContextRef) PPCFP128TypeInContext() TypeRef {
+// llgo:link ContextRef.PPCFP128TypeIn C.LLVMPPCFP128TypeInContext
+func (self ContextRef) PPCFP128TypeIn() TypeRef {
 	return nil
 }
 
@@ -1587,8 +1587,8 @@ func PPCFP128Type() TypeRef
 // The function is defined as a tuple of a return Type, a list of
 // parameter types, and whether the function is variadic.
 //
-// llgo:link TypeRef.FunctionType C.LLVMFunctionType
-func (self TypeRef) FunctionType(ParamTypes *TypeRef, ParamCount c.Uint, IsVarArg Bool) TypeRef {
+// llgo:link TypeRef.Function C.LLVMFunctionType
+func (self TypeRef) Function(ParamTypes *TypeRef, ParamCount c.Uint, IsVarArg Bool) TypeRef {
 	return self
 }
 
@@ -1601,8 +1601,8 @@ func (self TypeRef) IsFunctionVarArg() Bool {
 
 // Obtain the Type this function Type returns.
 //
-// llgo:link TypeRef.ReturnType C.LLVMGetReturnType
-func (self TypeRef) ReturnType() TypeRef {
+// llgo:link TypeRef.Return C.LLVMGetReturnType
+func (self TypeRef) Return() TypeRef {
 	return self
 }
 
@@ -1634,8 +1634,8 @@ func (self TypeRef) ParamTypes(Dest *TypeRef) {
 //
 // @see llvm::StructType::create()
 //
-// llgo:link ContextRef.StructTypeInContext C.LLVMStructTypeInContext
-func (self ContextRef) StructTypeInContext(ElementTypes *TypeRef, ElementCount c.Uint, Packed Bool) TypeRef {
+// llgo:link ContextRef.StructTypeIn C.LLVMStructTypeInContext
+func (self ContextRef) StructTypeIn(ElementTypes *TypeRef, ElementCount c.Uint, Packed Bool) TypeRef {
 	return nil
 }
 
@@ -1734,8 +1734,8 @@ func (self TypeRef) IsLiteralStruct() Bool {
 //
 // @see llvm::SequentialType::getElementType()
 //
-// llgo:link TypeRef.ElementType C.LLVMGetElementType
-func (self TypeRef) ElementType() TypeRef {
+// llgo:link TypeRef.Element C.LLVMGetElementType
+func (self TypeRef) Element() TypeRef {
 	return self
 }
 
@@ -1765,8 +1765,8 @@ func (self TypeRef) NumContainedTypes() c.Uint {
 // LLVMArrayType2
 // @see llvm::ArrayType::get()
 //
-// llgo:link TypeRef.ArrayType C.LLVMArrayType
-func (self TypeRef) ArrayType(ElementCount c.Uint) TypeRef {
+// llgo:link TypeRef.Array C.LLVMArrayType
+func (self TypeRef) Array(ElementCount c.Uint) TypeRef {
 	return self
 }
 
@@ -1813,8 +1813,8 @@ func (self TypeRef) ArrayLength2() c.Uint64T {
 //
 // @see llvm::PointerType::get()
 //
-// llgo:link TypeRef.PointerType C.LLVMPointerType
-func (self TypeRef) PointerType(AddressSpace c.Uint) TypeRef {
+// llgo:link TypeRef.Pointer C.LLVMPointerType
+func (self TypeRef) Pointer(AddressSpace c.Uint) TypeRef {
 	return self
 }
 
@@ -1833,8 +1833,8 @@ func (self TypeRef) PointerTypeIsOpaque() Bool {
 //
 // @see llvm::PointerType::get()
 //
-// llgo:link ContextRef.PointerTypeInContext C.LLVMPointerTypeInContext
-func (self ContextRef) PointerTypeInContext(AddressSpace c.Uint) TypeRef {
+// llgo:link ContextRef.PointerTypeIn C.LLVMPointerTypeInContext
+func (self ContextRef) PointerTypeIn(AddressSpace c.Uint) TypeRef {
 	return nil
 }
 
@@ -1857,8 +1857,8 @@ func (self TypeRef) PointerAddressSpace() c.Uint {
 //
 // @see llvm::VectorType::get()
 //
-// llgo:link TypeRef.VectorType C.LLVMVectorType
-func (self TypeRef) VectorType(ElementCount c.Uint) TypeRef {
+// llgo:link TypeRef.Vector C.LLVMVectorType
+func (self TypeRef) Vector(ElementCount c.Uint) TypeRef {
 	return self
 }
 
@@ -1870,8 +1870,8 @@ func (self TypeRef) VectorType(ElementCount c.Uint) TypeRef {
 //
 // @see llvm::ScalableVectorType::get()
 //
-// llgo:link TypeRef.ScalableVectorType C.LLVMScalableVectorType
-func (self TypeRef) ScalableVectorType(ElementCount c.Uint) TypeRef {
+// llgo:link TypeRef.ScalableVector C.LLVMScalableVectorType
+func (self TypeRef) ScalableVector(ElementCount c.Uint) TypeRef {
 	return self
 }
 
@@ -1925,36 +1925,36 @@ func (self ValueRef) ConstantPtrAuthAddrDiscriminator() ValueRef {
 
 // Create a void type in a context.
 //
-// llgo:link ContextRef.VoidTypeInContext C.LLVMVoidTypeInContext
-func (self ContextRef) VoidTypeInContext() TypeRef {
+// llgo:link ContextRef.VoidTypeIn C.LLVMVoidTypeInContext
+func (self ContextRef) VoidTypeIn() TypeRef {
 	return nil
 }
 
 // Create a label type in a context.
 //
-// llgo:link ContextRef.LabelTypeInContext C.LLVMLabelTypeInContext
-func (self ContextRef) LabelTypeInContext() TypeRef {
+// llgo:link ContextRef.LabelTypeIn C.LLVMLabelTypeInContext
+func (self ContextRef) LabelTypeIn() TypeRef {
 	return nil
 }
 
 // Create a X86 AMX type in a context.
 //
-// llgo:link ContextRef.X86AMXTypeInContext C.LLVMX86AMXTypeInContext
-func (self ContextRef) X86AMXTypeInContext() TypeRef {
+// llgo:link ContextRef.X86AMXTypeIn C.LLVMX86AMXTypeInContext
+func (self ContextRef) X86AMXTypeIn() TypeRef {
 	return nil
 }
 
 // Create a token type in a context.
 //
-// llgo:link ContextRef.TokenTypeInContext C.LLVMTokenTypeInContext
-func (self ContextRef) TokenTypeInContext() TypeRef {
+// llgo:link ContextRef.TokenTypeIn C.LLVMTokenTypeInContext
+func (self ContextRef) TokenTypeIn() TypeRef {
 	return nil
 }
 
 // Create a metadata type in a context.
 //
-// llgo:link ContextRef.MetadataTypeInContext C.LLVMMetadataTypeInContext
-func (self ContextRef) MetadataTypeInContext() TypeRef {
+// llgo:link ContextRef.MetadataTypeIn C.LLVMMetadataTypeInContext
+func (self ContextRef) MetadataTypeIn() TypeRef {
 	return nil
 }
 
@@ -1972,8 +1972,8 @@ func X86AMXType() TypeRef
 
 // Create a target extension type in LLVM context.
 //
-// llgo:link ContextRef.TargetExtTypeInContext C.LLVMTargetExtTypeInContext
-func (self ContextRef) TargetExtTypeInContext(Name *c.Char, TypeParams *TypeRef, TypeParamCount c.Uint, IntParams *c.Uint, IntParamCount c.Uint) TypeRef {
+// llgo:link ContextRef.TargetExtTypeIn C.LLVMTargetExtTypeInContext
+func (self ContextRef) TargetExtTypeIn(Name *c.Char, TypeParams *TypeRef, TypeParamCount c.Uint, IntParams *c.Uint, IntParamCount c.Uint) TypeRef {
 	return nil
 }
 
@@ -2035,8 +2035,8 @@ func (self ValueRef) TypeOf() TypeRef {
 //
 // @see llvm::Value::getValueID()
 //
-// llgo:link ValueRef.ValueKind C.LLVMGetValueKind
-func (self ValueRef) ValueKind() ValueKind {
+// llgo:link ValueRef.Kind C.LLVMGetValueKind
+func (self ValueRef) Kind() ValueKind {
 	return 0
 }
 
@@ -2044,8 +2044,8 @@ func (self ValueRef) ValueKind() ValueKind {
 //
 // @see llvm::Value::getName()
 //
-// llgo:link ValueRef.ValueName2 C.LLVMGetValueName2
-func (self ValueRef) ValueName2(Length *c.SizeT) *c.Char {
+// llgo:link ValueRef.Name2 C.LLVMGetValueName2
+func (self ValueRef) Name2(Length *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -2061,8 +2061,8 @@ func (self ValueRef) SetValueName2(Name *c.Char, NameLen c.SizeT) {
 //
 // @see llvm::Value::dump()
 //
-// llgo:link ValueRef.DumpValue C.LLVMDumpValue
-func (self ValueRef) DumpValue() {
+// llgo:link ValueRef.Dump C.LLVMDumpValue
+func (self ValueRef) Dump() {
 }
 
 // Return a string representation of the value. Use
@@ -2079,8 +2079,8 @@ func (self ValueRef) PrintValueToString() *c.Char {
 //
 // @see llvm::Value::getContext()
 //
-// llgo:link ValueRef.ValueContext C.LLVMGetValueContext
-func (self ValueRef) ValueContext() ContextRef {
+// llgo:link ValueRef.Context C.LLVMGetValueContext
+func (self ValueRef) Context() ContextRef {
 	return nil
 }
 
@@ -2217,8 +2217,8 @@ func (self ValueRef) IsAConstantPtrAuth() ValueRef {
 	return self
 }
 
-// llgo:link ValueRef.IsAGlobalValue C.LLVMIsAGlobalValue
-func (self ValueRef) IsAGlobalValue() ValueRef {
+// llgo:link ValueRef.IsAGlobal C.LLVMIsAGlobalValue
+func (self ValueRef) IsAGlobal() ValueRef {
 	return self
 }
 
@@ -2247,13 +2247,13 @@ func (self ValueRef) IsAGlobalIFunc() ValueRef {
 	return self
 }
 
-// llgo:link ValueRef.IsAUndefValue C.LLVMIsAUndefValue
-func (self ValueRef) IsAUndefValue() ValueRef {
+// llgo:link ValueRef.IsAUndef C.LLVMIsAUndefValue
+func (self ValueRef) IsAUndef() ValueRef {
 	return self
 }
 
-// llgo:link ValueRef.IsAPoisonValue C.LLVMIsAPoisonValue
-func (self ValueRef) IsAPoisonValue() ValueRef {
+// llgo:link ValueRef.IsAPoison C.LLVMIsAPoisonValue
+func (self ValueRef) IsAPoison() ValueRef {
 	return self
 }
 
@@ -2584,8 +2584,8 @@ func (self ValueRef) IsAMDString() ValueRef {
 
 // Deprecated: Use LLVMGetValueName2 instead.
 //
-// llgo:link ValueRef.ValueName C.LLVMGetValueName
-func (self ValueRef) ValueName() *c.Char {
+// llgo:link ValueRef.Name C.LLVMGetValueName
+func (self ValueRef) Name() *c.Char {
 	return nil
 }
 
@@ -2614,8 +2614,8 @@ func (self ValueRef) FirstUse() UseRef {
 // This effectively advances the iterator. It returns NULL if you are on
 // the final use and no more are available.
 //
-// llgo:link UseRef.NextUse C.LLVMGetNextUse
-func (self UseRef) NextUse() UseRef {
+// llgo:link UseRef.Next C.LLVMGetNextUse
+func (self UseRef) Next() UseRef {
 	return self
 }
 
@@ -2814,8 +2814,8 @@ func (self TypeRef) ConstFPFromBits(N *c.Uint64T) ValueRef {
 //
 // @see llvm::ConstantInt::getZExtValue()
 //
-// llgo:link ValueRef.ConstIntGetZExtValue C.LLVMConstIntGetZExtValue
-func (self ValueRef) ConstIntGetZExtValue() c.UlongLong {
+// llgo:link ValueRef.ConstIntGetZExt C.LLVMConstIntGetZExtValue
+func (self ValueRef) ConstIntGetZExt() c.UlongLong {
 	return 0
 }
 
@@ -2823,8 +2823,8 @@ func (self ValueRef) ConstIntGetZExtValue() c.UlongLong {
 //
 // @see llvm::ConstantInt::getSExtValue()
 //
-// llgo:link ValueRef.ConstIntGetSExtValue C.LLVMConstIntGetSExtValue
-func (self ValueRef) ConstIntGetSExtValue() c.LongLong {
+// llgo:link ValueRef.ConstIntGetSExt C.LLVMConstIntGetSExtValue
+func (self ValueRef) ConstIntGetSExt() c.LongLong {
 	return 0
 }
 
@@ -2844,8 +2844,8 @@ func (self ValueRef) ConstRealGetDouble(losesInfo *Bool) c.Double {
 // accurate LLVMConstStringInContext2
 // @see llvm::ConstantDataArray::getString()
 //
-// llgo:link ContextRef.ConstStringInContext C.LLVMConstStringInContext
-func (self ContextRef) ConstStringInContext(Str *c.Char, Length c.Uint, DontNullTerminate Bool) ValueRef {
+// llgo:link ContextRef.ConstStringIn C.LLVMConstStringInContext
+func (self ContextRef) ConstStringIn(Str *c.Char, Length c.Uint, DontNullTerminate Bool) ValueRef {
 	return nil
 }
 
@@ -2903,8 +2903,8 @@ func (self ValueRef) RawDataValues(SizeInBytes *c.SizeT) *c.Char {
 //
 // @see llvm::ConstantStruct::getAnon()
 //
-// llgo:link ContextRef.ConstStructInContext C.LLVMConstStructInContext
-func (self ContextRef) ConstStructInContext(ConstantVals *ValueRef, Count c.Uint, Packed Bool) ValueRef {
+// llgo:link ContextRef.ConstStructIn C.LLVMConstStructInContext
+func (self ContextRef) ConstStructIn(ConstantVals *ValueRef, Count c.Uint, Packed Bool) ValueRef {
 	return nil
 }
 
@@ -3956,8 +3956,8 @@ func (self ContextRef) MetadataAsValue(MD MetadataRef) ValueRef {
 
 // Obtain a Value as a Metadata.
 //
-// llgo:link ValueRef.ValueAsMetadata C.LLVMValueAsMetadata
-func (self ValueRef) ValueAsMetadata() MetadataRef {
+// llgo:link ValueRef.AsMetadata C.LLVMValueAsMetadata
+func (self ValueRef) AsMetadata() MetadataRef {
 	return nil
 }
 
@@ -4006,8 +4006,8 @@ func (self ValueRef) ReplaceMDNodeOperandWith(Index c.Uint, Replacement Metadata
 
 // Deprecated: Use LLVMMDStringInContext2 instead.
 //
-// llgo:link ContextRef.MDStringInContext C.LLVMMDStringInContext
-func (self ContextRef) MDStringInContext(Str *c.Char, SLen c.Uint) ValueRef {
+// llgo:link ContextRef.MDStringIn C.LLVMMDStringInContext
+func (self ContextRef) MDStringIn(Str *c.Char, SLen c.Uint) ValueRef {
 	return nil
 }
 
@@ -4018,8 +4018,8 @@ func MDString(Str *c.Char, SLen c.Uint) ValueRef
 
 // Deprecated: Use LLVMMDNodeInContext2 instead.
 //
-// llgo:link ContextRef.MDNodeInContext C.LLVMMDNodeInContext
-func (self ContextRef) MDNodeInContext(Vals *ValueRef, Count c.Uint) ValueRef {
+// llgo:link ContextRef.MDNodeIn C.LLVMMDNodeInContext
+func (self ContextRef) MDNodeIn(Vals *ValueRef, Count c.Uint) ValueRef {
 	return nil
 }
 
@@ -4046,8 +4046,8 @@ func CreateOperandBundle(Tag *c.Char, TagLen c.SizeT, Args *ValueRef, NumArgs c.
 // This must be called for every created operand bundle or memory will be
 // leaked.
 //
-// llgo:link OperandBundleRef.DisposeOperandBundle C.LLVMDisposeOperandBundle
-func (self OperandBundleRef) DisposeOperandBundle() {
+// llgo:link OperandBundleRef.Dispose C.LLVMDisposeOperandBundle
+func (self OperandBundleRef) Dispose() {
 }
 
 // Obtain the tag of an operand bundle as a string.
@@ -4057,8 +4057,8 @@ func (self OperandBundleRef) DisposeOperandBundle() {
 // @return The tag name of Bundle.
 // @see OperandBundleDef::getTag()
 //
-// llgo:link OperandBundleRef.OperandBundleTag C.LLVMGetOperandBundleTag
-func (self OperandBundleRef) OperandBundleTag(Len *c.SizeT) *c.Char {
+// llgo:link OperandBundleRef.Tag C.LLVMGetOperandBundleTag
+func (self OperandBundleRef) Tag(Len *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -4080,36 +4080,36 @@ func (self OperandBundleRef) NumOperandBundleArgs() c.Uint {
 // LLVMGetNumOperandBundleArgs().
 // @return The operand.
 //
-// llgo:link OperandBundleRef.OperandBundleArgAtIndex C.LLVMGetOperandBundleArgAtIndex
-func (self OperandBundleRef) OperandBundleArgAtIndex(Index c.Uint) ValueRef {
+// llgo:link OperandBundleRef.ArgAtIndex C.LLVMGetOperandBundleArgAtIndex
+func (self OperandBundleRef) ArgAtIndex(Index c.Uint) ValueRef {
 	return nil
 }
 
 // Convert a basic block instance to a value type.
 //
-// llgo:link BasicBlockRef.BasicBlockAsValue C.LLVMBasicBlockAsValue
-func (self BasicBlockRef) BasicBlockAsValue() ValueRef {
+// llgo:link BasicBlockRef.AsValue C.LLVMBasicBlockAsValue
+func (self BasicBlockRef) AsValue() ValueRef {
 	return nil
 }
 
 // Determine whether an LLVMValueRef is itself a basic block.
 //
-// llgo:link ValueRef.ValueIsBasicBlock C.LLVMValueIsBasicBlock
-func (self ValueRef) ValueIsBasicBlock() Bool {
+// llgo:link ValueRef.IsBasicBlock C.LLVMValueIsBasicBlock
+func (self ValueRef) IsBasicBlock() Bool {
 	return 0
 }
 
 // Convert an LLVMValueRef to an LLVMBasicBlockRef instance.
 //
-// llgo:link ValueRef.ValueAsBasicBlock C.LLVMValueAsBasicBlock
-func (self ValueRef) ValueAsBasicBlock() BasicBlockRef {
+// llgo:link ValueRef.AsBasicBlock C.LLVMValueAsBasicBlock
+func (self ValueRef) AsBasicBlock() BasicBlockRef {
 	return nil
 }
 
 // Obtain the string name of a basic block.
 //
-// llgo:link BasicBlockRef.BasicBlockName C.LLVMGetBasicBlockName
-func (self BasicBlockRef) BasicBlockName() *c.Char {
+// llgo:link BasicBlockRef.Name C.LLVMGetBasicBlockName
+func (self BasicBlockRef) Name() *c.Char {
 	return nil
 }
 
@@ -4117,8 +4117,8 @@ func (self BasicBlockRef) BasicBlockName() *c.Char {
 //
 // @see llvm::BasicBlock::getParent()
 //
-// llgo:link BasicBlockRef.BasicBlockParent C.LLVMGetBasicBlockParent
-func (self BasicBlockRef) BasicBlockParent() ValueRef {
+// llgo:link BasicBlockRef.Parent C.LLVMGetBasicBlockParent
+func (self BasicBlockRef) Parent() ValueRef {
 	return nil
 }
 
@@ -4131,8 +4131,8 @@ func (self BasicBlockRef) BasicBlockParent() ValueRef {
 //
 // @see llvm::BasicBlock::getTerminator()
 //
-// llgo:link BasicBlockRef.BasicBlockTerminator C.LLVMGetBasicBlockTerminator
-func (self BasicBlockRef) BasicBlockTerminator() ValueRef {
+// llgo:link BasicBlockRef.Terminator C.LLVMGetBasicBlockTerminator
+func (self BasicBlockRef) Terminator() ValueRef {
 	return nil
 }
 
@@ -4179,15 +4179,15 @@ func (self ValueRef) LastBasicBlock() BasicBlockRef {
 
 // Advance a basic block iterator.
 //
-// llgo:link BasicBlockRef.NextBasicBlock C.LLVMGetNextBasicBlock
-func (self BasicBlockRef) NextBasicBlock() BasicBlockRef {
+// llgo:link BasicBlockRef.Next C.LLVMGetNextBasicBlock
+func (self BasicBlockRef) Next() BasicBlockRef {
 	return self
 }
 
 // Go backwards in a basic block iterator.
 //
-// llgo:link BasicBlockRef.PreviousBasicBlock C.LLVMGetPreviousBasicBlock
-func (self BasicBlockRef) PreviousBasicBlock() BasicBlockRef {
+// llgo:link BasicBlockRef.Previous C.LLVMGetPreviousBasicBlock
+func (self BasicBlockRef) Previous() BasicBlockRef {
 	return self
 }
 
@@ -4223,8 +4223,8 @@ func (self ValueRef) AppendExistingBasicBlock(BB BasicBlockRef) {
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link ContextRef.CreateBasicBlockInContext C.LLVMCreateBasicBlockInContext
-func (self ContextRef) CreateBasicBlockInContext(Name *c.Char) BasicBlockRef {
+// llgo:link ContextRef.CreateBasicBlockIn C.LLVMCreateBasicBlockInContext
+func (self ContextRef) CreateBasicBlockIn(Name *c.Char) BasicBlockRef {
 	return nil
 }
 
@@ -4232,8 +4232,8 @@ func (self ContextRef) CreateBasicBlockInContext(Name *c.Char) BasicBlockRef {
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link ContextRef.AppendBasicBlockInContext C.LLVMAppendBasicBlockInContext
-func (self ContextRef) AppendBasicBlockInContext(Fn ValueRef, Name *c.Char) BasicBlockRef {
+// llgo:link ContextRef.AppendBasicBlockIn C.LLVMAppendBasicBlockInContext
+func (self ContextRef) AppendBasicBlockIn(Fn ValueRef, Name *c.Char) BasicBlockRef {
 	return nil
 }
 
@@ -4254,8 +4254,8 @@ func (self ValueRef) AppendBasicBlock(Name *c.Char) BasicBlockRef {
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link ContextRef.InsertBasicBlockInContext C.LLVMInsertBasicBlockInContext
-func (self ContextRef) InsertBasicBlockInContext(BB BasicBlockRef, Name *c.Char) BasicBlockRef {
+// llgo:link ContextRef.InsertBasicBlockIn C.LLVMInsertBasicBlockInContext
+func (self ContextRef) InsertBasicBlockIn(BB BasicBlockRef, Name *c.Char) BasicBlockRef {
 	return nil
 }
 
@@ -4263,8 +4263,8 @@ func (self ContextRef) InsertBasicBlockInContext(BB BasicBlockRef, Name *c.Char)
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link BasicBlockRef.InsertBasicBlock C.LLVMInsertBasicBlock
-func (self BasicBlockRef) InsertBasicBlock(Name *c.Char) BasicBlockRef {
+// llgo:link BasicBlockRef.Insert C.LLVMInsertBasicBlock
+func (self BasicBlockRef) Insert(Name *c.Char) BasicBlockRef {
 	return self
 }
 
@@ -4275,8 +4275,8 @@ func (self BasicBlockRef) InsertBasicBlock(Name *c.Char) BasicBlockRef {
 //
 // @see llvm::BasicBlock::eraseFromParent()
 //
-// llgo:link BasicBlockRef.DeleteBasicBlock C.LLVMDeleteBasicBlock
-func (self BasicBlockRef) DeleteBasicBlock() {
+// llgo:link BasicBlockRef.Delete C.LLVMDeleteBasicBlock
+func (self BasicBlockRef) Delete() {
 }
 
 // Remove a basic block from a function.
@@ -4521,8 +4521,8 @@ func (self ValueRef) LastDbgRecord() DbgRecordRef {
 //
 // @see llvm::Instruction::getDbgRecordRange()
 //
-// llgo:link DbgRecordRef.NextDbgRecord C.LLVMGetNextDbgRecord
-func (self DbgRecordRef) NextDbgRecord() DbgRecordRef {
+// llgo:link DbgRecordRef.Next C.LLVMGetNextDbgRecord
+func (self DbgRecordRef) Next() DbgRecordRef {
 	return self
 }
 
@@ -4530,8 +4530,8 @@ func (self DbgRecordRef) NextDbgRecord() DbgRecordRef {
 //
 // @see llvm::Instruction::getDbgRecordRange()
 //
-// llgo:link DbgRecordRef.PreviousDbgRecord C.LLVMGetPreviousDbgRecord
-func (self DbgRecordRef) PreviousDbgRecord() DbgRecordRef {
+// llgo:link DbgRecordRef.Previous C.LLVMGetPreviousDbgRecord
+func (self DbgRecordRef) Previous() DbgRecordRef {
 	return self
 }
 
@@ -4539,13 +4539,13 @@ func (self DbgRecordRef) PreviousDbgRecord() DbgRecordRef {
 //
 // @see llvm::DbgRecord::getDebugLoc()
 //
-// llgo:link DbgRecordRef.DbgRecordGetDebugLoc C.LLVMDbgRecordGetDebugLoc
-func (self DbgRecordRef) DbgRecordGetDebugLoc() MetadataRef {
+// llgo:link DbgRecordRef.DebugLoc C.LLVMDbgRecordGetDebugLoc
+func (self DbgRecordRef) DebugLoc() MetadataRef {
 	return nil
 }
 
-// llgo:link DbgRecordRef.DbgRecordGetKind C.LLVMDbgRecordGetKind
-func (self DbgRecordRef) DbgRecordGetKind() DbgRecordKind {
+// llgo:link DbgRecordRef.Kind C.LLVMDbgRecordGetKind
+func (self DbgRecordRef) Kind() DbgRecordKind {
 	return 0
 }
 
@@ -4666,8 +4666,8 @@ func (self ValueRef) CalledFunctionType() TypeRef {
 // @see llvm::CallInst::getCalledOperand()
 // @see llvm::InvokeInst::getCalledOperand()
 //
-// llgo:link ValueRef.CalledValue C.LLVMGetCalledValue
-func (self ValueRef) CalledValue() ValueRef {
+// llgo:link ValueRef.Called C.LLVMGetCalledValue
+func (self ValueRef) Called() ValueRef {
 	return self
 }
 
@@ -4881,8 +4881,8 @@ func (self ValueRef) SwitchDefaultDest() BasicBlockRef {
 //
 // @see llvm::SwitchInst::CaseHandle::getCaseValue()
 //
-// llgo:link ValueRef.SwitchCaseValue C.LLVMGetSwitchCaseValue
-func (self ValueRef) SwitchCaseValue(i c.Uint) ValueRef {
+// llgo:link ValueRef.SwitchCase C.LLVMGetSwitchCaseValue
+func (self ValueRef) SwitchCase(i c.Uint) ValueRef {
 	return self
 }
 
@@ -4894,8 +4894,8 @@ func (self ValueRef) SwitchCaseValue(i c.Uint) ValueRef {
 //
 // @see llvm::SwitchInst::CaseHandle::setValue()
 //
-// llgo:link ValueRef.SetSwitchCaseValue C.LLVMSetSwitchCaseValue
-func (self ValueRef) SetSwitchCaseValue(i c.Uint, CaseValue ValueRef) {
+// llgo:link ValueRef.SetSwitchCase C.LLVMSetSwitchCaseValue
+func (self ValueRef) SetSwitchCase(i c.Uint, CaseValue ValueRef) {
 }
 
 // Obtain the type that is being allocated by the alloca instruction.
@@ -4957,8 +4957,8 @@ func (self ValueRef) CountIncoming() c.Uint {
 
 // Obtain an incoming value to a PHI node as an LLVMValueRef.
 //
-// llgo:link ValueRef.IncomingValue C.LLVMGetIncomingValue
-func (self ValueRef) IncomingValue(Index c.Uint) ValueRef {
+// llgo:link ValueRef.Incoming C.LLVMGetIncomingValue
+func (self ValueRef) Incoming(Index c.Uint) ValueRef {
 	return self
 }
 
@@ -4991,8 +4991,8 @@ func (self ValueRef) Indices() *c.Uint {
 //
 // @{
 //
-// llgo:link ContextRef.CreateBuilderInContext C.LLVMCreateBuilderInContext
-func (self ContextRef) CreateBuilderInContext() BuilderRef {
+// llgo:link ContextRef.CreateBuilderIn C.LLVMCreateBuilderInContext
+func (self ContextRef) CreateBuilderIn() BuilderRef {
 	return nil
 }
 
@@ -5002,8 +5002,8 @@ func CreateBuilder() BuilderRef
 // Set the builder position before Instr but after any attached debug records,
 // or if Instr is null set the position to the end of Block.
 //
-// llgo:link BuilderRef.PositionBuilder C.LLVMPositionBuilder
-func (self BuilderRef) PositionBuilder(Block BasicBlockRef, Instr ValueRef) {
+// llgo:link BuilderRef.Position C.LLVMPositionBuilder
+func (self BuilderRef) Position(Block BasicBlockRef, Instr ValueRef) {
 }
 
 // Set the builder position before Instr and any attached debug records,
@@ -5038,16 +5038,16 @@ func (self BuilderRef) InsertBlock() BasicBlockRef {
 func (self BuilderRef) ClearInsertionPosition() {
 }
 
-// llgo:link BuilderRef.InsertIntoBuilder C.LLVMInsertIntoBuilder
-func (self BuilderRef) InsertIntoBuilder(Instr ValueRef) {
+// llgo:link BuilderRef.InsertInto C.LLVMInsertIntoBuilder
+func (self BuilderRef) InsertInto(Instr ValueRef) {
 }
 
 // llgo:link BuilderRef.InsertIntoBuilderWithName C.LLVMInsertIntoBuilderWithName
 func (self BuilderRef) InsertIntoBuilderWithName(Instr ValueRef, Name *c.Char) {
 }
 
-// llgo:link BuilderRef.DisposeBuilder C.LLVMDisposeBuilder
-func (self BuilderRef) DisposeBuilder() {
+// llgo:link BuilderRef.Dispose C.LLVMDisposeBuilder
+func (self BuilderRef) Dispose() {
 }
 
 // Get location information used by debugging information.
@@ -5094,8 +5094,8 @@ func (self BuilderRef) AddMetadataToInst(Inst ValueRef) {
 //
 // @see llvm::IRBuilder::getDefaultFPMathTag()
 //
-// llgo:link BuilderRef.BuilderGetDefaultFPMathTag C.LLVMBuilderGetDefaultFPMathTag
-func (self BuilderRef) BuilderGetDefaultFPMathTag() MetadataRef {
+// llgo:link BuilderRef.DefaultFPMathTag C.LLVMBuilderGetDefaultFPMathTag
+func (self BuilderRef) DefaultFPMathTag() MetadataRef {
 	return nil
 }
 
@@ -5105,16 +5105,16 @@ func (self BuilderRef) BuilderGetDefaultFPMathTag() MetadataRef {
 //
 // @see llvm::IRBuilder::setDefaultFPMathTag()
 //
-// llgo:link BuilderRef.BuilderSetDefaultFPMathTag C.LLVMBuilderSetDefaultFPMathTag
-func (self BuilderRef) BuilderSetDefaultFPMathTag(FPMathTag MetadataRef) {
+// llgo:link BuilderRef.SetDefaultFPMathTag C.LLVMBuilderSetDefaultFPMathTag
+func (self BuilderRef) SetDefaultFPMathTag(FPMathTag MetadataRef) {
 }
 
 // Obtain the context to which this builder is associated.
 //
 // @see llvm::IRBuilder::getContext()
 //
-// llgo:link BuilderRef.BuilderContext C.LLVMGetBuilderContext
-func (self BuilderRef) BuilderContext() ContextRef {
+// llgo:link BuilderRef.Context C.LLVMGetBuilderContext
+func (self BuilderRef) Context() ContextRef {
 	return nil
 }
 
@@ -5931,8 +5931,8 @@ func GetUndefMaskElem() c.Int
 // \Returns the result of \c LLVMGetUndefMaskElem() if the mask value is
 // poison at that position.
 //
-// llgo:link ValueRef.MaskValue C.LLVMGetMaskValue
-func (self ValueRef) MaskValue(Elt c.Uint) c.Int {
+// llgo:link ValueRef.Mask C.LLVMGetMaskValue
+func (self ValueRef) Mask(Elt c.Uint) c.Int {
 	return 0
 }
 
@@ -5987,15 +5987,15 @@ func (self ValueRef) SetCmpXchgFailureOrdering(Ordering AtomicOrdering) {
 // Changes the type of M so it can be passed to FunctionPassManagers and the
 // JIT.  They take ModuleProviders for historical reasons.
 //
-// llgo:link ModuleRef.CreateModuleProviderForExistingModule C.LLVMCreateModuleProviderForExistingModule
-func (self ModuleRef) CreateModuleProviderForExistingModule() ModuleProviderRef {
+// llgo:link ModuleRef.CreateModuleProviderForExisting C.LLVMCreateModuleProviderForExistingModule
+func (self ModuleRef) CreateModuleProviderForExisting() ModuleProviderRef {
 	return nil
 }
 
 // Destroys the module M.
 //
-// llgo:link ModuleProviderRef.DisposeModuleProvider C.LLVMDisposeModuleProvider
-func (self ModuleProviderRef) DisposeModuleProvider() {
+// llgo:link ModuleProviderRef.Dispose C.LLVMDisposeModuleProvider
+func (self ModuleProviderRef) Dispose() {
 }
 
 // @defgroup LLVMCCoreMemoryBuffers Memory Buffers
@@ -6024,8 +6024,8 @@ func (self MemoryBufferRef) BufferSize() c.SizeT {
 	return 0
 }
 
-// llgo:link MemoryBufferRef.DisposeMemoryBuffer C.LLVMDisposeMemoryBuffer
-func (self MemoryBufferRef) DisposeMemoryBuffer() {
+// llgo:link MemoryBufferRef.Dispose C.LLVMDisposeMemoryBuffer
+func (self MemoryBufferRef) Dispose() {
 }
 
 // Constructs a new whole-module pass pipeline. This type of pipeline is
@@ -6040,8 +6040,8 @@ func CreatePassManager() PassManagerRef
 // pipeline is suitable for code generation and JIT compilation tasks.
 // @see llvm::FunctionPassManager::FunctionPassManager
 //
-// llgo:link ModuleRef.CreateFunctionPassManagerForModule C.LLVMCreateFunctionPassManagerForModule
-func (self ModuleRef) CreateFunctionPassManagerForModule() PassManagerRef {
+// llgo:link ModuleRef.CreateFunctionPassManagerFor C.LLVMCreateFunctionPassManagerForModule
+func (self ModuleRef) CreateFunctionPassManagerFor() PassManagerRef {
 	return nil
 }
 
@@ -6057,8 +6057,8 @@ func (self ModuleProviderRef) CreateFunctionPassManager() PassManagerRef {
 // modified the module, 0 otherwise.
 // @see llvm::PassManager::run(Module&)
 //
-// llgo:link PassManagerRef.RunPassManager C.LLVMRunPassManager
-func (self PassManagerRef) RunPassManager(M ModuleRef) Bool {
+// llgo:link PassManagerRef.Run C.LLVMRunPassManager
+func (self PassManagerRef) Run(M ModuleRef) Bool {
 	return 0
 }
 
@@ -6066,8 +6066,8 @@ func (self PassManagerRef) RunPassManager(M ModuleRef) Bool {
 // manager. Returns 1 if any of the passes modified the module, 0 otherwise.
 // @see llvm::FunctionPassManager::doInitialization
 //
-// llgo:link PassManagerRef.InitializeFunctionPassManager C.LLVMInitializeFunctionPassManager
-func (self PassManagerRef) InitializeFunctionPassManager() Bool {
+// llgo:link PassManagerRef.InitializeFunction C.LLVMInitializeFunctionPassManager
+func (self PassManagerRef) InitializeFunction() Bool {
 	return 0
 }
 
@@ -6076,8 +6076,8 @@ func (self PassManagerRef) InitializeFunctionPassManager() Bool {
 // function, false otherwise.
 // @see llvm::FunctionPassManager::run(Function&)
 //
-// llgo:link PassManagerRef.RunFunctionPassManager C.LLVMRunFunctionPassManager
-func (self PassManagerRef) RunFunctionPassManager(F ValueRef) Bool {
+// llgo:link PassManagerRef.RunFunction C.LLVMRunFunctionPassManager
+func (self PassManagerRef) RunFunction(F ValueRef) Bool {
 	return 0
 }
 
@@ -6085,8 +6085,8 @@ func (self PassManagerRef) RunFunctionPassManager(F ValueRef) Bool {
 // manager. Returns 1 if any of the passes modified the module, 0 otherwise.
 // @see llvm::FunctionPassManager::doFinalization
 //
-// llgo:link PassManagerRef.FinalizeFunctionPassManager C.LLVMFinalizeFunctionPassManager
-func (self PassManagerRef) FinalizeFunctionPassManager() Bool {
+// llgo:link PassManagerRef.FinalizeFunction C.LLVMFinalizeFunctionPassManager
+func (self PassManagerRef) FinalizeFunction() Bool {
 	return 0
 }
 
@@ -6094,8 +6094,8 @@ func (self PassManagerRef) FinalizeFunctionPassManager() Bool {
 // the module provider.
 // @see llvm::PassManagerBase::~PassManagerBase.
 //
-// llgo:link PassManagerRef.DisposePassManager C.LLVMDisposePassManager
-func (self PassManagerRef) DisposePassManager() {
+// llgo:link PassManagerRef.Dispose C.LLVMDisposePassManager
+func (self PassManagerRef) Dispose() {
 }
 
 // Deprecated: Multi-threading can only be enabled/disabled with the compile

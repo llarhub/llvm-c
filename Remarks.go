@@ -61,8 +61,8 @@ type RemarkParserRef = *RemarkOpaqueParser
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkStringRef.RemarkStringGetData C.LLVMRemarkStringGetData
-func (self RemarkStringRef) RemarkStringGetData() *c.Char {
+// llgo:link RemarkStringRef.Data C.LLVMRemarkStringGetData
+func (self RemarkStringRef) Data() *c.Char {
 	return nil
 }
 
@@ -70,8 +70,8 @@ func (self RemarkStringRef) RemarkStringGetData() *c.Char {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkStringRef.RemarkStringGetLen C.LLVMRemarkStringGetLen
-func (self RemarkStringRef) RemarkStringGetLen() c.Uint32T {
+// llgo:link RemarkStringRef.Len C.LLVMRemarkStringGetLen
+func (self RemarkStringRef) Len() c.Uint32T {
 	return 0
 }
 
@@ -79,8 +79,8 @@ func (self RemarkStringRef) RemarkStringGetLen() c.Uint32T {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkDebugLocRef.RemarkDebugLocGetSourceFilePath C.LLVMRemarkDebugLocGetSourceFilePath
-func (self RemarkDebugLocRef) RemarkDebugLocGetSourceFilePath() RemarkStringRef {
+// llgo:link RemarkDebugLocRef.SourceFilePath C.LLVMRemarkDebugLocGetSourceFilePath
+func (self RemarkDebugLocRef) SourceFilePath() RemarkStringRef {
 	return nil
 }
 
@@ -88,8 +88,8 @@ func (self RemarkDebugLocRef) RemarkDebugLocGetSourceFilePath() RemarkStringRef 
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkDebugLocRef.RemarkDebugLocGetSourceLine C.LLVMRemarkDebugLocGetSourceLine
-func (self RemarkDebugLocRef) RemarkDebugLocGetSourceLine() c.Uint32T {
+// llgo:link RemarkDebugLocRef.SourceLine C.LLVMRemarkDebugLocGetSourceLine
+func (self RemarkDebugLocRef) SourceLine() c.Uint32T {
 	return 0
 }
 
@@ -97,8 +97,8 @@ func (self RemarkDebugLocRef) RemarkDebugLocGetSourceLine() c.Uint32T {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkDebugLocRef.RemarkDebugLocGetSourceColumn C.LLVMRemarkDebugLocGetSourceColumn
-func (self RemarkDebugLocRef) RemarkDebugLocGetSourceColumn() c.Uint32T {
+// llgo:link RemarkDebugLocRef.SourceColumn C.LLVMRemarkDebugLocGetSourceColumn
+func (self RemarkDebugLocRef) SourceColumn() c.Uint32T {
 	return 0
 }
 
@@ -107,8 +107,8 @@ func (self RemarkDebugLocRef) RemarkDebugLocGetSourceColumn() c.Uint32T {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkArgRef.RemarkArgGetKey C.LLVMRemarkArgGetKey
-func (self RemarkArgRef) RemarkArgGetKey() RemarkStringRef {
+// llgo:link RemarkArgRef.Key C.LLVMRemarkArgGetKey
+func (self RemarkArgRef) Key() RemarkStringRef {
 	return nil
 }
 
@@ -116,8 +116,8 @@ func (self RemarkArgRef) RemarkArgGetKey() RemarkStringRef {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkArgRef.RemarkArgGetValue C.LLVMRemarkArgGetValue
-func (self RemarkArgRef) RemarkArgGetValue() RemarkStringRef {
+// llgo:link RemarkArgRef.Value C.LLVMRemarkArgGetValue
+func (self RemarkArgRef) Value() RemarkStringRef {
 	return nil
 }
 
@@ -127,8 +127,8 @@ func (self RemarkArgRef) RemarkArgGetValue() RemarkStringRef {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkArgRef.RemarkArgGetDebugLoc C.LLVMRemarkArgGetDebugLoc
-func (self RemarkArgRef) RemarkArgGetDebugLoc() RemarkDebugLocRef {
+// llgo:link RemarkArgRef.DebugLoc C.LLVMRemarkArgGetDebugLoc
+func (self RemarkArgRef) DebugLoc() RemarkDebugLocRef {
 	return nil
 }
 
@@ -136,8 +136,8 @@ func (self RemarkArgRef) RemarkArgGetDebugLoc() RemarkDebugLocRef {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkEntryRef.RemarkEntryDispose C.LLVMRemarkEntryDispose
-func (self RemarkEntryRef) RemarkEntryDispose() {
+// llgo:link RemarkEntryRef.Dispose C.LLVMRemarkEntryDispose
+func (self RemarkEntryRef) Dispose() {
 }
 
 // The type of the remark. For example, it can allow users to only keep the
@@ -145,8 +145,8 @@ func (self RemarkEntryRef) RemarkEntryDispose() {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkEntryRef.RemarkEntryGetType C.LLVMRemarkEntryGetType
-func (self RemarkEntryRef) RemarkEntryGetType() RemarkType {
+// llgo:link RemarkEntryRef.Type C.LLVMRemarkEntryGetType
+func (self RemarkEntryRef) Type() RemarkType {
 	return 0
 }
 
@@ -154,8 +154,8 @@ func (self RemarkEntryRef) RemarkEntryGetType() RemarkType {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkEntryRef.RemarkEntryGetPassName C.LLVMRemarkEntryGetPassName
-func (self RemarkEntryRef) RemarkEntryGetPassName() RemarkStringRef {
+// llgo:link RemarkEntryRef.PassName C.LLVMRemarkEntryGetPassName
+func (self RemarkEntryRef) PassName() RemarkStringRef {
 	return nil
 }
 
@@ -163,8 +163,8 @@ func (self RemarkEntryRef) RemarkEntryGetPassName() RemarkStringRef {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkEntryRef.RemarkEntryGetRemarkName C.LLVMRemarkEntryGetRemarkName
-func (self RemarkEntryRef) RemarkEntryGetRemarkName() RemarkStringRef {
+// llgo:link RemarkEntryRef.RemarkName C.LLVMRemarkEntryGetRemarkName
+func (self RemarkEntryRef) RemarkName() RemarkStringRef {
 	return nil
 }
 
@@ -172,8 +172,8 @@ func (self RemarkEntryRef) RemarkEntryGetRemarkName() RemarkStringRef {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkEntryRef.RemarkEntryGetFunctionName C.LLVMRemarkEntryGetFunctionName
-func (self RemarkEntryRef) RemarkEntryGetFunctionName() RemarkStringRef {
+// llgo:link RemarkEntryRef.FunctionName C.LLVMRemarkEntryGetFunctionName
+func (self RemarkEntryRef) FunctionName() RemarkStringRef {
 	return nil
 }
 
@@ -183,8 +183,8 @@ func (self RemarkEntryRef) RemarkEntryGetFunctionName() RemarkStringRef {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkEntryRef.RemarkEntryGetDebugLoc C.LLVMRemarkEntryGetDebugLoc
-func (self RemarkEntryRef) RemarkEntryGetDebugLoc() RemarkDebugLocRef {
+// llgo:link RemarkEntryRef.DebugLoc C.LLVMRemarkEntryGetDebugLoc
+func (self RemarkEntryRef) DebugLoc() RemarkDebugLocRef {
 	return nil
 }
 
@@ -194,8 +194,8 @@ func (self RemarkEntryRef) RemarkEntryGetDebugLoc() RemarkDebugLocRef {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkEntryRef.RemarkEntryGetHotness C.LLVMRemarkEntryGetHotness
-func (self RemarkEntryRef) RemarkEntryGetHotness() c.Uint64T {
+// llgo:link RemarkEntryRef.Hotness C.LLVMRemarkEntryGetHotness
+func (self RemarkEntryRef) Hotness() c.Uint64T {
 	return 0
 }
 
@@ -203,8 +203,8 @@ func (self RemarkEntryRef) RemarkEntryGetHotness() c.Uint64T {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkEntryRef.RemarkEntryGetNumArgs C.LLVMRemarkEntryGetNumArgs
-func (self RemarkEntryRef) RemarkEntryGetNumArgs() c.Uint32T {
+// llgo:link RemarkEntryRef.NumArgs C.LLVMRemarkEntryGetNumArgs
+func (self RemarkEntryRef) NumArgs() c.Uint32T {
 	return 0
 }
 
@@ -216,8 +216,8 @@ func (self RemarkEntryRef) RemarkEntryGetNumArgs() c.Uint32T {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkEntryRef.RemarkEntryGetFirstArg C.LLVMRemarkEntryGetFirstArg
-func (self RemarkEntryRef) RemarkEntryGetFirstArg() RemarkArgRef {
+// llgo:link RemarkEntryRef.FirstArg C.LLVMRemarkEntryGetFirstArg
+func (self RemarkEntryRef) FirstArg() RemarkArgRef {
 	return nil
 }
 
@@ -301,8 +301,8 @@ func RemarkParserCreateBitstream(Buf unsafe.Pointer, Size c.Uint64T) RemarkParse
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkParserRef.RemarkParserGetNext C.LLVMRemarkParserGetNext
-func (self RemarkParserRef) RemarkParserGetNext() RemarkEntryRef {
+// llgo:link RemarkParserRef.Next C.LLVMRemarkParserGetNext
+func (self RemarkParserRef) Next() RemarkEntryRef {
 	return nil
 }
 
@@ -310,8 +310,8 @@ func (self RemarkParserRef) RemarkParserGetNext() RemarkEntryRef {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkParserRef.RemarkParserHasError C.LLVMRemarkParserHasError
-func (self RemarkParserRef) RemarkParserHasError() Bool {
+// llgo:link RemarkParserRef.HasError C.LLVMRemarkParserHasError
+func (self RemarkParserRef) HasError() Bool {
 	return 0
 }
 
@@ -325,8 +325,8 @@ func (self RemarkParserRef) RemarkParserHasError() Bool {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkParserRef.RemarkParserGetErrorMessage C.LLVMRemarkParserGetErrorMessage
-func (self RemarkParserRef) RemarkParserGetErrorMessage() *c.Char {
+// llgo:link RemarkParserRef.ErrorMessage C.LLVMRemarkParserGetErrorMessage
+func (self RemarkParserRef) ErrorMessage() *c.Char {
 	return nil
 }
 
@@ -334,8 +334,8 @@ func (self RemarkParserRef) RemarkParserGetErrorMessage() *c.Char {
 //
 // \since REMARKS_API_VERSION=0
 //
-// llgo:link RemarkParserRef.RemarkParserDispose C.LLVMRemarkParserDispose
-func (self RemarkParserRef) RemarkParserDispose() {
+// llgo:link RemarkParserRef.Dispose C.LLVMRemarkParserDispose
+func (self RemarkParserRef) Dispose() {
 }
 
 // Returns the version of the remarks library.

@@ -202,8 +202,8 @@ func DebugMetadataVersion() c.Uint
 
 // The version of debug metadata that's present in the provided \c Module.
 //
-// llgo:link ModuleRef.ModuleDebugMetadataVersion C.LLVMGetModuleDebugMetadataVersion
-func (self ModuleRef) ModuleDebugMetadataVersion() c.Uint {
+// llgo:link ModuleRef.DebugMetadataVersion C.LLVMGetModuleDebugMetadataVersion
+func (self ModuleRef) DebugMetadataVersion() c.Uint {
 	return 0
 }
 
@@ -237,21 +237,21 @@ func (self ModuleRef) CreateDIBuilder() DIBuilderRef {
 // Deallocates the \c DIBuilder and everything it owns.
 // @note You must call \c LLVMDIBuilderFinalize before this
 //
-// llgo:link DIBuilderRef.DisposeDIBuilder C.LLVMDisposeDIBuilder
-func (self DIBuilderRef) DisposeDIBuilder() {
+// llgo:link DIBuilderRef.Dispose C.LLVMDisposeDIBuilder
+func (self DIBuilderRef) Dispose() {
 }
 
 // Construct any deferred debug info descriptors.
 //
-// llgo:link DIBuilderRef.DIBuilderFinalize C.LLVMDIBuilderFinalize
-func (self DIBuilderRef) DIBuilderFinalize() {
+// llgo:link DIBuilderRef.Finalize C.LLVMDIBuilderFinalize
+func (self DIBuilderRef) Finalize() {
 }
 
 // Finalize a specific subprogram.
 // No new variables may be added to this subprogram afterwards.
 //
-// llgo:link DIBuilderRef.DIBuilderFinalizeSubprogram C.LLVMDIBuilderFinalizeSubprogram
-func (self DIBuilderRef) DIBuilderFinalizeSubprogram(Subprogram MetadataRef) {
+// llgo:link DIBuilderRef.FinalizeSubprogram C.LLVMDIBuilderFinalizeSubprogram
+func (self DIBuilderRef) FinalizeSubprogram(Subprogram MetadataRef) {
 }
 
 // A CompileUnit provides an anchor for all debugging
@@ -285,8 +285,8 @@ func (self DIBuilderRef) DIBuilderFinalizeSubprogram(Subprogram MetadataRef) {
 // \param SDK           The SDK. On Darwin, the last component of the sysroot.
 // \param SDKLen        The length of the C string passed to \c SDK.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateCompileUnit C.LLVMDIBuilderCreateCompileUnit
-func (self DIBuilderRef) DIBuilderCreateCompileUnit(Lang DWARFSourceLanguage, FileRef MetadataRef, Producer *c.Char, ProducerLen c.SizeT, isOptimized Bool, Flags *c.Char, FlagsLen c.SizeT, RuntimeVer c.Uint, SplitName *c.Char, SplitNameLen c.SizeT, Kind DWARFEmissionKind, DWOId c.Uint, SplitDebugInlining Bool, DebugInfoForProfiling Bool, SysRoot *c.Char, SysRootLen c.SizeT, SDK *c.Char, SDKLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateCompileUnit C.LLVMDIBuilderCreateCompileUnit
+func (self DIBuilderRef) CreateCompileUnit(Lang DWARFSourceLanguage, FileRef MetadataRef, Producer *c.Char, ProducerLen c.SizeT, isOptimized Bool, Flags *c.Char, FlagsLen c.SizeT, RuntimeVer c.Uint, SplitName *c.Char, SplitNameLen c.SizeT, Kind DWARFEmissionKind, DWOId c.Uint, SplitDebugInlining Bool, DebugInfoForProfiling Bool, SysRoot *c.Char, SysRootLen c.SizeT, SDK *c.Char, SDKLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -297,8 +297,8 @@ func (self DIBuilderRef) DIBuilderCreateCompileUnit(Lang DWARFSourceLanguage, Fi
 // \param Directory    Directory.
 // \param DirectoryLen The length of the C string passed to \c Directory.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateFile C.LLVMDIBuilderCreateFile
-func (self DIBuilderRef) DIBuilderCreateFile(Filename *c.Char, FilenameLen c.SizeT, Directory *c.Char, DirectoryLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateFile C.LLVMDIBuilderCreateFile
+func (self DIBuilderRef) CreateFile(Filename *c.Char, FilenameLen c.SizeT, Directory *c.Char, DirectoryLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -314,8 +314,8 @@ func (self DIBuilderRef) DIBuilderCreateFile(Filename *c.Char, FilenameLen c.Siz
 // \param Souce        The embedded source.
 // \param SourceLen    The length of the source.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateFileWithChecksum C.LLVMDIBuilderCreateFileWithChecksum
-func (self DIBuilderRef) DIBuilderCreateFileWithChecksum(Filename *c.Char, FilenameLen c.SizeT, Directory *c.Char, DirectoryLen c.SizeT, ChecksumKind ChecksumKind, Checksum *c.Char, ChecksumLen c.SizeT, Source *c.Char, SourceLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateFileWithChecksum C.LLVMDIBuilderCreateFileWithChecksum
+func (self DIBuilderRef) CreateFileWithChecksum(Filename *c.Char, FilenameLen c.SizeT, Directory *c.Char, DirectoryLen c.SizeT, ChecksumKind ChecksumKind, Checksum *c.Char, ChecksumLen c.SizeT, Source *c.Char, SourceLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -332,8 +332,8 @@ func (self DIBuilderRef) DIBuilderCreateFileWithChecksum(Filename *c.Char, Filen
 // \param APINotesFile    The path to an API notes file for the module.
 // \param APINotesFileLen The length of the C string passed to \c APINotestFile.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateModule C.LLVMDIBuilderCreateModule
-func (self DIBuilderRef) DIBuilderCreateModule(ParentScope MetadataRef, Name *c.Char, NameLen c.SizeT, ConfigMacros *c.Char, ConfigMacrosLen c.SizeT, IncludePath *c.Char, IncludePathLen c.SizeT, APINotesFile *c.Char, APINotesFileLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateModule C.LLVMDIBuilderCreateModule
+func (self DIBuilderRef) CreateModule(ParentScope MetadataRef, Name *c.Char, NameLen c.SizeT, ConfigMacros *c.Char, ConfigMacrosLen c.SizeT, IncludePath *c.Char, IncludePathLen c.SizeT, APINotesFile *c.Char, APINotesFileLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -345,8 +345,8 @@ func (self DIBuilderRef) DIBuilderCreateModule(ParentScope MetadataRef, Name *c.
 // \param ExportSymbols    Whether or not the namespace exports symbols, e.g.
 //                         this is true of C++ inline namespaces.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateNameSpace C.LLVMDIBuilderCreateNameSpace
-func (self DIBuilderRef) DIBuilderCreateNameSpace(ParentScope MetadataRef, Name *c.Char, NameLen c.SizeT, ExportSymbols Bool) MetadataRef {
+// llgo:link DIBuilderRef.CreateNameSpace C.LLVMDIBuilderCreateNameSpace
+func (self DIBuilderRef) CreateNameSpace(ParentScope MetadataRef, Name *c.Char, NameLen c.SizeT, ExportSymbols Bool) MetadataRef {
 	return nil
 }
 
@@ -367,8 +367,8 @@ func (self DIBuilderRef) DIBuilderCreateNameSpace(ParentScope MetadataRef, Name 
 //                        used to emit dwarf attributes.
 // \param IsOptimized     True if optimization is ON.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateFunction C.LLVMDIBuilderCreateFunction
-func (self DIBuilderRef) DIBuilderCreateFunction(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, LinkageName *c.Char, LinkageNameLen c.SizeT, File MetadataRef, LineNo c.Uint, Ty MetadataRef, IsLocalToUnit Bool, IsDefinition Bool, ScopeLine c.Uint, Flags DIFlags, IsOptimized Bool) MetadataRef {
+// llgo:link DIBuilderRef.CreateFunction C.LLVMDIBuilderCreateFunction
+func (self DIBuilderRef) CreateFunction(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, LinkageName *c.Char, LinkageNameLen c.SizeT, File MetadataRef, LineNo c.Uint, Ty MetadataRef, IsLocalToUnit Bool, IsDefinition Bool, ScopeLine c.Uint, Flags DIFlags, IsOptimized Bool) MetadataRef {
 	return nil
 }
 
@@ -379,8 +379,8 @@ func (self DIBuilderRef) DIBuilderCreateFunction(Scope MetadataRef, Name *c.Char
 // \param Line         The line in the source file.
 // \param Column       The column in the source file.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateLexicalBlock C.LLVMDIBuilderCreateLexicalBlock
-func (self DIBuilderRef) DIBuilderCreateLexicalBlock(Scope MetadataRef, File MetadataRef, Line c.Uint, Column c.Uint) MetadataRef {
+// llgo:link DIBuilderRef.CreateLexicalBlock C.LLVMDIBuilderCreateLexicalBlock
+func (self DIBuilderRef) CreateLexicalBlock(Scope MetadataRef, File MetadataRef, Line c.Uint, Column c.Uint) MetadataRef {
 	return nil
 }
 
@@ -390,8 +390,8 @@ func (self DIBuilderRef) DIBuilderCreateLexicalBlock(Scope MetadataRef, File Met
 // \param File           Source file.
 // \param Discriminator  DWARF path discriminator value.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateLexicalBlockFile C.LLVMDIBuilderCreateLexicalBlockFile
-func (self DIBuilderRef) DIBuilderCreateLexicalBlockFile(Scope MetadataRef, File MetadataRef, Discriminator c.Uint) MetadataRef {
+// llgo:link DIBuilderRef.CreateLexicalBlockFile C.LLVMDIBuilderCreateLexicalBlockFile
+func (self DIBuilderRef) CreateLexicalBlockFile(Scope MetadataRef, File MetadataRef, Discriminator c.Uint) MetadataRef {
 	return nil
 }
 
@@ -402,8 +402,8 @@ func (self DIBuilderRef) DIBuilderCreateLexicalBlockFile(Scope MetadataRef, File
 // \param File       File where the declaration is located.
 // \param Line       Line number of the declaration.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateImportedModuleFromNamespace C.LLVMDIBuilderCreateImportedModuleFromNamespace
-func (self DIBuilderRef) DIBuilderCreateImportedModuleFromNamespace(Scope MetadataRef, NS MetadataRef, File MetadataRef, Line c.Uint) MetadataRef {
+// llgo:link DIBuilderRef.CreateImportedModuleFromNamespace C.LLVMDIBuilderCreateImportedModuleFromNamespace
+func (self DIBuilderRef) CreateImportedModuleFromNamespace(Scope MetadataRef, NS MetadataRef, File MetadataRef, Line c.Uint) MetadataRef {
 	return nil
 }
 
@@ -417,8 +417,8 @@ func (self DIBuilderRef) DIBuilderCreateImportedModuleFromNamespace(Scope Metada
 // \param Elements       Renamed elements.
 // \param NumElements    Number of renamed elements.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateImportedModuleFromAlias C.LLVMDIBuilderCreateImportedModuleFromAlias
-func (self DIBuilderRef) DIBuilderCreateImportedModuleFromAlias(Scope MetadataRef, ImportedEntity MetadataRef, File MetadataRef, Line c.Uint, Elements *MetadataRef, NumElements c.Uint) MetadataRef {
+// llgo:link DIBuilderRef.CreateImportedModuleFromAlias C.LLVMDIBuilderCreateImportedModuleFromAlias
+func (self DIBuilderRef) CreateImportedModuleFromAlias(Scope MetadataRef, ImportedEntity MetadataRef, File MetadataRef, Line c.Uint, Elements *MetadataRef, NumElements c.Uint) MetadataRef {
 	return nil
 }
 
@@ -431,8 +431,8 @@ func (self DIBuilderRef) DIBuilderCreateImportedModuleFromAlias(Scope MetadataRe
 // \param Elements       Renamed elements.
 // \param NumElements    Number of renamed elements.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateImportedModuleFromModule C.LLVMDIBuilderCreateImportedModuleFromModule
-func (self DIBuilderRef) DIBuilderCreateImportedModuleFromModule(Scope MetadataRef, M MetadataRef, File MetadataRef, Line c.Uint, Elements *MetadataRef, NumElements c.Uint) MetadataRef {
+// llgo:link DIBuilderRef.CreateImportedModuleFromModule C.LLVMDIBuilderCreateImportedModuleFromModule
+func (self DIBuilderRef) CreateImportedModuleFromModule(Scope MetadataRef, M MetadataRef, File MetadataRef, Line c.Uint, Elements *MetadataRef, NumElements c.Uint) MetadataRef {
 	return nil
 }
 
@@ -450,8 +450,8 @@ func (self DIBuilderRef) DIBuilderCreateImportedModuleFromModule(Scope MetadataR
 // \param Elements       Renamed elements.
 // \param NumElements    Number of renamed elements.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateImportedDeclaration C.LLVMDIBuilderCreateImportedDeclaration
-func (self DIBuilderRef) DIBuilderCreateImportedDeclaration(Scope MetadataRef, Decl MetadataRef, File MetadataRef, Line c.Uint, Name *c.Char, NameLen c.SizeT, Elements *MetadataRef, NumElements c.Uint) MetadataRef {
+// llgo:link DIBuilderRef.CreateImportedDeclaration C.LLVMDIBuilderCreateImportedDeclaration
+func (self DIBuilderRef) CreateImportedDeclaration(Scope MetadataRef, Decl MetadataRef, File MetadataRef, Line c.Uint, Name *c.Char, NameLen c.SizeT, Elements *MetadataRef, NumElements c.Uint) MetadataRef {
 	return nil
 }
 
@@ -557,8 +557,8 @@ func (self MetadataRef) DIFileGetSource(Len *c.Uint) *c.Char {
 // \param Data           The type elements.
 // \param NumElements    Number of type elements.
 //
-// llgo:link DIBuilderRef.DIBuilderGetOrCreateTypeArray C.LLVMDIBuilderGetOrCreateTypeArray
-func (self DIBuilderRef) DIBuilderGetOrCreateTypeArray(Data *MetadataRef, NumElements c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.OrCreateTypeArray C.LLVMDIBuilderGetOrCreateTypeArray
+func (self DIBuilderRef) OrCreateTypeArray(Data *MetadataRef, NumElements c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -571,8 +571,8 @@ func (self DIBuilderRef) DIBuilderGetOrCreateTypeArray(Data *MetadataRef, NumEle
 // \param Flags           E.g.: \c LLVMDIFlagLValueReference.
 //                        These flags are used to emit dwarf attributes.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateSubroutineType C.LLVMDIBuilderCreateSubroutineType
-func (self DIBuilderRef) DIBuilderCreateSubroutineType(File MetadataRef, ParameterTypes *MetadataRef, NumParameterTypes c.Uint, Flags DIFlags) MetadataRef {
+// llgo:link DIBuilderRef.CreateSubroutineType C.LLVMDIBuilderCreateSubroutineType
+func (self DIBuilderRef) CreateSubroutineType(File MetadataRef, ParameterTypes *MetadataRef, NumParameterTypes c.Uint, Flags DIFlags) MetadataRef {
 	return nil
 }
 
@@ -586,8 +586,8 @@ func (self DIBuilderRef) DIBuilderCreateSubroutineType(File MetadataRef, Paramet
 // @param Value           Macro value.
 // @param ValueLen        Macro value length.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateMacro C.LLVMDIBuilderCreateMacro
-func (self DIBuilderRef) DIBuilderCreateMacro(ParentMacroFile MetadataRef, Line c.Uint, RecordType DWARFMacinfoRecordType, Name *c.Char, NameLen c.SizeT, Value *c.Char, ValueLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateMacro C.LLVMDIBuilderCreateMacro
+func (self DIBuilderRef) CreateMacro(ParentMacroFile MetadataRef, Line c.Uint, RecordType DWARFMacinfoRecordType, Name *c.Char, NameLen c.SizeT, Value *c.Char, ValueLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -599,8 +599,8 @@ func (self DIBuilderRef) DIBuilderCreateMacro(ParentMacroFile MetadataRef, Line 
 // @param Line            Source line number where the macro file is included.
 // @param File            File descriptor containing the name of the macro file.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateTempMacroFile C.LLVMDIBuilderCreateTempMacroFile
-func (self DIBuilderRef) DIBuilderCreateTempMacroFile(ParentMacroFile MetadataRef, Line c.Uint, File MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateTempMacroFile C.LLVMDIBuilderCreateTempMacroFile
+func (self DIBuilderRef) CreateTempMacroFile(ParentMacroFile MetadataRef, Line c.Uint, File MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -611,8 +611,8 @@ func (self DIBuilderRef) DIBuilderCreateTempMacroFile(ParentMacroFile MetadataRe
 // @param Value          Enumerator value.
 // @param IsUnsigned     True if the value is unsigned.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateEnumerator C.LLVMDIBuilderCreateEnumerator
-func (self DIBuilderRef) DIBuilderCreateEnumerator(Name *c.Char, NameLen c.SizeT, Value c.Int64T, IsUnsigned Bool) MetadataRef {
+// llgo:link DIBuilderRef.CreateEnumerator C.LLVMDIBuilderCreateEnumerator
+func (self DIBuilderRef) CreateEnumerator(Name *c.Char, NameLen c.SizeT, Value c.Int64T, IsUnsigned Bool) MetadataRef {
 	return nil
 }
 
@@ -624,8 +624,8 @@ func (self DIBuilderRef) DIBuilderCreateEnumerator(Name *c.Char, NameLen c.SizeT
 // @param Words          The words that make up the value.
 // @param IsUnsigned     True if the value is unsigned.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateEnumeratorOfArbitraryPrecision C.LLVMDIBuilderCreateEnumeratorOfArbitraryPrecision
-func (self DIBuilderRef) DIBuilderCreateEnumeratorOfArbitraryPrecision(Name *c.Char, NameLen c.SizeT, SizeInBits c.Uint64T, Words *c.Uint64T, IsUnsigned Bool) MetadataRef {
+// llgo:link DIBuilderRef.CreateEnumeratorOfArbitraryPrecision C.LLVMDIBuilderCreateEnumeratorOfArbitraryPrecision
+func (self DIBuilderRef) CreateEnumeratorOfArbitraryPrecision(Name *c.Char, NameLen c.SizeT, SizeInBits c.Uint64T, Words *c.Uint64T, IsUnsigned Bool) MetadataRef {
 	return nil
 }
 
@@ -642,8 +642,8 @@ func (self DIBuilderRef) DIBuilderCreateEnumeratorOfArbitraryPrecision(Name *c.C
 // \param NumElements    Number of enumeration elements.
 // \param ClassTy        Underlying type of a C++11/ObjC fixed enum.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateEnumerationType C.LLVMDIBuilderCreateEnumerationType
-func (self DIBuilderRef) DIBuilderCreateEnumerationType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Elements *MetadataRef, NumElements c.Uint, ClassTy MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateEnumerationType C.LLVMDIBuilderCreateEnumerationType
+func (self DIBuilderRef) CreateEnumerationType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Elements *MetadataRef, NumElements c.Uint, ClassTy MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -663,8 +663,8 @@ func (self DIBuilderRef) DIBuilderCreateEnumerationType(Scope MetadataRef, Name 
 // \param UniqueId     A unique identifier for the union.
 // \param UniqueIdLen  Length of unique identifier.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateUnionType C.LLVMDIBuilderCreateUnionType
-func (self DIBuilderRef) DIBuilderCreateUnionType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Flags DIFlags, Elements *MetadataRef, NumElements c.Uint, RunTimeLang c.Uint, UniqueId *c.Char, UniqueIdLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateUnionType C.LLVMDIBuilderCreateUnionType
+func (self DIBuilderRef) CreateUnionType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Flags DIFlags, Elements *MetadataRef, NumElements c.Uint, RunTimeLang c.Uint, UniqueId *c.Char, UniqueIdLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -676,8 +676,8 @@ func (self DIBuilderRef) DIBuilderCreateUnionType(Scope MetadataRef, Name *c.Cha
 // \param Subscripts   Subscripts.
 // \param NumSubscripts Number of subscripts.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateArrayType C.LLVMDIBuilderCreateArrayType
-func (self DIBuilderRef) DIBuilderCreateArrayType(Size c.Uint64T, AlignInBits c.Uint32T, Ty MetadataRef, Subscripts *MetadataRef, NumSubscripts c.Uint) MetadataRef {
+// llgo:link DIBuilderRef.CreateArrayType C.LLVMDIBuilderCreateArrayType
+func (self DIBuilderRef) CreateArrayType(Size c.Uint64T, AlignInBits c.Uint32T, Ty MetadataRef, Subscripts *MetadataRef, NumSubscripts c.Uint) MetadataRef {
 	return nil
 }
 
@@ -692,8 +692,8 @@ func (self DIBuilderRef) DIBuilderCreateArrayType(Size c.Uint64T, AlignInBits c.
 // \param AlignInBits    Set alignment.
 // \param BaseTy         The base type of the set.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateSetType C.LLVMDIBuilderCreateSetType
-func (self DIBuilderRef) DIBuilderCreateSetType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, BaseTy MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateSetType C.LLVMDIBuilderCreateSetType
+func (self DIBuilderRef) CreateSetType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, BaseTy MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -713,8 +713,8 @@ func (self DIBuilderRef) DIBuilderCreateSetType(Scope MetadataRef, Name *c.Char,
 // \param Stride     Stride of the subrange.
 // \param Bias       Bias of the subrange.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateSubrangeType C.LLVMDIBuilderCreateSubrangeType
-func (self DIBuilderRef) DIBuilderCreateSubrangeType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, LineNo c.Uint, File MetadataRef, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Flags DIFlags, BaseTy MetadataRef, LowerBound MetadataRef, UpperBound MetadataRef, Stride MetadataRef, Bias MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateSubrangeType C.LLVMDIBuilderCreateSubrangeType
+func (self DIBuilderRef) CreateSubrangeType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, LineNo c.Uint, File MetadataRef, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Flags DIFlags, BaseTy MetadataRef, LowerBound MetadataRef, UpperBound MetadataRef, Stride MetadataRef, Bias MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -731,8 +731,8 @@ func (self DIBuilderRef) DIBuilderCreateSubrangeType(Scope MetadataRef, Name *c.
 // \param Rank         Rank. (DIVariable, DIExpression or NULL)
 // \param BitStride    BitStride.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateDynamicArrayType C.LLVMDIBuilderCreateDynamicArrayType
-func (self DIBuilderRef) DIBuilderCreateDynamicArrayType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, LineNo c.Uint, File MetadataRef, Size c.Uint64T, AlignInBits c.Uint32T, Ty MetadataRef, Subscripts *MetadataRef, NumSubscripts c.Uint, DataLocation MetadataRef, Associated MetadataRef, Allocated MetadataRef, Rank MetadataRef, BitStride MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateDynamicArrayType C.LLVMDIBuilderCreateDynamicArrayType
+func (self DIBuilderRef) CreateDynamicArrayType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, LineNo c.Uint, File MetadataRef, Size c.Uint64T, AlignInBits c.Uint32T, Ty MetadataRef, Subscripts *MetadataRef, NumSubscripts c.Uint, DataLocation MetadataRef, Associated MetadataRef, Allocated MetadataRef, Rank MetadataRef, BitStride MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -752,8 +752,8 @@ func (self DIBuilderRef) ReplaceArrays(T *MetadataRef, Elements *MetadataRef, Nu
 // \param Subscripts   Subscripts.
 // \param NumSubscripts Number of subscripts.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateVectorType C.LLVMDIBuilderCreateVectorType
-func (self DIBuilderRef) DIBuilderCreateVectorType(Size c.Uint64T, AlignInBits c.Uint32T, Ty MetadataRef, Subscripts *MetadataRef, NumSubscripts c.Uint) MetadataRef {
+// llgo:link DIBuilderRef.CreateVectorType C.LLVMDIBuilderCreateVectorType
+func (self DIBuilderRef) CreateVectorType(Size c.Uint64T, AlignInBits c.Uint32T, Ty MetadataRef, Subscripts *MetadataRef, NumSubscripts c.Uint) MetadataRef {
 	return nil
 }
 
@@ -762,8 +762,8 @@ func (self DIBuilderRef) DIBuilderCreateVectorType(Size c.Uint64T, AlignInBits c
 // \param Name      The unspecified type's name.
 // \param NameLen   Length of type name.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateUnspecifiedType C.LLVMDIBuilderCreateUnspecifiedType
-func (self DIBuilderRef) DIBuilderCreateUnspecifiedType(Name *c.Char, NameLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateUnspecifiedType C.LLVMDIBuilderCreateUnspecifiedType
+func (self DIBuilderRef) CreateUnspecifiedType(Name *c.Char, NameLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -776,8 +776,8 @@ func (self DIBuilderRef) DIBuilderCreateUnspecifiedType(Name *c.Char, NameLen c.
 // \param Encoding    DWARF encoding code, e.g. \c LLVMDWARFTypeEncoding_float.
 // \param Flags       Flags to encode optional attribute like endianity
 //
-// llgo:link DIBuilderRef.DIBuilderCreateBasicType C.LLVMDIBuilderCreateBasicType
-func (self DIBuilderRef) DIBuilderCreateBasicType(Name *c.Char, NameLen c.SizeT, SizeInBits c.Uint64T, Encoding DWARFTypeEncoding, Flags DIFlags) MetadataRef {
+// llgo:link DIBuilderRef.CreateBasicType C.LLVMDIBuilderCreateBasicType
+func (self DIBuilderRef) CreateBasicType(Name *c.Char, NameLen c.SizeT, SizeInBits c.Uint64T, Encoding DWARFTypeEncoding, Flags DIFlags) MetadataRef {
 	return nil
 }
 
@@ -790,8 +790,8 @@ func (self DIBuilderRef) DIBuilderCreateBasicType(Name *c.Char, NameLen c.SizeT,
 // \param Name              Pointer type name. (optional)
 // \param NameLen           Length of pointer type name. (optional)
 //
-// llgo:link DIBuilderRef.DIBuilderCreatePointerType C.LLVMDIBuilderCreatePointerType
-func (self DIBuilderRef) DIBuilderCreatePointerType(PointeeTy MetadataRef, SizeInBits c.Uint64T, AlignInBits c.Uint32T, AddressSpace c.Uint, Name *c.Char, NameLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreatePointerType C.LLVMDIBuilderCreatePointerType
+func (self DIBuilderRef) CreatePointerType(PointeeTy MetadataRef, SizeInBits c.Uint64T, AlignInBits c.Uint32T, AddressSpace c.Uint, Name *c.Char, NameLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -812,8 +812,8 @@ func (self DIBuilderRef) DIBuilderCreatePointerType(PointeeTy MetadataRef, SizeI
 // \param UniqueId     A unique identifier for the struct.
 // \param UniqueIdLen  Length of the unique identifier for the struct.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateStructType C.LLVMDIBuilderCreateStructType
-func (self DIBuilderRef) DIBuilderCreateStructType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Flags DIFlags, DerivedFrom MetadataRef, Elements *MetadataRef, NumElements c.Uint, RunTimeLang c.Uint, VTableHolder MetadataRef, UniqueId *c.Char, UniqueIdLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateStructType C.LLVMDIBuilderCreateStructType
+func (self DIBuilderRef) CreateStructType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Flags DIFlags, DerivedFrom MetadataRef, Elements *MetadataRef, NumElements c.Uint, RunTimeLang c.Uint, VTableHolder MetadataRef, UniqueId *c.Char, UniqueIdLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -830,8 +830,8 @@ func (self DIBuilderRef) DIBuilderCreateStructType(Scope MetadataRef, Name *c.Ch
 // \param Flags        Flags to encode member attribute, e.g. private
 // \param Ty           Parent type.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateMemberType C.LLVMDIBuilderCreateMemberType
-func (self DIBuilderRef) DIBuilderCreateMemberType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, OffsetInBits c.Uint64T, Flags DIFlags, Ty MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateMemberType C.LLVMDIBuilderCreateMemberType
+func (self DIBuilderRef) CreateMemberType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, OffsetInBits c.Uint64T, Flags DIFlags, Ty MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -848,8 +848,8 @@ func (self DIBuilderRef) DIBuilderCreateMemberType(Scope MetadataRef, Name *c.Ch
 // \param ConstantVal  Const initializer of the member.
 // \param AlignInBits  Member alignment.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateStaticMemberType C.LLVMDIBuilderCreateStaticMemberType
-func (self DIBuilderRef) DIBuilderCreateStaticMemberType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, Type MetadataRef, Flags DIFlags, ConstantVal ValueRef, AlignInBits c.Uint32T) MetadataRef {
+// llgo:link DIBuilderRef.CreateStaticMemberType C.LLVMDIBuilderCreateStaticMemberType
+func (self DIBuilderRef) CreateStaticMemberType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, Type MetadataRef, Flags DIFlags, ConstantVal ValueRef, AlignInBits c.Uint32T) MetadataRef {
 	return nil
 }
 
@@ -861,8 +861,8 @@ func (self DIBuilderRef) DIBuilderCreateStaticMemberType(Scope MetadataRef, Name
 // \param AlignInBits  Alignment.
 // \param Flags        Flags.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateMemberPointerType C.LLVMDIBuilderCreateMemberPointerType
-func (self DIBuilderRef) DIBuilderCreateMemberPointerType(PointeeType MetadataRef, ClassType MetadataRef, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Flags DIFlags) MetadataRef {
+// llgo:link DIBuilderRef.CreateMemberPointerType C.LLVMDIBuilderCreateMemberPointerType
+func (self DIBuilderRef) CreateMemberPointerType(PointeeType MetadataRef, ClassType MetadataRef, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Flags DIFlags) MetadataRef {
 	return nil
 }
 
@@ -879,8 +879,8 @@ func (self DIBuilderRef) DIBuilderCreateMemberPointerType(PointeeType MetadataRe
 // \param Ty           Parent type.
 // \param PropertyNode Property associated with this ivar.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateObjCIVar C.LLVMDIBuilderCreateObjCIVar
-func (self DIBuilderRef) DIBuilderCreateObjCIVar(Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, OffsetInBits c.Uint64T, Flags DIFlags, Ty MetadataRef, PropertyNode MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateObjCIVar C.LLVMDIBuilderCreateObjCIVar
+func (self DIBuilderRef) CreateObjCIVar(Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, OffsetInBits c.Uint64T, Flags DIFlags, Ty MetadataRef, PropertyNode MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -897,8 +897,8 @@ func (self DIBuilderRef) DIBuilderCreateObjCIVar(Name *c.Char, NameLen c.SizeT, 
 // \param PropertyAttributes Objective C property attributes.
 // \param Ty                 Type.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateObjCProperty C.LLVMDIBuilderCreateObjCProperty
-func (self DIBuilderRef) DIBuilderCreateObjCProperty(Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, GetterName *c.Char, GetterNameLen c.SizeT, SetterName *c.Char, SetterNameLen c.SizeT, PropertyAttributes c.Uint, Ty MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateObjCProperty C.LLVMDIBuilderCreateObjCProperty
+func (self DIBuilderRef) CreateObjCProperty(Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, GetterName *c.Char, GetterNameLen c.SizeT, SetterName *c.Char, SetterNameLen c.SizeT, PropertyAttributes c.Uint, Ty MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -909,8 +909,8 @@ func (self DIBuilderRef) DIBuilderCreateObjCProperty(Name *c.Char, NameLen c.Siz
 // \param Implicit  Indicates whether this pointer was implicitly generated
 //                  (i.e., not spelled out in source).
 //
-// llgo:link DIBuilderRef.DIBuilderCreateObjectPointerType C.LLVMDIBuilderCreateObjectPointerType
-func (self DIBuilderRef) DIBuilderCreateObjectPointerType(Type MetadataRef, Implicit Bool) MetadataRef {
+// llgo:link DIBuilderRef.CreateObjectPointerType C.LLVMDIBuilderCreateObjectPointerType
+func (self DIBuilderRef) CreateObjectPointerType(Type MetadataRef, Implicit Bool) MetadataRef {
 	return nil
 }
 
@@ -921,8 +921,8 @@ func (self DIBuilderRef) DIBuilderCreateObjectPointerType(Type MetadataRef, Impl
 //                    e.g. LLVMDWARFTypeQualifier_volatile_type
 // \param Type        Base Type.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateQualifiedType C.LLVMDIBuilderCreateQualifiedType
-func (self DIBuilderRef) DIBuilderCreateQualifiedType(Tag c.Uint, Type MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateQualifiedType C.LLVMDIBuilderCreateQualifiedType
+func (self DIBuilderRef) CreateQualifiedType(Tag c.Uint, Type MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -932,16 +932,16 @@ func (self DIBuilderRef) DIBuilderCreateQualifiedType(Tag c.Uint, Type MetadataR
 // \param Tag       Tag identifying type,
 // \param Type      Base Type.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateReferenceType C.LLVMDIBuilderCreateReferenceType
-func (self DIBuilderRef) DIBuilderCreateReferenceType(Tag c.Uint, Type MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateReferenceType C.LLVMDIBuilderCreateReferenceType
+func (self DIBuilderRef) CreateReferenceType(Tag c.Uint, Type MetadataRef) MetadataRef {
 	return nil
 }
 
 // Create C++11 nullptr type.
 // \param Builder   The DIBuilder.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateNullPtrType C.LLVMDIBuilderCreateNullPtrType
-func (self DIBuilderRef) DIBuilderCreateNullPtrType() MetadataRef {
+// llgo:link DIBuilderRef.CreateNullPtrType C.LLVMDIBuilderCreateNullPtrType
+func (self DIBuilderRef) CreateNullPtrType() MetadataRef {
 	return nil
 }
 
@@ -953,8 +953,8 @@ func (self DIBuilderRef) DIBuilderCreateNullPtrType() MetadataRef {
 // \param LineNo     Line number.
 // \param Scope      The surrounding context for the typedef.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateTypedef C.LLVMDIBuilderCreateTypedef
-func (self DIBuilderRef) DIBuilderCreateTypedef(Type MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, Scope MetadataRef, AlignInBits c.Uint32T) MetadataRef {
+// llgo:link DIBuilderRef.CreateTypedef C.LLVMDIBuilderCreateTypedef
+func (self DIBuilderRef) CreateTypedef(Type MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, Scope MetadataRef, AlignInBits c.Uint32T) MetadataRef {
 	return nil
 }
 
@@ -967,8 +967,8 @@ func (self DIBuilderRef) DIBuilderCreateTypedef(Type MetadataRef, Name *c.Char, 
 // \param VBPtrOffset  Virtual base pointer offset.
 // \param Flags         Flags to describe inheritance attribute, e.g. private
 //
-// llgo:link DIBuilderRef.DIBuilderCreateInheritance C.LLVMDIBuilderCreateInheritance
-func (self DIBuilderRef) DIBuilderCreateInheritance(Ty MetadataRef, BaseTy MetadataRef, BaseOffset c.Uint64T, VBPtrOffset c.Uint32T, Flags DIFlags) MetadataRef {
+// llgo:link DIBuilderRef.CreateInheritance C.LLVMDIBuilderCreateInheritance
+func (self DIBuilderRef) CreateInheritance(Ty MetadataRef, BaseTy MetadataRef, BaseOffset c.Uint64T, VBPtrOffset c.Uint32T, Flags DIFlags) MetadataRef {
 	return nil
 }
 
@@ -987,8 +987,8 @@ func (self DIBuilderRef) DIBuilderCreateInheritance(Ty MetadataRef, BaseTy Metad
 // \param UniqueIdentifier    A unique identifier for the type.
 // \param UniqueIdentifierLen Length of the unique identifier.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateForwardDecl C.LLVMDIBuilderCreateForwardDecl
-func (self DIBuilderRef) DIBuilderCreateForwardDecl(Tag c.Uint, Name *c.Char, NameLen c.SizeT, Scope MetadataRef, File MetadataRef, Line c.Uint, RuntimeLang c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, UniqueIdentifier *c.Char, UniqueIdentifierLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateForwardDecl C.LLVMDIBuilderCreateForwardDecl
+func (self DIBuilderRef) CreateForwardDecl(Tag c.Uint, Name *c.Char, NameLen c.SizeT, Scope MetadataRef, File MetadataRef, Line c.Uint, RuntimeLang c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, UniqueIdentifier *c.Char, UniqueIdentifierLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -1008,8 +1008,8 @@ func (self DIBuilderRef) DIBuilderCreateForwardDecl(Tag c.Uint, Name *c.Char, Na
 // \param UniqueIdentifier    A unique identifier for the type.
 // \param UniqueIdentifierLen Length of the unique identifier.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateReplaceableCompositeType C.LLVMDIBuilderCreateReplaceableCompositeType
-func (self DIBuilderRef) DIBuilderCreateReplaceableCompositeType(Tag c.Uint, Name *c.Char, NameLen c.SizeT, Scope MetadataRef, File MetadataRef, Line c.Uint, RuntimeLang c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Flags DIFlags, UniqueIdentifier *c.Char, UniqueIdentifierLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateReplaceableCompositeType C.LLVMDIBuilderCreateReplaceableCompositeType
+func (self DIBuilderRef) CreateReplaceableCompositeType(Tag c.Uint, Name *c.Char, NameLen c.SizeT, Scope MetadataRef, File MetadataRef, Line c.Uint, RuntimeLang c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, Flags DIFlags, UniqueIdentifier *c.Char, UniqueIdentifierLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -1026,8 +1026,8 @@ func (self DIBuilderRef) DIBuilderCreateReplaceableCompositeType(Tag c.Uint, Nam
 // \param Flags               Flags to encode member attribute.
 // \param Type                Parent type.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateBitFieldMemberType C.LLVMDIBuilderCreateBitFieldMemberType
-func (self DIBuilderRef) DIBuilderCreateBitFieldMemberType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, OffsetInBits c.Uint64T, StorageOffsetInBits c.Uint64T, Flags DIFlags, Type MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateBitFieldMemberType C.LLVMDIBuilderCreateBitFieldMemberType
+func (self DIBuilderRef) CreateBitFieldMemberType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, OffsetInBits c.Uint64T, StorageOffsetInBits c.Uint64T, Flags DIFlags, Type MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -1052,8 +1052,8 @@ func (self DIBuilderRef) DIBuilderCreateBitFieldMemberType(Scope MetadataRef, Na
 // \param UniqueIdentifier    A unique identifier for the type.
 // \param UniqueIdentifierLen Length of the unique identifier.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateClassType C.LLVMDIBuilderCreateClassType
-func (self DIBuilderRef) DIBuilderCreateClassType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, OffsetInBits c.Uint64T, Flags DIFlags, DerivedFrom MetadataRef, Elements *MetadataRef, NumElements c.Uint, VTableHolder MetadataRef, TemplateParamsNode MetadataRef, UniqueIdentifier *c.Char, UniqueIdentifierLen c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateClassType C.LLVMDIBuilderCreateClassType
+func (self DIBuilderRef) CreateClassType(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNumber c.Uint, SizeInBits c.Uint64T, AlignInBits c.Uint32T, OffsetInBits c.Uint64T, Flags DIFlags, DerivedFrom MetadataRef, Elements *MetadataRef, NumElements c.Uint, VTableHolder MetadataRef, TemplateParamsNode MetadataRef, UniqueIdentifier *c.Char, UniqueIdentifierLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -1061,8 +1061,8 @@ func (self DIBuilderRef) DIBuilderCreateClassType(Scope MetadataRef, Name *c.Cha
 // \param Builder     The DIBuilder.
 // \param Type        The underlying type.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateArtificialType C.LLVMDIBuilderCreateArtificialType
-func (self DIBuilderRef) DIBuilderCreateArtificialType(Type MetadataRef) MetadataRef {
+// llgo:link DIBuilderRef.CreateArtificialType C.LLVMDIBuilderCreateArtificialType
+func (self DIBuilderRef) CreateArtificialType(Type MetadataRef) MetadataRef {
 	return nil
 }
 
@@ -1132,8 +1132,8 @@ func (self MetadataRef) DITypeGetFlags() DIFlags {
 // \param LowerBound Lower bound of the subrange, e.g. 0 for C, 1 for Fortran.
 // \param Count      Count of elements in the subrange.
 //
-// llgo:link DIBuilderRef.DIBuilderGetOrCreateSubrange C.LLVMDIBuilderGetOrCreateSubrange
-func (self DIBuilderRef) DIBuilderGetOrCreateSubrange(LowerBound c.Int64T, Count c.Int64T) MetadataRef {
+// llgo:link DIBuilderRef.OrCreateSubrange C.LLVMDIBuilderGetOrCreateSubrange
+func (self DIBuilderRef) OrCreateSubrange(LowerBound c.Int64T, Count c.Int64T) MetadataRef {
 	return nil
 }
 
@@ -1142,8 +1142,8 @@ func (self DIBuilderRef) DIBuilderGetOrCreateSubrange(LowerBound c.Int64T, Count
 // \param Data           The DI Node elements.
 // \param NumElements    Number of DI Node elements.
 //
-// llgo:link DIBuilderRef.DIBuilderGetOrCreateArray C.LLVMDIBuilderGetOrCreateArray
-func (self DIBuilderRef) DIBuilderGetOrCreateArray(Data *MetadataRef, NumElements c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.OrCreateArray C.LLVMDIBuilderGetOrCreateArray
+func (self DIBuilderRef) OrCreateArray(Data *MetadataRef, NumElements c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -1153,8 +1153,8 @@ func (self DIBuilderRef) DIBuilderGetOrCreateArray(Data *MetadataRef, NumElement
 // \param Addr        An array of complex address operations.
 // \param Length      Length of the address operation array.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateExpression C.LLVMDIBuilderCreateExpression
-func (self DIBuilderRef) DIBuilderCreateExpression(Addr *c.Uint64T, Length c.SizeT) MetadataRef {
+// llgo:link DIBuilderRef.CreateExpression C.LLVMDIBuilderCreateExpression
+func (self DIBuilderRef) CreateExpression(Addr *c.Uint64T, Length c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -1163,8 +1163,8 @@ func (self DIBuilderRef) DIBuilderCreateExpression(Addr *c.Uint64T, Length c.Siz
 // \param Builder     The DIBuilder.
 // \param Value       The constant value.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateConstantValueExpression C.LLVMDIBuilderCreateConstantValueExpression
-func (self DIBuilderRef) DIBuilderCreateConstantValueExpression(Value c.Uint64T) MetadataRef {
+// llgo:link DIBuilderRef.CreateConstantValueExpression C.LLVMDIBuilderCreateConstantValueExpression
+func (self DIBuilderRef) CreateConstantValueExpression(Value c.Uint64T) MetadataRef {
 	return nil
 }
 
@@ -1186,8 +1186,8 @@ func (self DIBuilderRef) DIBuilderCreateConstantValueExpression(Value c.Uint64T)
 // \param AlignInBits Variable alignment(or 0 if no alignment attr was
 //                    specified)
 //
-// llgo:link DIBuilderRef.DIBuilderCreateGlobalVariableExpression C.LLVMDIBuilderCreateGlobalVariableExpression
-func (self DIBuilderRef) DIBuilderCreateGlobalVariableExpression(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, Linkage *c.Char, LinkLen c.SizeT, File MetadataRef, LineNo c.Uint, Ty MetadataRef, LocalToUnit Bool, Expr MetadataRef, Decl MetadataRef, AlignInBits c.Uint32T) MetadataRef {
+// llgo:link DIBuilderRef.CreateGlobalVariableExpression C.LLVMDIBuilderCreateGlobalVariableExpression
+func (self DIBuilderRef) CreateGlobalVariableExpression(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, Linkage *c.Char, LinkLen c.SizeT, File MetadataRef, LineNo c.Uint, Ty MetadataRef, LocalToUnit Bool, Expr MetadataRef, Decl MetadataRef, AlignInBits c.Uint32T) MetadataRef {
 	return nil
 }
 
@@ -1293,8 +1293,8 @@ func MetadataReplaceAllUsesWith(TempTargetMetadata MetadataRef, Replacement Meta
 // \param AlignInBits Variable alignment(or 0 if no alignment attr was
 //                    specified)
 //
-// llgo:link DIBuilderRef.DIBuilderCreateTempGlobalVariableFwdDecl C.LLVMDIBuilderCreateTempGlobalVariableFwdDecl
-func (self DIBuilderRef) DIBuilderCreateTempGlobalVariableFwdDecl(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, Linkage *c.Char, LnkLen c.SizeT, File MetadataRef, LineNo c.Uint, Ty MetadataRef, LocalToUnit Bool, Decl MetadataRef, AlignInBits c.Uint32T) MetadataRef {
+// llgo:link DIBuilderRef.CreateTempGlobalVariableFwdDecl C.LLVMDIBuilderCreateTempGlobalVariableFwdDecl
+func (self DIBuilderRef) CreateTempGlobalVariableFwdDecl(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, Linkage *c.Char, LnkLen c.SizeT, File MetadataRef, LineNo c.Uint, Ty MetadataRef, LocalToUnit Bool, Decl MetadataRef, AlignInBits c.Uint32T) MetadataRef {
 	return nil
 }
 
@@ -1312,8 +1312,8 @@ func (self DIBuilderRef) DIBuilderCreateTempGlobalVariableFwdDecl(Scope Metadata
 // \param DebugLoc    Debug info location.
 // \param Instr       Instruction acting as a location for the new record.
 //
-// llgo:link DIBuilderRef.DIBuilderInsertDeclareRecordBefore C.LLVMDIBuilderInsertDeclareRecordBefore
-func (self DIBuilderRef) DIBuilderInsertDeclareRecordBefore(Storage ValueRef, VarInfo MetadataRef, Expr MetadataRef, DebugLoc MetadataRef, Instr ValueRef) DbgRecordRef {
+// llgo:link DIBuilderRef.InsertDeclareRecordBefore C.LLVMDIBuilderInsertDeclareRecordBefore
+func (self DIBuilderRef) InsertDeclareRecordBefore(Storage ValueRef, VarInfo MetadataRef, Expr MetadataRef, DebugLoc MetadataRef, Instr ValueRef) DbgRecordRef {
 	return nil
 }
 
@@ -1333,8 +1333,8 @@ func (self DIBuilderRef) DIBuilderInsertDeclareRecordBefore(Storage ValueRef, Va
 // \param DebugLoc    Debug info location.
 // \param Block       Basic block acting as a location for the new record.
 //
-// llgo:link DIBuilderRef.DIBuilderInsertDeclareRecordAtEnd C.LLVMDIBuilderInsertDeclareRecordAtEnd
-func (self DIBuilderRef) DIBuilderInsertDeclareRecordAtEnd(Storage ValueRef, VarInfo MetadataRef, Expr MetadataRef, DebugLoc MetadataRef, Block BasicBlockRef) DbgRecordRef {
+// llgo:link DIBuilderRef.InsertDeclareRecordAtEnd C.LLVMDIBuilderInsertDeclareRecordAtEnd
+func (self DIBuilderRef) InsertDeclareRecordAtEnd(Storage ValueRef, VarInfo MetadataRef, Expr MetadataRef, DebugLoc MetadataRef, Block BasicBlockRef) DbgRecordRef {
 	return nil
 }
 
@@ -1352,8 +1352,8 @@ func (self DIBuilderRef) DIBuilderInsertDeclareRecordAtEnd(Storage ValueRef, Var
 // \param DebugLoc    Debug info location.
 // \param Instr       Instruction acting as a location for the new record.
 //
-// llgo:link DIBuilderRef.DIBuilderInsertDbgValueRecordBefore C.LLVMDIBuilderInsertDbgValueRecordBefore
-func (self DIBuilderRef) DIBuilderInsertDbgValueRecordBefore(Val ValueRef, VarInfo MetadataRef, Expr MetadataRef, DebugLoc MetadataRef, Instr ValueRef) DbgRecordRef {
+// llgo:link DIBuilderRef.InsertDbgValueRecordBefore C.LLVMDIBuilderInsertDbgValueRecordBefore
+func (self DIBuilderRef) InsertDbgValueRecordBefore(Val ValueRef, VarInfo MetadataRef, Expr MetadataRef, DebugLoc MetadataRef, Instr ValueRef) DbgRecordRef {
 	return nil
 }
 
@@ -1373,8 +1373,8 @@ func (self DIBuilderRef) DIBuilderInsertDbgValueRecordBefore(Val ValueRef, VarIn
 // \param DebugLoc    Debug info location.
 // \param Block       Basic block acting as a location for the new record.
 //
-// llgo:link DIBuilderRef.DIBuilderInsertDbgValueRecordAtEnd C.LLVMDIBuilderInsertDbgValueRecordAtEnd
-func (self DIBuilderRef) DIBuilderInsertDbgValueRecordAtEnd(Val ValueRef, VarInfo MetadataRef, Expr MetadataRef, DebugLoc MetadataRef, Block BasicBlockRef) DbgRecordRef {
+// llgo:link DIBuilderRef.InsertDbgValueRecordAtEnd C.LLVMDIBuilderInsertDbgValueRecordAtEnd
+func (self DIBuilderRef) InsertDbgValueRecordAtEnd(Val ValueRef, VarInfo MetadataRef, Expr MetadataRef, DebugLoc MetadataRef, Block BasicBlockRef) DbgRecordRef {
 	return nil
 }
 
@@ -1390,8 +1390,8 @@ func (self DIBuilderRef) DIBuilderInsertDbgValueRecordAtEnd(Val ValueRef, VarInf
 // \param Flags           Flags.
 // \param AlignInBits     Variable alignment.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateAutoVariable C.LLVMDIBuilderCreateAutoVariable
-func (self DIBuilderRef) DIBuilderCreateAutoVariable(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, Ty MetadataRef, AlwaysPreserve Bool, Flags DIFlags, AlignInBits c.Uint32T) MetadataRef {
+// llgo:link DIBuilderRef.CreateAutoVariable C.LLVMDIBuilderCreateAutoVariable
+func (self DIBuilderRef) CreateAutoVariable(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, Ty MetadataRef, AlwaysPreserve Bool, Flags DIFlags, AlignInBits c.Uint32T) MetadataRef {
 	return nil
 }
 
@@ -1407,8 +1407,8 @@ func (self DIBuilderRef) DIBuilderCreateAutoVariable(Scope MetadataRef, Name *c.
 // \param AlwaysPreserve  If true, this descriptor will survive optimizations.
 // \param Flags           Flags.
 //
-// llgo:link DIBuilderRef.DIBuilderCreateParameterVariable C.LLVMDIBuilderCreateParameterVariable
-func (self DIBuilderRef) DIBuilderCreateParameterVariable(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, ArgNo c.Uint, File MetadataRef, LineNo c.Uint, Ty MetadataRef, AlwaysPreserve Bool, Flags DIFlags) MetadataRef {
+// llgo:link DIBuilderRef.CreateParameterVariable C.LLVMDIBuilderCreateParameterVariable
+func (self DIBuilderRef) CreateParameterVariable(Scope MetadataRef, Name *c.Char, NameLen c.SizeT, ArgNo c.Uint, File MetadataRef, LineNo c.Uint, Ty MetadataRef, AlwaysPreserve Bool, Flags DIFlags) MetadataRef {
 	return nil
 }
 
@@ -1479,8 +1479,8 @@ func (self ValueRef) InstructionSetDebugLoc(Loc MetadataRef) {
 //
 // @see llvm::DIBuilder::createLabel()
 //
-// llgo:link DIBuilderRef.DIBuilderCreateLabel C.LLVMDIBuilderCreateLabel
-func (self DIBuilderRef) DIBuilderCreateLabel(Context MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, AlwaysPreserve Bool) MetadataRef {
+// llgo:link DIBuilderRef.CreateLabel C.LLVMDIBuilderCreateLabel
+func (self DIBuilderRef) CreateLabel(Context MetadataRef, Name *c.Char, NameLen c.SizeT, File MetadataRef, LineNo c.Uint, AlwaysPreserve Bool) MetadataRef {
 	return nil
 }
 
@@ -1493,8 +1493,8 @@ func (self DIBuilderRef) DIBuilderCreateLabel(Context MetadataRef, Name *c.Char,
 //
 // @see llvm::DIBuilder::insertLabel()
 //
-// llgo:link DIBuilderRef.DIBuilderInsertLabelBefore C.LLVMDIBuilderInsertLabelBefore
-func (self DIBuilderRef) DIBuilderInsertLabelBefore(LabelInfo MetadataRef, Location MetadataRef, InsertBefore ValueRef) DbgRecordRef {
+// llgo:link DIBuilderRef.InsertLabelBefore C.LLVMDIBuilderInsertLabelBefore
+func (self DIBuilderRef) InsertLabelBefore(LabelInfo MetadataRef, Location MetadataRef, InsertBefore ValueRef) DbgRecordRef {
 	return nil
 }
 
@@ -1507,8 +1507,8 @@ func (self DIBuilderRef) DIBuilderInsertLabelBefore(LabelInfo MetadataRef, Locat
 //
 // @see llvm::DIBuilder::insertLabel()
 //
-// llgo:link DIBuilderRef.DIBuilderInsertLabelAtEnd C.LLVMDIBuilderInsertLabelAtEnd
-func (self DIBuilderRef) DIBuilderInsertLabelAtEnd(LabelInfo MetadataRef, Location MetadataRef, InsertAtEnd BasicBlockRef) DbgRecordRef {
+// llgo:link DIBuilderRef.InsertLabelAtEnd C.LLVMDIBuilderInsertLabelAtEnd
+func (self DIBuilderRef) InsertLabelAtEnd(LabelInfo MetadataRef, Location MetadataRef, InsertAtEnd BasicBlockRef) DbgRecordRef {
 	return nil
 }
 
@@ -1516,7 +1516,7 @@ func (self DIBuilderRef) DIBuilderInsertLabelAtEnd(LabelInfo MetadataRef, Locati
 //
 // @see llvm::Metadata::getMetadataID()
 //
-// llgo:link MetadataRef.MetadataKind C.LLVMGetMetadataKind
-func (self MetadataRef) MetadataKind() MetadataKind {
+// llgo:link MetadataRef.Kind C.LLVMGetMetadataKind
+func (self MetadataRef) Kind() MetadataKind {
 	return 0
 }

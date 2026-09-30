@@ -21,8 +21,8 @@ type ErrorTypeId uintptr
 // Returns the type id for the given error instance, which must be a failure
 // value (i.e. non-null).
 //
-// llgo:link ErrorRef.ErrorTypeId C.LLVMGetErrorTypeId
-func (self ErrorRef) ErrorTypeId() ErrorTypeId {
+// llgo:link ErrorRef.TypeId C.LLVMGetErrorTypeId
+func (self ErrorRef) TypeId() ErrorTypeId {
 	return 0
 }
 
@@ -31,8 +31,8 @@ func (self ErrorRef) ErrorTypeId() ErrorTypeId {
 // Note: This method *only* needs to be called if the error is not being passed
 // to some other consuming operation, e.g. LLVMGetErrorMessage.
 //
-// llgo:link ErrorRef.ConsumeError C.LLVMConsumeError
-func (self ErrorRef) ConsumeError() {
+// llgo:link ErrorRef.Consume C.LLVMConsumeError
+func (self ErrorRef) Consume() {
 }
 
 // Report a fatal error if Err is a failure value.
@@ -49,8 +49,8 @@ func (self ErrorRef) CantFail() {
 // The caller is responsible for disposing of the string by calling
 // LLVMDisposeErrorMessage.
 //
-// llgo:link ErrorRef.ErrorMessage C.LLVMGetErrorMessage
-func (self ErrorRef) ErrorMessage() *c.Char {
+// llgo:link ErrorRef.Message C.LLVMGetErrorMessage
+func (self ErrorRef) Message() *c.Char {
 	return nil
 }
 

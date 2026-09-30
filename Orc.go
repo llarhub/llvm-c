@@ -412,8 +412,8 @@ type OrcExecutionSessionLookupHandleResultFunction = func(_llcppg_param1 ErrorRe
 // requesting definitions from the JIT will typically be delivered a
 // FailureToMaterialize error instead).
 //
-// llgo:link OrcExecutionSessionRef.OrcExecutionSessionSetErrorReporter C.LLVMOrcExecutionSessionSetErrorReporter
-func (self OrcExecutionSessionRef) OrcExecutionSessionSetErrorReporter(ReportError OrcErrorReporterFunction, Ctx unsafe.Pointer) {
+// llgo:link OrcExecutionSessionRef.SetErrorReporter C.LLVMOrcExecutionSessionSetErrorReporter
+func (self OrcExecutionSessionRef) SetErrorReporter(ReportError OrcErrorReporterFunction, Ctx unsafe.Pointer) {
 }
 
 // Return a reference to the SymbolStringPool for an ExecutionSession.
@@ -421,8 +421,8 @@ func (self OrcExecutionSessionRef) OrcExecutionSessionSetErrorReporter(ReportErr
 // Ownership of the pool remains with the ExecutionSession: The caller is
 // not required to free the pool.
 //
-// llgo:link OrcExecutionSessionRef.OrcExecutionSessionGetSymbolStringPool C.LLVMOrcExecutionSessionGetSymbolStringPool
-func (self OrcExecutionSessionRef) OrcExecutionSessionGetSymbolStringPool() OrcSymbolStringPoolRef {
+// llgo:link OrcExecutionSessionRef.SymbolStringPool C.LLVMOrcExecutionSessionGetSymbolStringPool
+func (self OrcExecutionSessionRef) SymbolStringPool() OrcSymbolStringPoolRef {
 	return nil
 }
 
@@ -435,8 +435,8 @@ func (self OrcExecutionSessionRef) OrcExecutionSessionGetSymbolStringPool() OrcS
 // entries will have become unreferenced, e.g. after removing a module or
 // closing a JITDylib.
 //
-// llgo:link OrcSymbolStringPoolRef.OrcSymbolStringPoolClearDeadEntries C.LLVMOrcSymbolStringPoolClearDeadEntries
-func (self OrcSymbolStringPoolRef) OrcSymbolStringPoolClearDeadEntries() {
+// llgo:link OrcSymbolStringPoolRef.ClearDeadEntries C.LLVMOrcSymbolStringPoolClearDeadEntries
+func (self OrcSymbolStringPoolRef) ClearDeadEntries() {
 }
 
 // Intern a string in the ExecutionSession's SymbolStringPool and return a
@@ -450,8 +450,8 @@ func (self OrcSymbolStringPoolRef) OrcSymbolStringPoolClearDeadEntries() {
 //
 // Note that this function does not perform linker-mangling on the string.
 //
-// llgo:link OrcExecutionSessionRef.OrcExecutionSessionIntern C.LLVMOrcExecutionSessionIntern
-func (self OrcExecutionSessionRef) OrcExecutionSessionIntern(Name *c.Char) OrcSymbolStringPoolEntryRef {
+// llgo:link OrcExecutionSessionRef.Intern C.LLVMOrcExecutionSessionIntern
+func (self OrcExecutionSessionRef) Intern(Name *c.Char) OrcSymbolStringPoolEntryRef {
 	return nil
 }
 
@@ -482,8 +482,8 @@ func (self OrcExecutionSessionRef) OrcExecutionSessionIntern(Name *c.Char) OrcSy
 //
 // THIS API IS EXPERIMENTAL AND LIKELY TO CHANGE IN THE NEAR FUTURE!
 //
-// llgo:link OrcExecutionSessionRef.OrcExecutionSessionLookup C.LLVMOrcExecutionSessionLookup
-func (self OrcExecutionSessionRef) OrcExecutionSessionLookup(K OrcLookupKind, SearchOrder OrcCJITDylibSearchOrder, SearchOrderSize c.SizeT, Symbols OrcCLookupSet, SymbolsSize c.SizeT, HandleResult OrcExecutionSessionLookupHandleResultFunction, Ctx unsafe.Pointer) {
+// llgo:link OrcExecutionSessionRef.Lookup C.LLVMOrcExecutionSessionLookup
+func (self OrcExecutionSessionRef) Lookup(K OrcLookupKind, SearchOrder OrcCJITDylibSearchOrder, SearchOrderSize c.SizeT, Symbols OrcCLookupSet, SymbolsSize c.SizeT, HandleResult OrcExecutionSessionLookupHandleResultFunction, Ctx unsafe.Pointer) {
 }
 
 // Increments the ref-count for a SymbolStringPool entry.
@@ -502,8 +502,8 @@ func (self OrcSymbolStringPoolEntryRef) OrcReleaseSymbolStringPoolEntry() {
 // the entry is freed (once all LLVMOrcSymbolStringPoolEntryRefs have been
 // released).
 //
-// llgo:link OrcSymbolStringPoolEntryRef.OrcSymbolStringPoolEntryStr C.LLVMOrcSymbolStringPoolEntryStr
-func (self OrcSymbolStringPoolEntryRef) OrcSymbolStringPoolEntryStr() *c.Char {
+// llgo:link OrcSymbolStringPoolEntryRef.Str C.LLVMOrcSymbolStringPoolEntryStr
+func (self OrcSymbolStringPoolEntryRef) Str() *c.Char {
 	return nil
 }
 
@@ -522,8 +522,8 @@ func OrcResourceTrackerTransferTo(SrcRT OrcResourceTrackerRef, DstRT OrcResource
 // Remove all resources associated with the given tracker. See
 // ResourceTracker::remove().
 //
-// llgo:link OrcResourceTrackerRef.OrcResourceTrackerRemove C.LLVMOrcResourceTrackerRemove
-func (self OrcResourceTrackerRef) OrcResourceTrackerRemove() ErrorRef {
+// llgo:link OrcResourceTrackerRef.Remove C.LLVMOrcResourceTrackerRemove
+func (self OrcResourceTrackerRef) Remove() ErrorRef {
 	return nil
 }
 
@@ -640,15 +640,15 @@ func (self OrcMaterializationResponsibilityRef) OrcDisposeMaterializationRespons
 
 // Returns the target JITDylib that these symbols are being materialized into.
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityGetTargetDylib C.LLVMOrcMaterializationResponsibilityGetTargetDylib
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityGetTargetDylib() OrcJITDylibRef {
+// llgo:link OrcMaterializationResponsibilityRef.TargetDylib C.LLVMOrcMaterializationResponsibilityGetTargetDylib
+func (self OrcMaterializationResponsibilityRef) TargetDylib() OrcJITDylibRef {
 	return nil
 }
 
 // Returns the ExecutionSession for this MaterializationResponsibility.
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityGetExecutionSession C.LLVMOrcMaterializationResponsibilityGetExecutionSession
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityGetExecutionSession() OrcExecutionSessionRef {
+// llgo:link OrcMaterializationResponsibilityRef.ExecutionSession C.LLVMOrcMaterializationResponsibilityGetExecutionSession
+func (self OrcMaterializationResponsibilityRef) ExecutionSession() OrcExecutionSessionRef {
 	return nil
 }
 
@@ -661,8 +661,8 @@ func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibility
 // MaterializationResponsibility requires the caller to retain the symbols
 // explicitly.
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityGetSymbols C.LLVMOrcMaterializationResponsibilityGetSymbols
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityGetSymbols(NumPairs *c.SizeT) OrcCSymbolFlagsMapPairs {
+// llgo:link OrcMaterializationResponsibilityRef.Symbols C.LLVMOrcMaterializationResponsibilityGetSymbols
+func (self OrcMaterializationResponsibilityRef) Symbols(NumPairs *c.SizeT) OrcCSymbolFlagsMapPairs {
 	return nil
 }
 
@@ -681,8 +681,8 @@ func (self OrcCSymbolFlagsMapPairs) OrcDisposeCSymbolFlagsMap() {
 // The returned symbol is not retained over any mutating operation of the
 // MaterializationResponsbility or beyond the lifetime thereof.
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityGetInitializerSymbol C.LLVMOrcMaterializationResponsibilityGetInitializerSymbol
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityGetInitializerSymbol() OrcSymbolStringPoolEntryRef {
+// llgo:link OrcMaterializationResponsibilityRef.InitializerSymbol C.LLVMOrcMaterializationResponsibilityGetInitializerSymbol
+func (self OrcMaterializationResponsibilityRef) InitializerSymbol() OrcSymbolStringPoolEntryRef {
 	return nil
 }
 
@@ -691,8 +691,8 @@ func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibility
 // information can be used to return responsibility for unrequested symbols
 // back to the JITDylib via the delegate method.
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityGetRequestedSymbols C.LLVMOrcMaterializationResponsibilityGetRequestedSymbols
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityGetRequestedSymbols(NumSymbols *c.SizeT) *OrcSymbolStringPoolEntryRef {
+// llgo:link OrcMaterializationResponsibilityRef.RequestedSymbols C.LLVMOrcMaterializationResponsibilityGetRequestedSymbols
+func (self OrcMaterializationResponsibilityRef) RequestedSymbols(NumSymbols *c.SizeT) *OrcSymbolStringPoolEntryRef {
 	return nil
 }
 
@@ -718,8 +718,8 @@ func OrcDisposeSymbols(Symbols *OrcSymbolStringPoolEntryRef)
 // MaterializationResponsibility then this method is guaranteed to return
 // LLVMErrorSuccess.
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityNotifyResolved C.LLVMOrcMaterializationResponsibilityNotifyResolved
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityNotifyResolved(Symbols OrcCSymbolMapPairs, NumPairs c.SizeT) ErrorRef {
+// llgo:link OrcMaterializationResponsibilityRef.NotifyResolved C.LLVMOrcMaterializationResponsibilityNotifyResolved
+func (self OrcMaterializationResponsibilityRef) NotifyResolved(Symbols OrcCSymbolMapPairs, NumPairs c.SizeT) ErrorRef {
 	return nil
 }
 
@@ -748,8 +748,8 @@ func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibility
 // MaterializationResponsibility then this method is guaranteed to return
 // LLVMErrorSuccess.
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityNotifyEmitted C.LLVMOrcMaterializationResponsibilityNotifyEmitted
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityNotifyEmitted(SymbolDepGroups *OrcCSymbolDependenceGroup, NumSymbolDepGroups c.SizeT) ErrorRef {
+// llgo:link OrcMaterializationResponsibilityRef.NotifyEmitted C.LLVMOrcMaterializationResponsibilityNotifyEmitted
+func (self OrcMaterializationResponsibilityRef) NotifyEmitted(SymbolDepGroups *OrcCSymbolDependenceGroup, NumSymbolDepGroups c.SizeT) ErrorRef {
 	return nil
 }
 
@@ -765,8 +765,8 @@ func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibility
 // additional symbols at materialization time (e.g. stubs, compile
 // callbacks, metadata)
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityDefineMaterializing C.LLVMOrcMaterializationResponsibilityDefineMaterializing
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityDefineMaterializing(Pairs OrcCSymbolFlagsMapPairs, NumPairs c.SizeT) ErrorRef {
+// llgo:link OrcMaterializationResponsibilityRef.DefineMaterializing C.LLVMOrcMaterializationResponsibilityDefineMaterializing
+func (self OrcMaterializationResponsibilityRef) DefineMaterializing(Pairs OrcCSymbolFlagsMapPairs, NumPairs c.SizeT) ErrorRef {
 	return nil
 }
 
@@ -776,8 +776,8 @@ func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibility
 // from the target JITDylib, and send an error to any queries waiting on
 // these symbols.
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityFailMaterialization C.LLVMOrcMaterializationResponsibilityFailMaterialization
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityFailMaterialization() {
+// llgo:link OrcMaterializationResponsibilityRef.FailMaterialization C.LLVMOrcMaterializationResponsibilityFailMaterialization
+func (self OrcMaterializationResponsibilityRef) FailMaterialization() {
 }
 
 // Transfers responsibility to the given MaterializationUnit for all
@@ -786,8 +786,8 @@ func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibility
 // by introspecting which symbols have actually been looked up and
 // materializing only those).
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityReplace C.LLVMOrcMaterializationResponsibilityReplace
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityReplace(MU OrcMaterializationUnitRef) ErrorRef {
+// llgo:link OrcMaterializationResponsibilityRef.Replace C.LLVMOrcMaterializationResponsibilityReplace
+func (self OrcMaterializationResponsibilityRef) Replace(MU OrcMaterializationUnitRef) ErrorRef {
 	return nil
 }
 
@@ -798,8 +798,8 @@ func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibility
 // The caller retains responsibility of the the passed
 // MaterializationResponsibility.
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcMaterializationResponsibilityDelegate C.LLVMOrcMaterializationResponsibilityDelegate
-func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibilityDelegate(Symbols *OrcSymbolStringPoolEntryRef, NumSymbols c.SizeT, Result *OrcMaterializationResponsibilityRef) ErrorRef {
+// llgo:link OrcMaterializationResponsibilityRef.Delegate C.LLVMOrcMaterializationResponsibilityDelegate
+func (self OrcMaterializationResponsibilityRef) Delegate(Symbols *OrcSymbolStringPoolEntryRef, NumSymbols c.SizeT, Result *OrcMaterializationResponsibilityRef) ErrorRef {
 	return nil
 }
 
@@ -811,8 +811,8 @@ func (self OrcMaterializationResponsibilityRef) OrcMaterializationResponsibility
 // This call does not install any library code or symbols into the newly
 // created JITDylib. The client is responsible for all configuration.
 //
-// llgo:link OrcExecutionSessionRef.OrcExecutionSessionCreateBareJITDylib C.LLVMOrcExecutionSessionCreateBareJITDylib
-func (self OrcExecutionSessionRef) OrcExecutionSessionCreateBareJITDylib(Name *c.Char) OrcJITDylibRef {
+// llgo:link OrcExecutionSessionRef.CreateBareJITDylib C.LLVMOrcExecutionSessionCreateBareJITDylib
+func (self OrcExecutionSessionRef) CreateBareJITDylib(Name *c.Char) OrcJITDylibRef {
 	return nil
 }
 
@@ -827,16 +827,16 @@ func (self OrcExecutionSessionRef) OrcExecutionSessionCreateBareJITDylib(Name *c
 // call is equivalent to LLVMExecutionSessionRefCreateBareJITDylib and will
 // always return success.
 //
-// llgo:link OrcExecutionSessionRef.OrcExecutionSessionCreateJITDylib C.LLVMOrcExecutionSessionCreateJITDylib
-func (self OrcExecutionSessionRef) OrcExecutionSessionCreateJITDylib(Result *OrcJITDylibRef, Name *c.Char) ErrorRef {
+// llgo:link OrcExecutionSessionRef.CreateJITDylib C.LLVMOrcExecutionSessionCreateJITDylib
+func (self OrcExecutionSessionRef) CreateJITDylib(Result *OrcJITDylibRef, Name *c.Char) ErrorRef {
 	return nil
 }
 
 // Returns the JITDylib with the given name, or NULL if no such JITDylib
 // exists.
 //
-// llgo:link OrcExecutionSessionRef.OrcExecutionSessionGetJITDylibByName C.LLVMOrcExecutionSessionGetJITDylibByName
-func (self OrcExecutionSessionRef) OrcExecutionSessionGetJITDylibByName(Name *c.Char) OrcJITDylibRef {
+// llgo:link OrcExecutionSessionRef.JITDylibByName C.LLVMOrcExecutionSessionGetJITDylibByName
+func (self OrcExecutionSessionRef) JITDylibByName(Name *c.Char) OrcJITDylibRef {
 	return nil
 }
 
@@ -844,8 +844,8 @@ func (self OrcExecutionSessionRef) OrcExecutionSessionGetJITDylibByName(Name *c.
 // The tracker is returned with an initial ref-count of 1, and must be released
 // with LLVMOrcReleaseResourceTracker when no longer needed.
 //
-// llgo:link OrcJITDylibRef.OrcJITDylibCreateResourceTracker C.LLVMOrcJITDylibCreateResourceTracker
-func (self OrcJITDylibRef) OrcJITDylibCreateResourceTracker() OrcResourceTrackerRef {
+// llgo:link OrcJITDylibRef.CreateResourceTracker C.LLVMOrcJITDylibCreateResourceTracker
+func (self OrcJITDylibRef) CreateResourceTracker() OrcResourceTrackerRef {
 	return nil
 }
 
@@ -853,8 +853,8 @@ func (self OrcJITDylibRef) OrcJITDylibCreateResourceTracker() OrcResourceTracker
 // This operation will increase the retain count of the tracker: Clients should
 // call LLVMOrcReleaseResourceTracker when the result is no longer needed.
 //
-// llgo:link OrcJITDylibRef.OrcJITDylibGetDefaultResourceTracker C.LLVMOrcJITDylibGetDefaultResourceTracker
-func (self OrcJITDylibRef) OrcJITDylibGetDefaultResourceTracker() OrcResourceTrackerRef {
+// llgo:link OrcJITDylibRef.DefaultResourceTracker C.LLVMOrcJITDylibGetDefaultResourceTracker
+func (self OrcJITDylibRef) DefaultResourceTracker() OrcResourceTrackerRef {
 	return nil
 }
 
@@ -864,16 +864,16 @@ func (self OrcJITDylibRef) OrcJITDylibGetDefaultResourceTracker() OrcResourceTra
 // If the operation fails then ownership remains with the caller who should
 // call LLVMOrcDisposeMaterializationUnit to destroy it.
 //
-// llgo:link OrcJITDylibRef.OrcJITDylibDefine C.LLVMOrcJITDylibDefine
-func (self OrcJITDylibRef) OrcJITDylibDefine(MU OrcMaterializationUnitRef) ErrorRef {
+// llgo:link OrcJITDylibRef.Define C.LLVMOrcJITDylibDefine
+func (self OrcJITDylibRef) Define(MU OrcMaterializationUnitRef) ErrorRef {
 	return nil
 }
 
 // Calls remove on all trackers associated with this JITDylib, see
 // JITDylib::clear().
 //
-// llgo:link OrcJITDylibRef.OrcJITDylibClear C.LLVMOrcJITDylibClear
-func (self OrcJITDylibRef) OrcJITDylibClear() ErrorRef {
+// llgo:link OrcJITDylibRef.Clear C.LLVMOrcJITDylibClear
+func (self OrcJITDylibRef) Clear() ErrorRef {
 	return nil
 }
 
@@ -882,8 +882,8 @@ func (self OrcJITDylibRef) OrcJITDylibClear() ErrorRef {
 // The JITDylib will take ownership of the given generator: The client is no
 // longer responsible for managing its memory.
 //
-// llgo:link OrcJITDylibRef.OrcJITDylibAddGenerator C.LLVMOrcJITDylibAddGenerator
-func (self OrcJITDylibRef) OrcJITDylibAddGenerator(DG OrcDefinitionGeneratorRef) {
+// llgo:link OrcJITDylibRef.AddGenerator C.LLVMOrcJITDylibAddGenerator
+func (self OrcJITDylibRef) AddGenerator(DG OrcDefinitionGeneratorRef) {
 }
 
 // Create a custom generator.
@@ -904,8 +904,8 @@ func OrcCreateCustomCAPIDefinitionGenerator(F OrcCAPIDefinitionGeneratorTryToGen
 // Continue a lookup that was suspended in a generator (see
 // LLVMOrcCAPIDefinitionGeneratorTryToGenerateFunction).
 //
-// llgo:link OrcLookupStateRef.OrcLookupStateContinueLookup C.LLVMOrcLookupStateContinueLookup
-func (self OrcLookupStateRef) OrcLookupStateContinueLookup(Err ErrorRef) {
+// llgo:link OrcLookupStateRef.ContinueLookup C.LLVMOrcLookupStateContinueLookup
+func (self OrcLookupStateRef) ContinueLookup(Err ErrorRef) {
 }
 
 // Get a DynamicLibrarySearchGenerator that will reflect process symbols into
@@ -989,8 +989,8 @@ func OrcCreateNewThreadSafeContext() OrcThreadSafeContextRef
 // ThreadSafeModules) will keep the underlying data alive as long as it is
 // needed.
 //
-// llgo:link ContextRef.OrcCreateNewThreadSafeContextFromLLVMContext C.LLVMOrcCreateNewThreadSafeContextFromLLVMContext
-func (self ContextRef) OrcCreateNewThreadSafeContextFromLLVMContext() OrcThreadSafeContextRef {
+// llgo:link ContextRef.OrcCreateNewThreadSafeContextFromLLVM C.LLVMOrcCreateNewThreadSafeContextFromLLVMContext
+func (self ContextRef) OrcCreateNewThreadSafeContextFromLLVM() OrcThreadSafeContextRef {
 	return nil
 }
 
@@ -1009,8 +1009,8 @@ func (self OrcThreadSafeContextRef) OrcDisposeThreadSafeContext() {
 // responsible for it. If it is not transferred to the JIT then the client
 // should call LLVMOrcDisposeThreadSafeModule to dispose of it.
 //
-// llgo:link ModuleRef.OrcCreateNewThreadSafeModule C.LLVMOrcCreateNewThreadSafeModule
-func (self ModuleRef) OrcCreateNewThreadSafeModule(TSCtx OrcThreadSafeContextRef) OrcThreadSafeModuleRef {
+// llgo:link ModuleRef.OrcCreateNewThreadSafe C.LLVMOrcCreateNewThreadSafeModule
+func (self ModuleRef) OrcCreateNewThreadSafe(TSCtx OrcThreadSafeContextRef) OrcThreadSafeModuleRef {
 	return nil
 }
 
@@ -1024,8 +1024,8 @@ func (self OrcThreadSafeModuleRef) OrcDisposeThreadSafeModule() {
 
 // Apply the given function to the module contained in this ThreadSafeModule.
 //
-// llgo:link OrcThreadSafeModuleRef.OrcThreadSafeModuleWithModuleDo C.LLVMOrcThreadSafeModuleWithModuleDo
-func (self OrcThreadSafeModuleRef) OrcThreadSafeModuleWithModuleDo(F OrcGenericIRModuleOperationFunction, Ctx unsafe.Pointer) ErrorRef {
+// llgo:link OrcThreadSafeModuleRef.WithModuleDo C.LLVMOrcThreadSafeModuleWithModuleDo
+func (self OrcThreadSafeModuleRef) WithModuleDo(F OrcGenericIRModuleOperationFunction, Ctx unsafe.Pointer) ErrorRef {
 	return nil
 }
 
@@ -1047,8 +1047,8 @@ func OrcJITTargetMachineBuilderDetectHost(Result *OrcJITTargetMachineBuilderRef)
 // LLVMOrcLLJITBuilderSetJITTargetMachineBuilder) or disposed of by calling
 // LLVMOrcDisposeJITTargetMachineBuilder.
 //
-// llgo:link TargetMachineRef.OrcJITTargetMachineBuilderCreateFromTargetMachine C.LLVMOrcJITTargetMachineBuilderCreateFromTargetMachine
-func (self TargetMachineRef) OrcJITTargetMachineBuilderCreateFromTargetMachine() OrcJITTargetMachineBuilderRef {
+// llgo:link TargetMachineRef.OrcJITTargetMachineBuilderCreateFrom C.LLVMOrcJITTargetMachineBuilderCreateFromTargetMachine
+func (self TargetMachineRef) OrcJITTargetMachineBuilderCreateFrom() OrcJITTargetMachineBuilderRef {
 	return nil
 }
 
@@ -1063,16 +1063,16 @@ func (self OrcJITTargetMachineBuilderRef) OrcDisposeJITTargetMachineBuilder() {
 // The caller owns the resulting string as must dispose of it by calling
 // LLVMDisposeMessage
 //
-// llgo:link OrcJITTargetMachineBuilderRef.OrcJITTargetMachineBuilderGetTargetTriple C.LLVMOrcJITTargetMachineBuilderGetTargetTriple
-func (self OrcJITTargetMachineBuilderRef) OrcJITTargetMachineBuilderGetTargetTriple() *c.Char {
+// llgo:link OrcJITTargetMachineBuilderRef.TargetTriple C.LLVMOrcJITTargetMachineBuilderGetTargetTriple
+func (self OrcJITTargetMachineBuilderRef) TargetTriple() *c.Char {
 	return nil
 }
 
 // Sets the target triple for the given JITTargetMachineBuilder to the given
 // string.
 //
-// llgo:link OrcJITTargetMachineBuilderRef.OrcJITTargetMachineBuilderSetTargetTriple C.LLVMOrcJITTargetMachineBuilderSetTargetTriple
-func (self OrcJITTargetMachineBuilderRef) OrcJITTargetMachineBuilderSetTargetTriple(TargetTriple *c.Char) {
+// llgo:link OrcJITTargetMachineBuilderRef.SetTargetTriple C.LLVMOrcJITTargetMachineBuilderSetTargetTriple
+func (self OrcJITTargetMachineBuilderRef) SetTargetTriple(TargetTriple *c.Char) {
 }
 
 // Add an object to an ObjectLayer to the given JITDylib.
@@ -1085,8 +1085,8 @@ func (self OrcJITTargetMachineBuilderRef) OrcJITTargetMachineBuilderSetTargetTri
 // Resources associated with the given object will be tracked by the given
 // JITDylib's default ResourceTracker.
 //
-// llgo:link OrcObjectLayerRef.OrcObjectLayerAddObjectFile C.LLVMOrcObjectLayerAddObjectFile
-func (self OrcObjectLayerRef) OrcObjectLayerAddObjectFile(JD OrcJITDylibRef, ObjBuffer MemoryBufferRef) ErrorRef {
+// llgo:link OrcObjectLayerRef.AddObjectFile C.LLVMOrcObjectLayerAddObjectFile
+func (self OrcObjectLayerRef) AddObjectFile(JD OrcJITDylibRef, ObjBuffer MemoryBufferRef) ErrorRef {
 	return nil
 }
 
@@ -1100,8 +1100,8 @@ func (self OrcObjectLayerRef) OrcObjectLayerAddObjectFile(JD OrcJITDylibRef, Obj
 // Resources associated with the given object will be tracked by
 // ResourceTracker RT.
 //
-// llgo:link OrcObjectLayerRef.OrcObjectLayerAddObjectFileWithRT C.LLVMOrcObjectLayerAddObjectFileWithRT
-func (self OrcObjectLayerRef) OrcObjectLayerAddObjectFileWithRT(RT OrcResourceTrackerRef, ObjBuffer MemoryBufferRef) ErrorRef {
+// llgo:link OrcObjectLayerRef.AddObjectFileWithRT C.LLVMOrcObjectLayerAddObjectFileWithRT
+func (self OrcObjectLayerRef) AddObjectFileWithRT(RT OrcResourceTrackerRef, ObjBuffer MemoryBufferRef) ErrorRef {
 	return nil
 }
 
@@ -1110,8 +1110,8 @@ func (self OrcObjectLayerRef) OrcObjectLayerAddObjectFileWithRT(RT OrcResourceTr
 // Ownership of the responsibility object and object buffer pass to this
 // function. The client is not responsible for cleanup.
 //
-// llgo:link OrcObjectLayerRef.OrcObjectLayerEmit C.LLVMOrcObjectLayerEmit
-func (self OrcObjectLayerRef) OrcObjectLayerEmit(R OrcMaterializationResponsibilityRef, ObjBuffer MemoryBufferRef) {
+// llgo:link OrcObjectLayerRef.Emit C.LLVMOrcObjectLayerEmit
+func (self OrcObjectLayerRef) Emit(R OrcMaterializationResponsibilityRef, ObjBuffer MemoryBufferRef) {
 }
 
 // Dispose of an ObjectLayer.
@@ -1120,21 +1120,21 @@ func (self OrcObjectLayerRef) OrcObjectLayerEmit(R OrcMaterializationResponsibil
 func (self OrcObjectLayerRef) OrcDisposeObjectLayer() {
 }
 
-// llgo:link OrcIRTransformLayerRef.OrcIRTransformLayerEmit C.LLVMOrcIRTransformLayerEmit
-func (self OrcIRTransformLayerRef) OrcIRTransformLayerEmit(MR OrcMaterializationResponsibilityRef, TSM OrcThreadSafeModuleRef) {
+// llgo:link OrcIRTransformLayerRef.Emit C.LLVMOrcIRTransformLayerEmit
+func (self OrcIRTransformLayerRef) Emit(MR OrcMaterializationResponsibilityRef, TSM OrcThreadSafeModuleRef) {
 }
 
 // Set the transform function of the provided transform layer, passing through a
 // pointer to user provided context.
 //
-// llgo:link OrcIRTransformLayerRef.OrcIRTransformLayerSetTransform C.LLVMOrcIRTransformLayerSetTransform
-func (self OrcIRTransformLayerRef) OrcIRTransformLayerSetTransform(TransformFunction OrcIRTransformLayerTransformFunction, Ctx unsafe.Pointer) {
+// llgo:link OrcIRTransformLayerRef.SetTransform C.LLVMOrcIRTransformLayerSetTransform
+func (self OrcIRTransformLayerRef) SetTransform(TransformFunction OrcIRTransformLayerTransformFunction, Ctx unsafe.Pointer) {
 }
 
 // Set the transform function on an LLVMOrcObjectTransformLayer.
 //
-// llgo:link OrcObjectTransformLayerRef.OrcObjectTransformLayerSetTransform C.LLVMOrcObjectTransformLayerSetTransform
-func (self OrcObjectTransformLayerRef) OrcObjectTransformLayerSetTransform(TransformFunction OrcObjectTransformLayerTransformFunction, Ctx unsafe.Pointer) {
+// llgo:link OrcObjectTransformLayerRef.SetTransform C.LLVMOrcObjectTransformLayerSetTransform
+func (self OrcObjectTransformLayerRef) SetTransform(TransformFunction OrcObjectTransformLayerTransformFunction, Ctx unsafe.Pointer) {
 }
 
 // Create a LocalIndirectStubsManager from the given target triple.

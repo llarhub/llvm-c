@@ -56,14 +56,14 @@ func (self OrcLLJITBuilderRef) OrcDisposeLLJITBuilder() {
 // This function takes ownership of the JTMB argument: clients should not
 // dispose of the JITTargetMachineBuilder after calling this function.
 //
-// llgo:link OrcLLJITBuilderRef.OrcLLJITBuilderSetJITTargetMachineBuilder C.LLVMOrcLLJITBuilderSetJITTargetMachineBuilder
-func (self OrcLLJITBuilderRef) OrcLLJITBuilderSetJITTargetMachineBuilder(JTMB OrcJITTargetMachineBuilderRef) {
+// llgo:link OrcLLJITBuilderRef.SetJITTargetMachineBuilder C.LLVMOrcLLJITBuilderSetJITTargetMachineBuilder
+func (self OrcLLJITBuilderRef) SetJITTargetMachineBuilder(JTMB OrcJITTargetMachineBuilderRef) {
 }
 
 // Set an ObjectLinkingLayer creator function for this LLJIT instance.
 //
-// llgo:link OrcLLJITBuilderRef.OrcLLJITBuilderSetObjectLinkingLayerCreator C.LLVMOrcLLJITBuilderSetObjectLinkingLayerCreator
-func (self OrcLLJITBuilderRef) OrcLLJITBuilderSetObjectLinkingLayerCreator(F OrcLLJITBuilderObjectLinkingLayerCreatorFunction, Ctx unsafe.Pointer) {
+// llgo:link OrcLLJITBuilderRef.SetObjectLinkingLayerCreator C.LLVMOrcLLJITBuilderSetObjectLinkingLayerCreator
+func (self OrcLLJITBuilderRef) SetObjectLinkingLayerCreator(F OrcLLJITBuilderObjectLinkingLayerCreatorFunction, Ctx unsafe.Pointer) {
 }
 
 // Create an LLJIT instance from an LLJITBuilder.
@@ -94,8 +94,8 @@ func (self OrcLLJITRef) OrcDisposeLLJIT() ErrorRef {
 // The ExecutionSession is owned by the LLJIT instance. The client is not
 // responsible for managing its memory.
 //
-// llgo:link OrcLLJITRef.OrcLLJITGetExecutionSession C.LLVMOrcLLJITGetExecutionSession
-func (self OrcLLJITRef) OrcLLJITGetExecutionSession() OrcExecutionSessionRef {
+// llgo:link OrcLLJITRef.ExecutionSession C.LLVMOrcLLJITGetExecutionSession
+func (self OrcLLJITRef) ExecutionSession() OrcExecutionSessionRef {
 	return nil
 }
 
@@ -104,23 +104,23 @@ func (self OrcLLJITRef) OrcLLJITGetExecutionSession() OrcExecutionSessionRef {
 // The JITDylib is owned by the LLJIT instance. The client is not responsible
 // for managing its memory.
 //
-// llgo:link OrcLLJITRef.OrcLLJITGetMainJITDylib C.LLVMOrcLLJITGetMainJITDylib
-func (self OrcLLJITRef) OrcLLJITGetMainJITDylib() OrcJITDylibRef {
+// llgo:link OrcLLJITRef.MainJITDylib C.LLVMOrcLLJITGetMainJITDylib
+func (self OrcLLJITRef) MainJITDylib() OrcJITDylibRef {
 	return nil
 }
 
 // Return the target triple for this LLJIT instance. This string is owned by
 // the LLJIT instance and should not be freed by the client.
 //
-// llgo:link OrcLLJITRef.OrcLLJITGetTripleString C.LLVMOrcLLJITGetTripleString
-func (self OrcLLJITRef) OrcLLJITGetTripleString() *c.Char {
+// llgo:link OrcLLJITRef.TripleString C.LLVMOrcLLJITGetTripleString
+func (self OrcLLJITRef) TripleString() *c.Char {
 	return nil
 }
 
 // Returns the global prefix character according to the LLJIT's DataLayout.
 //
-// llgo:link OrcLLJITRef.OrcLLJITGetGlobalPrefix C.LLVMOrcLLJITGetGlobalPrefix
-func (self OrcLLJITRef) OrcLLJITGetGlobalPrefix() c.Char {
+// llgo:link OrcLLJITRef.GlobalPrefix C.LLVMOrcLLJITGetGlobalPrefix
+func (self OrcLLJITRef) GlobalPrefix() c.Char {
 	return 0
 }
 
@@ -130,8 +130,8 @@ func (self OrcLLJITRef) OrcLLJITGetGlobalPrefix() c.Char {
 // decrement the ref-count on the pool entry once they are finished with this
 // value.
 //
-// llgo:link OrcLLJITRef.OrcLLJITMangleAndIntern C.LLVMOrcLLJITMangleAndIntern
-func (self OrcLLJITRef) OrcLLJITMangleAndIntern(UnmangledName *c.Char) OrcSymbolStringPoolEntryRef {
+// llgo:link OrcLLJITRef.MangleAndIntern C.LLVMOrcLLJITMangleAndIntern
+func (self OrcLLJITRef) MangleAndIntern(UnmangledName *c.Char) OrcSymbolStringPoolEntryRef {
 	return nil
 }
 
@@ -143,8 +143,8 @@ func (self OrcLLJITRef) OrcLLJITMangleAndIntern(UnmangledName *c.Char) OrcSymbol
 // Resources associated with the given object will be tracked by the given
 // JITDylib's default resource tracker.
 //
-// llgo:link OrcLLJITRef.OrcLLJITAddObjectFile C.LLVMOrcLLJITAddObjectFile
-func (self OrcLLJITRef) OrcLLJITAddObjectFile(JD OrcJITDylibRef, ObjBuffer MemoryBufferRef) ErrorRef {
+// llgo:link OrcLLJITRef.AddObjectFile C.LLVMOrcLLJITAddObjectFile
+func (self OrcLLJITRef) AddObjectFile(JD OrcJITDylibRef, ObjBuffer MemoryBufferRef) ErrorRef {
 	return nil
 }
 
@@ -156,8 +156,8 @@ func (self OrcLLJITRef) OrcLLJITAddObjectFile(JD OrcJITDylibRef, ObjBuffer Memor
 // Resources associated with the given object will be tracked by ResourceTracker
 // RT.
 //
-// llgo:link OrcLLJITRef.OrcLLJITAddObjectFileWithRT C.LLVMOrcLLJITAddObjectFileWithRT
-func (self OrcLLJITRef) OrcLLJITAddObjectFileWithRT(RT OrcResourceTrackerRef, ObjBuffer MemoryBufferRef) ErrorRef {
+// llgo:link OrcLLJITRef.AddObjectFileWithRT C.LLVMOrcLLJITAddObjectFileWithRT
+func (self OrcLLJITRef) AddObjectFileWithRT(RT OrcResourceTrackerRef, ObjBuffer MemoryBufferRef) ErrorRef {
 	return nil
 }
 
@@ -169,8 +169,8 @@ func (self OrcLLJITRef) OrcLLJITAddObjectFileWithRT(RT OrcResourceTrackerRef, Ob
 // Resources associated with the given Module will be tracked by the given
 // JITDylib's default resource tracker.
 //
-// llgo:link OrcLLJITRef.OrcLLJITAddLLVMIRModule C.LLVMOrcLLJITAddLLVMIRModule
-func (self OrcLLJITRef) OrcLLJITAddLLVMIRModule(JD OrcJITDylibRef, TSM OrcThreadSafeModuleRef) ErrorRef {
+// llgo:link OrcLLJITRef.AddLLVMIRModule C.LLVMOrcLLJITAddLLVMIRModule
+func (self OrcLLJITRef) AddLLVMIRModule(JD OrcJITDylibRef, TSM OrcThreadSafeModuleRef) ErrorRef {
 	return nil
 }
 
@@ -182,8 +182,8 @@ func (self OrcLLJITRef) OrcLLJITAddLLVMIRModule(JD OrcJITDylibRef, TSM OrcThread
 // Resources associated with the given Module will be tracked by ResourceTracker
 // RT.
 //
-// llgo:link OrcLLJITRef.OrcLLJITAddLLVMIRModuleWithRT C.LLVMOrcLLJITAddLLVMIRModuleWithRT
-func (self OrcLLJITRef) OrcLLJITAddLLVMIRModuleWithRT(JD OrcResourceTrackerRef, TSM OrcThreadSafeModuleRef) ErrorRef {
+// llgo:link OrcLLJITRef.AddLLVMIRModuleWithRT C.LLVMOrcLLJITAddLLVMIRModuleWithRT
+func (self OrcLLJITRef) AddLLVMIRModuleWithRT(JD OrcResourceTrackerRef, TSM OrcThreadSafeModuleRef) ErrorRef {
 	return nil
 }
 
@@ -191,29 +191,29 @@ func (self OrcLLJITRef) OrcLLJITAddLLVMIRModuleWithRT(JD OrcResourceTrackerRef, 
 //
 // This operation does not take ownership of the Name argument.
 //
-// llgo:link OrcLLJITRef.OrcLLJITLookup C.LLVMOrcLLJITLookup
-func (self OrcLLJITRef) OrcLLJITLookup(Result *OrcExecutorAddress, Name *c.Char) ErrorRef {
+// llgo:link OrcLLJITRef.Lookup C.LLVMOrcLLJITLookup
+func (self OrcLLJITRef) Lookup(Result *OrcExecutorAddress, Name *c.Char) ErrorRef {
 	return nil
 }
 
 // Returns a non-owning reference to the LLJIT instance's object linking layer.
 //
-// llgo:link OrcLLJITRef.OrcLLJITGetObjLinkingLayer C.LLVMOrcLLJITGetObjLinkingLayer
-func (self OrcLLJITRef) OrcLLJITGetObjLinkingLayer() OrcObjectLayerRef {
+// llgo:link OrcLLJITRef.ObjLinkingLayer C.LLVMOrcLLJITGetObjLinkingLayer
+func (self OrcLLJITRef) ObjLinkingLayer() OrcObjectLayerRef {
 	return nil
 }
 
 // Returns a non-owning reference to the LLJIT instance's object linking layer.
 //
-// llgo:link OrcLLJITRef.OrcLLJITGetObjTransformLayer C.LLVMOrcLLJITGetObjTransformLayer
-func (self OrcLLJITRef) OrcLLJITGetObjTransformLayer() OrcObjectTransformLayerRef {
+// llgo:link OrcLLJITRef.ObjTransformLayer C.LLVMOrcLLJITGetObjTransformLayer
+func (self OrcLLJITRef) ObjTransformLayer() OrcObjectTransformLayerRef {
 	return nil
 }
 
 // Returns a non-owning reference to the LLJIT instance's IR transform layer.
 //
-// llgo:link OrcLLJITRef.OrcLLJITGetIRTransformLayer C.LLVMOrcLLJITGetIRTransformLayer
-func (self OrcLLJITRef) OrcLLJITGetIRTransformLayer() OrcIRTransformLayerRef {
+// llgo:link OrcLLJITRef.IRTransformLayer C.LLVMOrcLLJITGetIRTransformLayer
+func (self OrcLLJITRef) IRTransformLayer() OrcIRTransformLayerRef {
 	return nil
 }
 
@@ -222,7 +222,7 @@ func (self OrcLLJITRef) OrcLLJITGetIRTransformLayer() OrcIRTransformLayerRef {
 // This string is owned by the LLJIT instance and does not need to be freed
 // by the caller.
 //
-// llgo:link OrcLLJITRef.OrcLLJITGetDataLayoutStr C.LLVMOrcLLJITGetDataLayoutStr
-func (self OrcLLJITRef) OrcLLJITGetDataLayoutStr() *c.Char {
+// llgo:link OrcLLJITRef.DataLayoutStr C.LLVMOrcLLJITGetDataLayoutStr
+func (self OrcLLJITRef) DataLayoutStr() *c.Char {
 	return nil
 }

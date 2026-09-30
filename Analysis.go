@@ -16,8 +16,8 @@ const (
 	ReturnStatusAction VerifierFailureAction = 2
 )
 
-// llgo:link ModuleRef.VerifyModule C.LLVMVerifyModule
-func (self ModuleRef) VerifyModule(Action VerifierFailureAction, OutMessage **c.Char) Bool {
+// llgo:link ModuleRef.Verify C.LLVMVerifyModule
+func (self ModuleRef) Verify(Action VerifierFailureAction, OutMessage **c.Char) Bool {
 	return 0
 }
 

@@ -53,8 +53,8 @@ func (self ValueRef) Comdat() ComdatRef {
 func (self ValueRef) SetComdat(C ComdatRef) {
 }
 
-// llgo:link ComdatRef.ComdatSelectionKind C.LLVMGetComdatSelectionKind
-func (self ComdatRef) ComdatSelectionKind() ComdatSelectionKind {
+// llgo:link ComdatRef.SelectionKind C.LLVMGetComdatSelectionKind
+func (self ComdatRef) SelectionKind() ComdatSelectionKind {
 	return 0
 }
 
