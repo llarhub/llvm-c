@@ -13,16 +13,14 @@ type MemoryManagerNotifyTerminatingCallback = func(_llcppg_param1 unsafe.Pointer
 // Create a ObjectLinkingLayer instance using the standard JITLink
 // InProcessMemoryManager for memory management.
 //
-// llgo:link (*OrcOpaqueObjectLayer).OrcCreateObjectLinkingLayerWithInProcessMemoryManager C.LLVMOrcCreateObjectLinkingLayerWithInProcessMemoryManager
-func (self *OrcOpaqueObjectLayer) OrcCreateObjectLinkingLayerWithInProcessMemoryManager(ES OrcExecutionSessionRef) ErrorRef {
-	return nil
-}
+//go:linkname OrcCreateObjectLinkingLayerWithInProcessMemoryManager C.LLVMOrcCreateObjectLinkingLayerWithInProcessMemoryManager
+func OrcCreateObjectLinkingLayerWithInProcessMemoryManager(Result *OrcObjectLayerRef, ES OrcExecutionSessionRef) ErrorRef
 
 // Create a RTDyldObjectLinkingLayer instance using the standard
 // SectionMemoryManager for memory management.
 //
-// llgo:link (*OrcOpaqueExecutionSession).OrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManager C.LLVMOrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManager
-func (self *OrcOpaqueExecutionSession) OrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManager() OrcObjectLayerRef {
+// llgo:link OrcExecutionSessionRef.OrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManager C.LLVMOrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManager
+func (self OrcExecutionSessionRef) OrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManager() OrcObjectLayerRef {
 	return nil
 }
 
@@ -30,8 +28,8 @@ func (self *OrcOpaqueExecutionSession) OrcCreateRTDyldObjectLinkingLayerWithSect
 // SectionMemoryManager for memory management. If ReserveAlloc is true then
 // a contiguous range of memory will be reserved for each object file.
 //
-// llgo:link (*OrcOpaqueExecutionSession).OrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManagerReserveAlloc C.LLVMOrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManagerReserveAlloc
-func (self *OrcOpaqueExecutionSession) OrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManagerReserveAlloc(ReserveAlloc Bool) OrcObjectLayerRef {
+// llgo:link OrcExecutionSessionRef.OrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManagerReserveAlloc C.LLVMOrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManagerReserveAlloc
+func (self OrcExecutionSessionRef) OrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManagerReserveAlloc(ReserveAlloc Bool) OrcObjectLayerRef {
 	return nil
 }
 
@@ -58,14 +56,16 @@ func (self *OrcOpaqueExecutionSession) OrcCreateRTDyldObjectLinkingLayerWithSect
 // This scheme simply reuses the CreateContextCtx pointer as the one-and-only
 // allocation context.
 //
-//go:linkname OrcCreateRTDyldObjectLinkingLayerWithMCJITMemoryManagerLikeCallbacks C.LLVMOrcCreateRTDyldObjectLinkingLayerWithMCJITMemoryManagerLikeCallbacks
-func OrcCreateRTDyldObjectLinkingLayerWithMCJITMemoryManagerLikeCallbacks(ES OrcExecutionSessionRef, CreateContextCtx unsafe.Pointer, CreateContext MemoryManagerCreateContextCallback, NotifyTerminating MemoryManagerNotifyTerminatingCallback, AllocateCodeSection MemoryManagerAllocateCodeSectionCallback, AllocateDataSection MemoryManagerAllocateDataSectionCallback, FinalizeMemory MemoryManagerFinalizeMemoryCallback, Destroy MemoryManagerDestroyCallback) OrcObjectLayerRef
+// llgo:link OrcExecutionSessionRef.OrcCreateRTDyldObjectLinkingLayerWithMCJITMemoryManagerLikeCallbacks C.LLVMOrcCreateRTDyldObjectLinkingLayerWithMCJITMemoryManagerLikeCallbacks
+func (self OrcExecutionSessionRef) OrcCreateRTDyldObjectLinkingLayerWithMCJITMemoryManagerLikeCallbacks(CreateContextCtx unsafe.Pointer, CreateContext MemoryManagerCreateContextCallback, NotifyTerminating MemoryManagerNotifyTerminatingCallback, AllocateCodeSection MemoryManagerAllocateCodeSectionCallback, AllocateDataSection MemoryManagerAllocateDataSectionCallback, FinalizeMemory MemoryManagerFinalizeMemoryCallback, Destroy MemoryManagerDestroyCallback) OrcObjectLayerRef {
+	return nil
+}
 
 // Add the given listener to the given RTDyldObjectLinkingLayer.
 //
 // Note: Layer must be an RTDyldObjectLinkingLayer instance or
 // behavior is undefined.
 //
-// llgo:link (*OrcOpaqueObjectLayer).OrcRTDyldObjectLinkingLayerRegisterJITEventListener C.LLVMOrcRTDyldObjectLinkingLayerRegisterJITEventListener
-func (self *OrcOpaqueObjectLayer) OrcRTDyldObjectLinkingLayerRegisterJITEventListener(Listener JITEventListenerRef) {
+// llgo:link OrcObjectLayerRef.OrcRTDyldObjectLinkingLayerRegisterJITEventListener C.LLVMOrcRTDyldObjectLinkingLayerRegisterJITEventListener
+func (self OrcObjectLayerRef) OrcRTDyldObjectLinkingLayerRegisterJITEventListener(Listener JITEventListenerRef) {
 }

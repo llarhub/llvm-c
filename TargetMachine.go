@@ -20,7 +20,7 @@ type TargetMachineRef = *OpaqueTargetMachine
 type Target struct {
 }
 type TargetRef = *Target
-type CodeGenOptLevel c.Int
+type CodeGenOptLevel c.Uint
 
 const (
 	CodeGenLevelNone       CodeGenOptLevel = 0
@@ -29,7 +29,7 @@ const (
 	CodeGenLevelAggressive CodeGenOptLevel = 3
 )
 
-type RelocMode c.Int
+type RelocMode c.Uint
 
 const (
 	RelocDefault      RelocMode = 0
@@ -41,7 +41,7 @@ const (
 	RelocROPI_RWPI    RelocMode = 6
 )
 
-type CodeModel c.Int
+type CodeModel c.Uint
 
 const (
 	CodeModelDefault    CodeModel = 0
@@ -53,14 +53,14 @@ const (
 	CodeModelLarge      CodeModel = 6
 )
 
-type CodeGenFileType c.Int
+type CodeGenFileType c.Uint
 
 const (
 	AssemblyFile CodeGenFileType = 0
 	ObjectFile   CodeGenFileType = 1
 )
 
-type GlobalISelAbortMode c.Int
+type GlobalISelAbortMode c.Uint
 
 const (
 	GlobalISelAbortEnable          GlobalISelAbortMode = 0
@@ -75,8 +75,8 @@ func GetFirstTarget() TargetRef
 
 // Returns the next llvm::Target given a previous one (or null if there's none)
 //
-// llgo:link (*Target).NextTarget C.LLVMGetNextTarget
-func (self *Target) NextTarget() TargetRef {
+// llgo:link TargetRef.NextTarget C.LLVMGetNextTarget
+func (self TargetRef) NextTarget() TargetRef {
 	return self
 }
 
@@ -95,36 +95,36 @@ func GetTargetFromTriple(Triple *c.Char, T *TargetRef, ErrorMessage **c.Char) Bo
 
 // Returns the name of a target. See llvm::Target::getName
 //
-// llgo:link (*Target).TargetName C.LLVMGetTargetName
-func (self *Target) TargetName() *c.Char {
+// llgo:link TargetRef.TargetName C.LLVMGetTargetName
+func (self TargetRef) TargetName() *c.Char {
 	return nil
 }
 
 // Returns the description  of a target. See llvm::Target::getDescription
 //
-// llgo:link (*Target).TargetDescription C.LLVMGetTargetDescription
-func (self *Target) TargetDescription() *c.Char {
+// llgo:link TargetRef.TargetDescription C.LLVMGetTargetDescription
+func (self TargetRef) TargetDescription() *c.Char {
 	return nil
 }
 
 // Returns if the target has a JIT
 //
-// llgo:link (*Target).TargetHasJIT C.LLVMTargetHasJIT
-func (self *Target) TargetHasJIT() Bool {
+// llgo:link TargetRef.TargetHasJIT C.LLVMTargetHasJIT
+func (self TargetRef) TargetHasJIT() Bool {
 	return 0
 }
 
 // Returns if the target has a TargetMachine associated
 //
-// llgo:link (*Target).TargetHasTargetMachine C.LLVMTargetHasTargetMachine
-func (self *Target) TargetHasTargetMachine() Bool {
+// llgo:link TargetRef.TargetHasTargetMachine C.LLVMTargetHasTargetMachine
+func (self TargetRef) TargetHasTargetMachine() Bool {
 	return 0
 }
 
 // Returns if the target as an ASM backend (required for emitting output)
 //
-// llgo:link (*Target).TargetHasAsmBackend C.LLVMTargetHasAsmBackend
-func (self *Target) TargetHasAsmBackend() Bool {
+// llgo:link TargetRef.TargetHasAsmBackend C.LLVMTargetHasAsmBackend
+func (self TargetRef) TargetHasAsmBackend() Bool {
 	return 0
 }
 
@@ -139,36 +139,36 @@ func CreateTargetMachineOptions() TargetMachineOptionsRef
 
 // Dispose of an LLVMTargetMachineOptionsRef instance.
 //
-// llgo:link (*OpaqueTargetMachineOptions).DisposeTargetMachineOptions C.LLVMDisposeTargetMachineOptions
-func (self *OpaqueTargetMachineOptions) DisposeTargetMachineOptions() {
+// llgo:link TargetMachineOptionsRef.DisposeTargetMachineOptions C.LLVMDisposeTargetMachineOptions
+func (self TargetMachineOptionsRef) DisposeTargetMachineOptions() {
 }
 
-// llgo:link (*OpaqueTargetMachineOptions).TargetMachineOptionsSetCPU C.LLVMTargetMachineOptionsSetCPU
-func (self *OpaqueTargetMachineOptions) TargetMachineOptionsSetCPU(CPU *c.Char) {
+// llgo:link TargetMachineOptionsRef.TargetMachineOptionsSetCPU C.LLVMTargetMachineOptionsSetCPU
+func (self TargetMachineOptionsRef) TargetMachineOptionsSetCPU(CPU *c.Char) {
 }
 
 // Set the list of features for the target machine.
 //
 // \param Features a comma-separated list of features.
 //
-// llgo:link (*OpaqueTargetMachineOptions).TargetMachineOptionsSetFeatures C.LLVMTargetMachineOptionsSetFeatures
-func (self *OpaqueTargetMachineOptions) TargetMachineOptionsSetFeatures(Features *c.Char) {
+// llgo:link TargetMachineOptionsRef.TargetMachineOptionsSetFeatures C.LLVMTargetMachineOptionsSetFeatures
+func (self TargetMachineOptionsRef) TargetMachineOptionsSetFeatures(Features *c.Char) {
 }
 
-// llgo:link (*OpaqueTargetMachineOptions).TargetMachineOptionsSetABI C.LLVMTargetMachineOptionsSetABI
-func (self *OpaqueTargetMachineOptions) TargetMachineOptionsSetABI(ABI *c.Char) {
+// llgo:link TargetMachineOptionsRef.TargetMachineOptionsSetABI C.LLVMTargetMachineOptionsSetABI
+func (self TargetMachineOptionsRef) TargetMachineOptionsSetABI(ABI *c.Char) {
 }
 
-// llgo:link (*OpaqueTargetMachineOptions).TargetMachineOptionsSetCodeGenOptLevel C.LLVMTargetMachineOptionsSetCodeGenOptLevel
-func (self *OpaqueTargetMachineOptions) TargetMachineOptionsSetCodeGenOptLevel(Level CodeGenOptLevel) {
+// llgo:link TargetMachineOptionsRef.TargetMachineOptionsSetCodeGenOptLevel C.LLVMTargetMachineOptionsSetCodeGenOptLevel
+func (self TargetMachineOptionsRef) TargetMachineOptionsSetCodeGenOptLevel(Level CodeGenOptLevel) {
 }
 
-// llgo:link (*OpaqueTargetMachineOptions).TargetMachineOptionsSetRelocMode C.LLVMTargetMachineOptionsSetRelocMode
-func (self *OpaqueTargetMachineOptions) TargetMachineOptionsSetRelocMode(Reloc RelocMode) {
+// llgo:link TargetMachineOptionsRef.TargetMachineOptionsSetRelocMode C.LLVMTargetMachineOptionsSetRelocMode
+func (self TargetMachineOptionsRef) TargetMachineOptionsSetRelocMode(Reloc RelocMode) {
 }
 
-// llgo:link (*OpaqueTargetMachineOptions).TargetMachineOptionsSetCodeModel C.LLVMTargetMachineOptionsSetCodeModel
-func (self *OpaqueTargetMachineOptions) TargetMachineOptionsSetCodeModel(CodeModel CodeModel) {
+// llgo:link TargetMachineOptionsRef.TargetMachineOptionsSetCodeModel C.LLVMTargetMachineOptionsSetCodeModel
+func (self TargetMachineOptionsRef) TargetMachineOptionsSetCodeModel(CodeModel CodeModel) {
 }
 
 // Create a new llvm::TargetMachine.
@@ -178,29 +178,29 @@ func (self *OpaqueTargetMachineOptions) TargetMachineOptionsSetCodeModel(CodeMod
 // \param Options additional configuration (see
 //                LLVMCreateTargetMachineOptions()).
 //
-// llgo:link (*Target).CreateTargetMachineWithOptions C.LLVMCreateTargetMachineWithOptions
-func (self *Target) CreateTargetMachineWithOptions(Triple *c.Char, Options TargetMachineOptionsRef) TargetMachineRef {
+// llgo:link TargetRef.CreateTargetMachineWithOptions C.LLVMCreateTargetMachineWithOptions
+func (self TargetRef) CreateTargetMachineWithOptions(Triple *c.Char, Options TargetMachineOptionsRef) TargetMachineRef {
 	return nil
 }
 
 // Creates a new llvm::TargetMachine. See llvm::Target::createTargetMachine
 //
-// llgo:link (*Target).CreateTargetMachine C.LLVMCreateTargetMachine
-func (self *Target) CreateTargetMachine(Triple *c.Char, CPU *c.Char, Features *c.Char, Level CodeGenOptLevel, Reloc RelocMode, CodeModel CodeModel) TargetMachineRef {
+// llgo:link TargetRef.CreateTargetMachine C.LLVMCreateTargetMachine
+func (self TargetRef) CreateTargetMachine(Triple *c.Char, CPU *c.Char, Features *c.Char, Level CodeGenOptLevel, Reloc RelocMode, CodeModel CodeModel) TargetMachineRef {
 	return nil
 }
 
 // Dispose the LLVMTargetMachineRef instance generated by
 // LLVMCreateTargetMachine.
 //
-// llgo:link (*OpaqueTargetMachine).DisposeTargetMachine C.LLVMDisposeTargetMachine
-func (self *OpaqueTargetMachine) DisposeTargetMachine() {
+// llgo:link TargetMachineRef.DisposeTargetMachine C.LLVMDisposeTargetMachine
+func (self TargetMachineRef) DisposeTargetMachine() {
 }
 
 // Returns the Target used in a TargetMachine
 //
-// llgo:link (*OpaqueTargetMachine).TargetMachineTarget C.LLVMGetTargetMachineTarget
-func (self *OpaqueTargetMachine) TargetMachineTarget() TargetRef {
+// llgo:link TargetMachineRef.TargetMachineTarget C.LLVMGetTargetMachineTarget
+func (self TargetMachineRef) TargetMachineTarget() TargetRef {
 	return nil
 }
 
@@ -208,8 +208,8 @@ func (self *OpaqueTargetMachine) TargetMachineTarget() TargetRef {
 // llvm::TargetMachine::getTriple. The result needs to be disposed with
 // LLVMDisposeMessage.
 //
-// llgo:link (*OpaqueTargetMachine).TargetMachineTriple C.LLVMGetTargetMachineTriple
-func (self *OpaqueTargetMachine) TargetMachineTriple() *c.Char {
+// llgo:link TargetMachineRef.TargetMachineTriple C.LLVMGetTargetMachineTriple
+func (self TargetMachineRef) TargetMachineTriple() *c.Char {
 	return nil
 }
 
@@ -217,8 +217,8 @@ func (self *OpaqueTargetMachine) TargetMachineTriple() *c.Char {
 // llvm::TargetMachine::getCPU. The result needs to be disposed with
 // LLVMDisposeMessage.
 //
-// llgo:link (*OpaqueTargetMachine).TargetMachineCPU C.LLVMGetTargetMachineCPU
-func (self *OpaqueTargetMachine) TargetMachineCPU() *c.Char {
+// llgo:link TargetMachineRef.TargetMachineCPU C.LLVMGetTargetMachineCPU
+func (self TargetMachineRef) TargetMachineCPU() *c.Char {
 	return nil
 }
 
@@ -226,62 +226,62 @@ func (self *OpaqueTargetMachine) TargetMachineCPU() *c.Char {
 // llvm::TargetMachine::getFeatureString. The result needs to be disposed with
 // LLVMDisposeMessage.
 //
-// llgo:link (*OpaqueTargetMachine).TargetMachineFeatureString C.LLVMGetTargetMachineFeatureString
-func (self *OpaqueTargetMachine) TargetMachineFeatureString() *c.Char {
+// llgo:link TargetMachineRef.TargetMachineFeatureString C.LLVMGetTargetMachineFeatureString
+func (self TargetMachineRef) TargetMachineFeatureString() *c.Char {
 	return nil
 }
 
 // Create a DataLayout based on the targetMachine.
 //
-// llgo:link (*OpaqueTargetMachine).CreateTargetDataLayout C.LLVMCreateTargetDataLayout
-func (self *OpaqueTargetMachine) CreateTargetDataLayout() TargetDataRef {
+// llgo:link TargetMachineRef.CreateTargetDataLayout C.LLVMCreateTargetDataLayout
+func (self TargetMachineRef) CreateTargetDataLayout() TargetDataRef {
 	return nil
 }
 
 // Set the target machine's ASM verbosity.
 //
-// llgo:link (*OpaqueTargetMachine).SetTargetMachineAsmVerbosity C.LLVMSetTargetMachineAsmVerbosity
-func (self *OpaqueTargetMachine) SetTargetMachineAsmVerbosity(VerboseAsm Bool) {
+// llgo:link TargetMachineRef.SetTargetMachineAsmVerbosity C.LLVMSetTargetMachineAsmVerbosity
+func (self TargetMachineRef) SetTargetMachineAsmVerbosity(VerboseAsm Bool) {
 }
 
 // Enable fast-path instruction selection.
 //
-// llgo:link (*OpaqueTargetMachine).SetTargetMachineFastISel C.LLVMSetTargetMachineFastISel
-func (self *OpaqueTargetMachine) SetTargetMachineFastISel(Enable Bool) {
+// llgo:link TargetMachineRef.SetTargetMachineFastISel C.LLVMSetTargetMachineFastISel
+func (self TargetMachineRef) SetTargetMachineFastISel(Enable Bool) {
 }
 
 // Enable global instruction selection.
 //
-// llgo:link (*OpaqueTargetMachine).SetTargetMachineGlobalISel C.LLVMSetTargetMachineGlobalISel
-func (self *OpaqueTargetMachine) SetTargetMachineGlobalISel(Enable Bool) {
+// llgo:link TargetMachineRef.SetTargetMachineGlobalISel C.LLVMSetTargetMachineGlobalISel
+func (self TargetMachineRef) SetTargetMachineGlobalISel(Enable Bool) {
 }
 
 // Set abort behaviour when global instruction selection fails to lower/select
 // an instruction.
 //
-// llgo:link (*OpaqueTargetMachine).SetTargetMachineGlobalISelAbort C.LLVMSetTargetMachineGlobalISelAbort
-func (self *OpaqueTargetMachine) SetTargetMachineGlobalISelAbort(Mode GlobalISelAbortMode) {
+// llgo:link TargetMachineRef.SetTargetMachineGlobalISelAbort C.LLVMSetTargetMachineGlobalISelAbort
+func (self TargetMachineRef) SetTargetMachineGlobalISelAbort(Mode GlobalISelAbortMode) {
 }
 
 // Enable the MachineOutliner pass.
 //
-// llgo:link (*OpaqueTargetMachine).SetTargetMachineMachineOutliner C.LLVMSetTargetMachineMachineOutliner
-func (self *OpaqueTargetMachine) SetTargetMachineMachineOutliner(Enable Bool) {
+// llgo:link TargetMachineRef.SetTargetMachineMachineOutliner C.LLVMSetTargetMachineMachineOutliner
+func (self TargetMachineRef) SetTargetMachineMachineOutliner(Enable Bool) {
 }
 
 // Emits an asm or object file for the given module to the filename. This
 // wraps several c++ only classes (among them a file stream). Returns any
 // error in ErrorMessage. Use LLVMDisposeMessage to dispose the message.
 //
-// llgo:link (*OpaqueTargetMachine).TargetMachineEmitToFile C.LLVMTargetMachineEmitToFile
-func (self *OpaqueTargetMachine) TargetMachineEmitToFile(M ModuleRef, Filename *c.Char, codegen CodeGenFileType, ErrorMessage **c.Char) Bool {
+// llgo:link TargetMachineRef.TargetMachineEmitToFile C.LLVMTargetMachineEmitToFile
+func (self TargetMachineRef) TargetMachineEmitToFile(M ModuleRef, Filename *c.Char, codegen CodeGenFileType, ErrorMessage **c.Char) Bool {
 	return 0
 }
 
 // Compile the LLVM IR stored in \p M and store the result in \p OutMemBuf.
 //
-// llgo:link (*OpaqueTargetMachine).TargetMachineEmitToMemoryBuffer C.LLVMTargetMachineEmitToMemoryBuffer
-func (self *OpaqueTargetMachine) TargetMachineEmitToMemoryBuffer(M ModuleRef, codegen CodeGenFileType, ErrorMessage **c.Char, OutMemBuf *MemoryBufferRef) Bool {
+// llgo:link TargetMachineRef.TargetMachineEmitToMemoryBuffer C.LLVMTargetMachineEmitToMemoryBuffer
+func (self TargetMachineRef) TargetMachineEmitToMemoryBuffer(M ModuleRef, codegen CodeGenFileType, ErrorMessage **c.Char, OutMemBuf *MemoryBufferRef) Bool {
 	return 0
 }
 
@@ -311,6 +311,6 @@ func GetHostCPUFeatures() *c.Char
 
 // Adds the target-specific analysis passes to the pass manager.
 //
-// llgo:link (*OpaqueTargetMachine).AddAnalysisPasses C.LLVMAddAnalysisPasses
-func (self *OpaqueTargetMachine) AddAnalysisPasses(PM PassManagerRef) {
+// llgo:link TargetMachineRef.AddAnalysisPasses C.LLVMAddAnalysisPasses
+func (self TargetMachineRef) AddAnalysisPasses(PM PassManagerRef) {
 }

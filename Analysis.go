@@ -8,7 +8,7 @@ import "github.com/goplus/lib/c"
 // @ingroup LLVMC
 //
 // @{
-type VerifierFailureAction c.Int
+type VerifierFailureAction c.Uint
 
 const (
 	AbortProcessAction VerifierFailureAction = 0
@@ -16,20 +16,20 @@ const (
 	ReturnStatusAction VerifierFailureAction = 2
 )
 
-// llgo:link (*OpaqueModule).VerifyModule C.LLVMVerifyModule
-func (self *OpaqueModule) VerifyModule(Action VerifierFailureAction, OutMessage **c.Char) Bool {
+// llgo:link ModuleRef.VerifyModule C.LLVMVerifyModule
+func (self ModuleRef) VerifyModule(Action VerifierFailureAction, OutMessage **c.Char) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).VerifyFunction C.LLVMVerifyFunction
-func (self *OpaqueValue) VerifyFunction(Action VerifierFailureAction) Bool {
+// llgo:link ValueRef.VerifyFunction C.LLVMVerifyFunction
+func (self ValueRef) VerifyFunction(Action VerifierFailureAction) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).ViewFunctionCFG C.LLVMViewFunctionCFG
-func (self *OpaqueValue) ViewFunctionCFG() {
+// llgo:link ValueRef.ViewFunctionCFG C.LLVMViewFunctionCFG
+func (self ValueRef) ViewFunctionCFG() {
 }
 
-// llgo:link (*OpaqueValue).ViewFunctionCFGOnly C.LLVMViewFunctionCFGOnly
-func (self *OpaqueValue) ViewFunctionCFGOnly() {
+// llgo:link ValueRef.ViewFunctionCFGOnly C.LLVMViewFunctionCFGOnly
+func (self ValueRef) ViewFunctionCFGOnly() {
 }

@@ -8,7 +8,7 @@ import "github.com/goplus/lib/c"
 // @ingroup LLVMCCore
 //
 // @{
-type ComdatSelectionKind c.Int
+type ComdatSelectionKind c.Uint
 
 const (
 	// < The linker may choose any COMDAT.
@@ -31,8 +31,8 @@ const (
 //
 // @see llvm::Module::getOrInsertComdat()
 //
-// llgo:link (*OpaqueModule).OrInsertComdat C.LLVMGetOrInsertComdat
-func (self *OpaqueModule) OrInsertComdat(Name *c.Char) ComdatRef {
+// llgo:link ModuleRef.OrInsertComdat C.LLVMGetOrInsertComdat
+func (self ModuleRef) OrInsertComdat(Name *c.Char) ComdatRef {
 	return nil
 }
 
@@ -40,8 +40,8 @@ func (self *OpaqueModule) OrInsertComdat(Name *c.Char) ComdatRef {
 //
 // @see llvm::GlobalObject::getComdat()
 //
-// llgo:link (*OpaqueValue).Comdat C.LLVMGetComdat
-func (self *OpaqueValue) Comdat() ComdatRef {
+// llgo:link ValueRef.Comdat C.LLVMGetComdat
+func (self ValueRef) Comdat() ComdatRef {
 	return nil
 }
 
@@ -49,15 +49,15 @@ func (self *OpaqueValue) Comdat() ComdatRef {
 //
 // @see llvm::GlobalObject::setComdat()
 //
-// llgo:link (*OpaqueValue).SetComdat C.LLVMSetComdat
-func (self *OpaqueValue) SetComdat(C ComdatRef) {
+// llgo:link ValueRef.SetComdat C.LLVMSetComdat
+func (self ValueRef) SetComdat(C ComdatRef) {
 }
 
-// llgo:link (*Comdat).ComdatSelectionKind C.LLVMGetComdatSelectionKind
-func (self *Comdat) ComdatSelectionKind() ComdatSelectionKind {
+// llgo:link ComdatRef.ComdatSelectionKind C.LLVMGetComdatSelectionKind
+func (self ComdatRef) ComdatSelectionKind() ComdatSelectionKind {
 	return 0
 }
 
-// llgo:link (*Comdat).SetComdatSelectionKind C.LLVMSetComdatSelectionKind
-func (self *Comdat) SetComdatSelectionKind(Kind ComdatSelectionKind) {
+// llgo:link ComdatRef.SetComdatSelectionKind C.LLVMSetComdatSelectionKind
+func (self ComdatRef) SetComdatSelectionKind(Kind ComdatSelectionKind) {
 }

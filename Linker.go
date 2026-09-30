@@ -11,7 +11,7 @@ import (
 // @ingroup LLVMCCore
 //
 // @{
-type LinkerMode c.Int
+type LinkerMode c.Uint
 
 const (
 	LinkerDestroySource          LinkerMode = 0

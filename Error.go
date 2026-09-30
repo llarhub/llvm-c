@@ -21,8 +21,8 @@ type ErrorTypeId uintptr
 // Returns the type id for the given error instance, which must be a failure
 // value (i.e. non-null).
 //
-// llgo:link (*OpaqueError).ErrorTypeId C.LLVMGetErrorTypeId
-func (self *OpaqueError) ErrorTypeId() ErrorTypeId {
+// llgo:link ErrorRef.ErrorTypeId C.LLVMGetErrorTypeId
+func (self ErrorRef) ErrorTypeId() ErrorTypeId {
 	return 0
 }
 
@@ -31,8 +31,8 @@ func (self *OpaqueError) ErrorTypeId() ErrorTypeId {
 // Note: This method *only* needs to be called if the error is not being passed
 // to some other consuming operation, e.g. LLVMGetErrorMessage.
 //
-// llgo:link (*OpaqueError).ConsumeError C.LLVMConsumeError
-func (self *OpaqueError) ConsumeError() {
+// llgo:link ErrorRef.ConsumeError C.LLVMConsumeError
+func (self ErrorRef) ConsumeError() {
 }
 
 // Report a fatal error if Err is a failure value.
@@ -40,8 +40,8 @@ func (self *OpaqueError) ConsumeError() {
 // This function can be used to wrap calls to fallible functions ONLY when it is
 // known that the Error will always be a success value.
 //
-// llgo:link (*OpaqueError).CantFail C.LLVMCantFail
-func (self *OpaqueError) CantFail() {
+// llgo:link ErrorRef.CantFail C.LLVMCantFail
+func (self ErrorRef) CantFail() {
 }
 
 // Returns the given string's error message. This operation consumes the error,
@@ -49,8 +49,8 @@ func (self *OpaqueError) CantFail() {
 // The caller is responsible for disposing of the string by calling
 // LLVMDisposeErrorMessage.
 //
-// llgo:link (*OpaqueError).ErrorMessage C.LLVMGetErrorMessage
-func (self *OpaqueError) ErrorMessage() *c.Char {
+// llgo:link ErrorRef.ErrorMessage C.LLVMGetErrorMessage
+func (self ErrorRef) ErrorMessage() *c.Char {
 	return nil
 }
 

@@ -26,8 +26,8 @@ type PassBuilderOptionsRef = *OpaquePassBuilderOptions
 // pipelines may also be invoked using `default<O3>` and friends. See opt for
 // full reference of the Passes format.
 //
-// llgo:link (*OpaqueModule).RunPasses C.LLVMRunPasses
-func (self *OpaqueModule) RunPasses(Passes *c.Char, TM TargetMachineRef, Options PassBuilderOptionsRef) ErrorRef {
+// llgo:link ModuleRef.RunPasses C.LLVMRunPasses
+func (self ModuleRef) RunPasses(Passes *c.Char, TM TargetMachineRef, Options PassBuilderOptionsRef) ErrorRef {
 	return nil
 }
 
@@ -36,8 +36,8 @@ func (self *OpaqueModule) RunPasses(Passes *c.Char, TM TargetMachineRef, Options
 // This function behaves the same as LLVMRunPasses, but operates on a single
 // function instead of an entire module.
 //
-// llgo:link (*OpaqueValue).RunPassesOnFunction C.LLVMRunPassesOnFunction
-func (self *OpaqueValue) RunPassesOnFunction(Passes *c.Char, TM TargetMachineRef, Options PassBuilderOptionsRef) ErrorRef {
+// llgo:link ValueRef.RunPassesOnFunction C.LLVMRunPassesOnFunction
+func (self ValueRef) RunPassesOnFunction(Passes *c.Char, TM TargetMachineRef, Options PassBuilderOptionsRef) ErrorRef {
 	return nil
 }
 
@@ -53,66 +53,66 @@ func CreatePassBuilderOptions() PassBuilderOptionsRef
 // Toggle adding the VerifierPass for the PassBuilder, ensuring all functions
 // inside the module is valid.
 //
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetVerifyEach C.LLVMPassBuilderOptionsSetVerifyEach
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetVerifyEach(VerifyEach Bool) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetVerifyEach C.LLVMPassBuilderOptionsSetVerifyEach
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetVerifyEach(VerifyEach Bool) {
 }
 
 // Toggle debug logging when running the PassBuilder
 //
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetDebugLogging C.LLVMPassBuilderOptionsSetDebugLogging
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetDebugLogging(DebugLogging Bool) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetDebugLogging C.LLVMPassBuilderOptionsSetDebugLogging
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetDebugLogging(DebugLogging Bool) {
 }
 
 // Specify a custom alias analysis pipeline for the PassBuilder to be used
 // instead of the default one. The string argument is not copied; the caller
 // is responsible for ensuring it outlives the PassBuilderOptions instance.
 //
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetAAPipeline C.LLVMPassBuilderOptionsSetAAPipeline
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetAAPipeline(AAPipeline *c.Char) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetAAPipeline C.LLVMPassBuilderOptionsSetAAPipeline
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetAAPipeline(AAPipeline *c.Char) {
 }
 
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetLoopInterleaving C.LLVMPassBuilderOptionsSetLoopInterleaving
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetLoopInterleaving(LoopInterleaving Bool) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetLoopInterleaving C.LLVMPassBuilderOptionsSetLoopInterleaving
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetLoopInterleaving(LoopInterleaving Bool) {
 }
 
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetLoopVectorization C.LLVMPassBuilderOptionsSetLoopVectorization
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetLoopVectorization(LoopVectorization Bool) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetLoopVectorization C.LLVMPassBuilderOptionsSetLoopVectorization
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetLoopVectorization(LoopVectorization Bool) {
 }
 
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetSLPVectorization C.LLVMPassBuilderOptionsSetSLPVectorization
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetSLPVectorization(SLPVectorization Bool) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetSLPVectorization C.LLVMPassBuilderOptionsSetSLPVectorization
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetSLPVectorization(SLPVectorization Bool) {
 }
 
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetLoopUnrolling C.LLVMPassBuilderOptionsSetLoopUnrolling
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetLoopUnrolling(LoopUnrolling Bool) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetLoopUnrolling C.LLVMPassBuilderOptionsSetLoopUnrolling
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetLoopUnrolling(LoopUnrolling Bool) {
 }
 
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetForgetAllSCEVInLoopUnroll C.LLVMPassBuilderOptionsSetForgetAllSCEVInLoopUnroll
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetForgetAllSCEVInLoopUnroll(ForgetAllSCEVInLoopUnroll Bool) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetForgetAllSCEVInLoopUnroll C.LLVMPassBuilderOptionsSetForgetAllSCEVInLoopUnroll
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetForgetAllSCEVInLoopUnroll(ForgetAllSCEVInLoopUnroll Bool) {
 }
 
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetLicmMssaOptCap C.LLVMPassBuilderOptionsSetLicmMssaOptCap
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetLicmMssaOptCap(LicmMssaOptCap c.Uint) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetLicmMssaOptCap C.LLVMPassBuilderOptionsSetLicmMssaOptCap
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetLicmMssaOptCap(LicmMssaOptCap c.Uint) {
 }
 
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetLicmMssaNoAccForPromotionCap C.LLVMPassBuilderOptionsSetLicmMssaNoAccForPromotionCap
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetLicmMssaNoAccForPromotionCap(LicmMssaNoAccForPromotionCap c.Uint) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetLicmMssaNoAccForPromotionCap C.LLVMPassBuilderOptionsSetLicmMssaNoAccForPromotionCap
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetLicmMssaNoAccForPromotionCap(LicmMssaNoAccForPromotionCap c.Uint) {
 }
 
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetCallGraphProfile C.LLVMPassBuilderOptionsSetCallGraphProfile
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetCallGraphProfile(CallGraphProfile Bool) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetCallGraphProfile C.LLVMPassBuilderOptionsSetCallGraphProfile
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetCallGraphProfile(CallGraphProfile Bool) {
 }
 
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetMergeFunctions C.LLVMPassBuilderOptionsSetMergeFunctions
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetMergeFunctions(MergeFunctions Bool) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetMergeFunctions C.LLVMPassBuilderOptionsSetMergeFunctions
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetMergeFunctions(MergeFunctions Bool) {
 }
 
-// llgo:link (*OpaquePassBuilderOptions).PassBuilderOptionsSetInlinerThreshold C.LLVMPassBuilderOptionsSetInlinerThreshold
-func (self *OpaquePassBuilderOptions) PassBuilderOptionsSetInlinerThreshold(Threshold c.Int) {
+// llgo:link PassBuilderOptionsRef.PassBuilderOptionsSetInlinerThreshold C.LLVMPassBuilderOptionsSetInlinerThreshold
+func (self PassBuilderOptionsRef) PassBuilderOptionsSetInlinerThreshold(Threshold c.Int) {
 }
 
 // Dispose of a heap-allocated PassBuilderOptions instance
 //
-// llgo:link (*OpaquePassBuilderOptions).DisposePassBuilderOptions C.LLVMDisposePassBuilderOptions
-func (self *OpaquePassBuilderOptions) DisposePassBuilderOptions() {
+// llgo:link PassBuilderOptionsRef.DisposePassBuilderOptions C.LLVMDisposePassBuilderOptions
+func (self PassBuilderOptionsRef) DisposePassBuilderOptions() {
 }

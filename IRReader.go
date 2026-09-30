@@ -14,8 +14,8 @@ import "github.com/goplus/lib/c"
 //
 // @see llvm::ParseIR()
 //
-// llgo:link (*OpaqueContext).ParseIRInContext C.LLVMParseIRInContext
-func (self *OpaqueContext) ParseIRInContext(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
+// llgo:link ContextRef.ParseIRInContext C.LLVMParseIRInContext
+func (self ContextRef) ParseIRInContext(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }
 
@@ -29,7 +29,7 @@ func (self *OpaqueContext) ParseIRInContext(MemBuf MemoryBufferRef, OutM *Module
 //
 // @see llvm::ParseIR()
 //
-// llgo:link (*OpaqueContext).ParseIRInContext2 C.LLVMParseIRInContext2
-func (self *OpaqueContext) ParseIRInContext2(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
+// llgo:link ContextRef.ParseIRInContext2 C.LLVMParseIRInContext2
+func (self ContextRef) ParseIRInContext2(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }

@@ -13,7 +13,7 @@ const LTO_API_VERSION = 30
 type LtoBoolT = bool
 
 // \since prior to LTO_API_VERSION=3
-type LtoSymbolAttributes c.Int
+type LtoSymbolAttributes c.Uint
 
 const (
 	LTO_SYMBOL_ALIGNMENT_MASK              LtoSymbolAttributes = 31
@@ -38,7 +38,7 @@ const (
 )
 
 // \since prior to LTO_API_VERSION=3
-type LtoDebugModel c.Int
+type LtoDebugModel c.Uint
 
 const (
 	LTO_DEBUG_MODEL_NONE  LtoDebugModel = 0
@@ -46,7 +46,7 @@ const (
 )
 
 // \since prior to LTO_API_VERSION=3
-type LtoCodegenModel c.Int
+type LtoCodegenModel c.Uint
 
 const (
 	LTO_CODEGEN_PIC_MODEL_STATIC         LtoCodegenModel = 0
@@ -74,7 +74,7 @@ type ThinltoCodeGenT = *OpaqueThinLTOCodeGenerator
 // Diagnostic severity.
 //
 // \since LTO_API_VERSION=7
-type LtoCodegenDiagnosticSeverityT c.Int
+type LtoCodegenDiagnosticSeverityT c.Uint
 
 const (
 	LTO_DS_ERROR   LtoCodegenDiagnosticSeverityT = 0
@@ -227,16 +227,16 @@ func LtoModuleCreateFromFdAtOffset(fd c.Int, path *c.Char, file_size c.SizeT, ma
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleDispose C.lto_module_dispose
-func (self *OpaqueLTOModule) LtoModuleDispose() {
+// llgo:link LtoModuleT.LtoModuleDispose C.lto_module_dispose
+func (self LtoModuleT) LtoModuleDispose() {
 }
 
 // Returns triple string which the object module was compiled under.
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleGetTargetTriple C.lto_module_get_target_triple
-func (self *OpaqueLTOModule) LtoModuleGetTargetTriple() *c.Char {
+// llgo:link LtoModuleT.LtoModuleGetTargetTriple C.lto_module_get_target_triple
+func (self LtoModuleT) LtoModuleGetTargetTriple() *c.Char {
 	return nil
 }
 
@@ -244,16 +244,16 @@ func (self *OpaqueLTOModule) LtoModuleGetTargetTriple() *c.Char {
 //
 // \since LTO_API_VERSION=4
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleSetTargetTriple C.lto_module_set_target_triple
-func (self *OpaqueLTOModule) LtoModuleSetTargetTriple(triple *c.Char) {
+// llgo:link LtoModuleT.LtoModuleSetTargetTriple C.lto_module_set_target_triple
+func (self LtoModuleT) LtoModuleSetTargetTriple(triple *c.Char) {
 }
 
 // Returns the number of symbols in the object module.
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleGetNumSymbols C.lto_module_get_num_symbols
-func (self *OpaqueLTOModule) LtoModuleGetNumSymbols() c.Uint {
+// llgo:link LtoModuleT.LtoModuleGetNumSymbols C.lto_module_get_num_symbols
+func (self LtoModuleT) LtoModuleGetNumSymbols() c.Uint {
 	return 0
 }
 
@@ -261,8 +261,8 @@ func (self *OpaqueLTOModule) LtoModuleGetNumSymbols() c.Uint {
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleGetSymbolName C.lto_module_get_symbol_name
-func (self *OpaqueLTOModule) LtoModuleGetSymbolName(index c.Uint) *c.Char {
+// llgo:link LtoModuleT.LtoModuleGetSymbolName C.lto_module_get_symbol_name
+func (self LtoModuleT) LtoModuleGetSymbolName(index c.Uint) *c.Char {
 	return nil
 }
 
@@ -270,8 +270,8 @@ func (self *OpaqueLTOModule) LtoModuleGetSymbolName(index c.Uint) *c.Char {
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleGetSymbolAttribute C.lto_module_get_symbol_attribute
-func (self *OpaqueLTOModule) LtoModuleGetSymbolAttribute(index c.Uint) LtoSymbolAttributes {
+// llgo:link LtoModuleT.LtoModuleGetSymbolAttribute C.lto_module_get_symbol_attribute
+func (self LtoModuleT) LtoModuleGetSymbolAttribute(index c.Uint) LtoSymbolAttributes {
 	return 0
 }
 
@@ -279,8 +279,8 @@ func (self *OpaqueLTOModule) LtoModuleGetSymbolAttribute(index c.Uint) LtoSymbol
 //
 // \since prior to LTO_API_VERSION=30
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleGetNumAsmUndefSymbols C.lto_module_get_num_asm_undef_symbols
-func (self *OpaqueLTOModule) LtoModuleGetNumAsmUndefSymbols() c.Uint {
+// llgo:link LtoModuleT.LtoModuleGetNumAsmUndefSymbols C.lto_module_get_num_asm_undef_symbols
+func (self LtoModuleT) LtoModuleGetNumAsmUndefSymbols() c.Uint {
 	return 0
 }
 
@@ -288,8 +288,8 @@ func (self *OpaqueLTOModule) LtoModuleGetNumAsmUndefSymbols() c.Uint {
 //
 // \since prior to LTO_API_VERSION=30
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleGetAsmUndefSymbolName C.lto_module_get_asm_undef_symbol_name
-func (self *OpaqueLTOModule) LtoModuleGetAsmUndefSymbolName(index c.Uint) *c.Char {
+// llgo:link LtoModuleT.LtoModuleGetAsmUndefSymbolName C.lto_module_get_asm_undef_symbol_name
+func (self LtoModuleT) LtoModuleGetAsmUndefSymbolName(index c.Uint) *c.Char {
 	return nil
 }
 
@@ -300,8 +300,8 @@ func (self *OpaqueLTOModule) LtoModuleGetAsmUndefSymbolName(index c.Uint) *c.Cha
 //
 // \since LTO_API_VERSION=16
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleGetLinkeropts C.lto_module_get_linkeropts
-func (self *OpaqueLTOModule) LtoModuleGetLinkeropts() *c.Char {
+// llgo:link LtoModuleT.LtoModuleGetLinkeropts C.lto_module_get_linkeropts
+func (self LtoModuleT) LtoModuleGetLinkeropts() *c.Char {
 	return nil
 }
 
@@ -315,8 +315,8 @@ func (self *OpaqueLTOModule) LtoModuleGetLinkeropts() *c.Char {
 //
 // \since LTO_API_VERSION=27
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleGetMachoCputype C.lto_module_get_macho_cputype
-func (self *OpaqueLTOModule) LtoModuleGetMachoCputype(out_cputype *c.Uint, out_cpusubtype *c.Uint) LtoBoolT {
+// llgo:link LtoModuleT.LtoModuleGetMachoCputype C.lto_module_get_macho_cputype
+func (self LtoModuleT) LtoModuleGetMachoCputype(out_cputype *c.Uint, out_cpusubtype *c.Uint) LtoBoolT {
 	return false
 }
 
@@ -328,8 +328,8 @@ func (self *OpaqueLTOModule) LtoModuleGetMachoCputype(out_cputype *c.Uint, out_c
 //
 // \since LTO_API_VERSION=29
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleHasCtorDtor C.lto_module_has_ctor_dtor
-func (self *OpaqueLTOModule) LtoModuleHasCtorDtor() LtoBoolT {
+// llgo:link LtoModuleT.LtoModuleHasCtorDtor C.lto_module_has_ctor_dtor
+func (self LtoModuleT) LtoModuleHasCtorDtor() LtoBoolT {
 	return false
 }
 
@@ -339,8 +339,9 @@ func (self *OpaqueLTOModule) LtoModuleHasCtorDtor() LtoBoolT {
 //
 // \since LTO_API_VERSION=7
 //
-//go:linkname LtoCodegenSetDiagnosticHandler C.lto_codegen_set_diagnostic_handler
-func LtoCodegenSetDiagnosticHandler(_llcppg_param1 LtoCodeGenT, _llcppg_param2 LtoDiagnosticHandlerT, _llcppg_param3 unsafe.Pointer)
+// llgo:link LtoCodeGenT.LtoCodegenSetDiagnosticHandler C.lto_codegen_set_diagnostic_handler
+func (self LtoCodeGenT) LtoCodegenSetDiagnosticHandler(_llcppg_param2 LtoDiagnosticHandlerT, _llcppg_param3 unsafe.Pointer) {
+}
 
 // Instantiates a code generator.
 // Returns NULL on error (check lto_get_error_message() for details).
@@ -369,8 +370,8 @@ func LtoCodegenCreateInLocalContext() LtoCodeGenT
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenDispose C.lto_codegen_dispose
-func (self *OpaqueLTOCodeGenerator) LtoCodegenDispose() {
+// llgo:link LtoCodeGenT.LtoCodegenDispose C.lto_codegen_dispose
+func (self LtoCodeGenT) LtoCodegenDispose() {
 }
 
 // Add an object module to the set of modules for which code will be generated.
@@ -382,8 +383,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenDispose() {
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenAddModule C.lto_codegen_add_module
-func (self *OpaqueLTOCodeGenerator) LtoCodegenAddModule(mod LtoModuleT) LtoBoolT {
+// llgo:link LtoCodeGenT.LtoCodegenAddModule C.lto_codegen_add_module
+func (self LtoCodeGenT) LtoCodegenAddModule(mod LtoModuleT) LtoBoolT {
 	return false
 }
 
@@ -394,8 +395,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenAddModule(mod LtoModuleT) LtoBoolT
 //
 // \since LTO_API_VERSION=13
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenSetModule C.lto_codegen_set_module
-func (self *OpaqueLTOCodeGenerator) LtoCodegenSetModule(mod LtoModuleT) {
+// llgo:link LtoCodeGenT.LtoCodegenSetModule C.lto_codegen_set_module
+func (self LtoCodeGenT) LtoCodegenSetModule(mod LtoModuleT) {
 }
 
 // Sets if debug info should be generated.
@@ -403,8 +404,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenSetModule(mod LtoModuleT) {
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenSetDebugModel C.lto_codegen_set_debug_model
-func (self *OpaqueLTOCodeGenerator) LtoCodegenSetDebugModel(_llcppg_param2 LtoDebugModel) LtoBoolT {
+// llgo:link LtoCodeGenT.LtoCodegenSetDebugModel C.lto_codegen_set_debug_model
+func (self LtoCodeGenT) LtoCodegenSetDebugModel(_llcppg_param2 LtoDebugModel) LtoBoolT {
 	return false
 }
 
@@ -413,8 +414,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenSetDebugModel(_llcppg_param2 LtoDe
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenSetPicModel C.lto_codegen_set_pic_model
-func (self *OpaqueLTOCodeGenerator) LtoCodegenSetPicModel(_llcppg_param2 LtoCodegenModel) LtoBoolT {
+// llgo:link LtoCodeGenT.LtoCodegenSetPicModel C.lto_codegen_set_pic_model
+func (self LtoCodeGenT) LtoCodegenSetPicModel(_llcppg_param2 LtoCodegenModel) LtoBoolT {
 	return false
 }
 
@@ -422,8 +423,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenSetPicModel(_llcppg_param2 LtoCode
 //
 // \since LTO_API_VERSION=4
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenSetCpu C.lto_codegen_set_cpu
-func (self *OpaqueLTOCodeGenerator) LtoCodegenSetCpu(cpu *c.Char) {
+// llgo:link LtoCodeGenT.LtoCodegenSetCpu C.lto_codegen_set_cpu
+func (self LtoCodeGenT) LtoCodegenSetCpu(cpu *c.Char) {
 }
 
 // Sets the location of the assembler tool to run. If not set, libLTO
@@ -431,16 +432,16 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenSetCpu(cpu *c.Char) {
 //
 // \since LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenSetAssemblerPath C.lto_codegen_set_assembler_path
-func (self *OpaqueLTOCodeGenerator) LtoCodegenSetAssemblerPath(path *c.Char) {
+// llgo:link LtoCodeGenT.LtoCodegenSetAssemblerPath C.lto_codegen_set_assembler_path
+func (self LtoCodeGenT) LtoCodegenSetAssemblerPath(path *c.Char) {
 }
 
 // Sets extra arguments that libLTO should pass to the assembler.
 //
 // \since LTO_API_VERSION=4
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenSetAssemblerArgs C.lto_codegen_set_assembler_args
-func (self *OpaqueLTOCodeGenerator) LtoCodegenSetAssemblerArgs(args **c.Char, nargs c.Int) {
+// llgo:link LtoCodeGenT.LtoCodegenSetAssemblerArgs C.lto_codegen_set_assembler_args
+func (self LtoCodeGenT) LtoCodegenSetAssemblerArgs(args **c.Char, nargs c.Int) {
 }
 
 // Adds to a list of all global symbols that must exist in the final generated
@@ -449,8 +450,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenSetAssemblerArgs(args **c.Char, na
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenAddMustPreserveSymbol C.lto_codegen_add_must_preserve_symbol
-func (self *OpaqueLTOCodeGenerator) LtoCodegenAddMustPreserveSymbol(symbol *c.Char) {
+// llgo:link LtoCodeGenT.LtoCodegenAddMustPreserveSymbol C.lto_codegen_add_must_preserve_symbol
+func (self LtoCodeGenT) LtoCodegenAddMustPreserveSymbol(symbol *c.Char) {
 }
 
 // Writes a new object file at the specified path that contains the
@@ -459,8 +460,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenAddMustPreserveSymbol(symbol *c.Ch
 //
 // \since LTO_API_VERSION=5
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenWriteMergedModules C.lto_codegen_write_merged_modules
-func (self *OpaqueLTOCodeGenerator) LtoCodegenWriteMergedModules(path *c.Char) LtoBoolT {
+// llgo:link LtoCodeGenT.LtoCodegenWriteMergedModules C.lto_codegen_write_merged_modules
+func (self LtoCodeGenT) LtoCodegenWriteMergedModules(path *c.Char) LtoBoolT {
 	return false
 }
 
@@ -475,8 +476,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenWriteMergedModules(path *c.Char) L
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenCompile C.lto_codegen_compile
-func (self *OpaqueLTOCodeGenerator) LtoCodegenCompile(length *c.SizeT) unsafe.Pointer {
+// llgo:link LtoCodeGenT.LtoCodegenCompile C.lto_codegen_compile
+func (self LtoCodeGenT) LtoCodegenCompile(length *c.SizeT) unsafe.Pointer {
 	return nil
 }
 
@@ -488,8 +489,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenCompile(length *c.SizeT) unsafe.Po
 //
 // \since LTO_API_VERSION=5
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenCompileToFile C.lto_codegen_compile_to_file
-func (self *OpaqueLTOCodeGenerator) LtoCodegenCompileToFile(name **c.Char) LtoBoolT {
+// llgo:link LtoCodeGenT.LtoCodegenCompileToFile C.lto_codegen_compile_to_file
+func (self LtoCodeGenT) LtoCodegenCompileToFile(name **c.Char) LtoBoolT {
 	return false
 }
 
@@ -497,8 +498,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenCompileToFile(name **c.Char) LtoBo
 //
 // \since LTO_API_VERSION=12
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenOptimize C.lto_codegen_optimize
-func (self *OpaqueLTOCodeGenerator) LtoCodegenOptimize() LtoBoolT {
+// llgo:link LtoCodeGenT.LtoCodegenOptimize C.lto_codegen_optimize
+func (self LtoCodeGenT) LtoCodegenOptimize() LtoBoolT {
 	return false
 }
 
@@ -513,8 +514,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenOptimize() LtoBoolT {
 //
 // \since LTO_API_VERSION=12
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenCompileOptimized C.lto_codegen_compile_optimized
-func (self *OpaqueLTOCodeGenerator) LtoCodegenCompileOptimized(length *c.SizeT) unsafe.Pointer {
+// llgo:link LtoCodeGenT.LtoCodegenCompileOptimized C.lto_codegen_compile_optimized
+func (self LtoCodeGenT) LtoCodegenCompileOptimized(length *c.SizeT) unsafe.Pointer {
 	return nil
 }
 
@@ -549,8 +550,8 @@ func LtoSetDebugOptions(options **c.Char, number c.Int)
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenDebugOptions C.lto_codegen_debug_options
-func (self *OpaqueLTOCodeGenerator) LtoCodegenDebugOptions(_llcppg_param2 *c.Char) {
+// llgo:link LtoCodeGenT.LtoCodegenDebugOptions C.lto_codegen_debug_options
+func (self LtoCodeGenT) LtoCodegenDebugOptions(_llcppg_param2 *c.Char) {
 }
 
 // Same as the previous function, but takes every option separately through an
@@ -558,8 +559,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenDebugOptions(_llcppg_param2 *c.Cha
 //
 // \since prior to LTO_API_VERSION=26
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenDebugOptionsArray C.lto_codegen_debug_options_array
-func (self *OpaqueLTOCodeGenerator) LtoCodegenDebugOptionsArray(_llcppg_param2 **c.Char, number c.Int) {
+// llgo:link LtoCodeGenT.LtoCodegenDebugOptionsArray C.lto_codegen_debug_options_array
+func (self LtoCodeGenT) LtoCodegenDebugOptionsArray(_llcppg_param2 **c.Char, number c.Int) {
 }
 
 // Initializes LLVM disassemblers.
@@ -575,8 +576,8 @@ func LtoInitializeDisassembler()
 //
 // \since LTO_API_VERSION=14
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenSetShouldInternalize C.lto_codegen_set_should_internalize
-func (self *OpaqueLTOCodeGenerator) LtoCodegenSetShouldInternalize(ShouldInternalize LtoBoolT) {
+// llgo:link LtoCodeGenT.LtoCodegenSetShouldInternalize C.lto_codegen_set_should_internalize
+func (self LtoCodeGenT) LtoCodegenSetShouldInternalize(ShouldInternalize LtoBoolT) {
 }
 
 // Set whether to embed uselists in bitcode.
@@ -586,8 +587,8 @@ func (self *OpaqueLTOCodeGenerator) LtoCodegenSetShouldInternalize(ShouldInterna
 //
 // \since LTO_API_VERSION=15
 //
-// llgo:link (*OpaqueLTOCodeGenerator).LtoCodegenSetShouldEmbedUselists C.lto_codegen_set_should_embed_uselists
-func (self *OpaqueLTOCodeGenerator) LtoCodegenSetShouldEmbedUselists(ShouldEmbedUselists LtoBoolT) {
+// llgo:link LtoCodeGenT.LtoCodegenSetShouldEmbedUselists C.lto_codegen_set_should_embed_uselists
+func (self LtoCodeGenT) LtoCodegenSetShouldEmbedUselists(ShouldEmbedUselists LtoBoolT) {
 }
 
 // Creates an LTO input file from a buffer. The path
@@ -605,8 +606,8 @@ func LtoInputCreate(buffer unsafe.Pointer, buffer_size c.SizeT, path *c.Char) Lt
 //
 // \since LTO_API_VERSION=24
 //
-// llgo:link (*OpaqueLTOInput).LtoInputDispose C.lto_input_dispose
-func (self *OpaqueLTOInput) LtoInputDispose() {
+// llgo:link LtoInputT.LtoInputDispose C.lto_input_dispose
+func (self LtoInputT) LtoInputDispose() {
 }
 
 // Returns the number of dependent library specifiers
@@ -614,8 +615,8 @@ func (self *OpaqueLTOInput) LtoInputDispose() {
 //
 // \since LTO_API_VERSION=24
 //
-// llgo:link (*OpaqueLTOInput).LtoInputGetNumDependentLibraries C.lto_input_get_num_dependent_libraries
-func (self *OpaqueLTOInput) LtoInputGetNumDependentLibraries() c.Uint {
+// llgo:link LtoInputT.LtoInputGetNumDependentLibraries C.lto_input_get_num_dependent_libraries
+func (self LtoInputT) LtoInputGetNumDependentLibraries() c.Uint {
 	return 0
 }
 
@@ -625,8 +626,8 @@ func (self *OpaqueLTOInput) LtoInputGetNumDependentLibraries() c.Uint {
 //
 // \since LTO_API_VERSION=24
 //
-// llgo:link (*OpaqueLTOInput).LtoInputGetDependentLibrary C.lto_input_get_dependent_library
-func (self *OpaqueLTOInput) LtoInputGetDependentLibrary(index c.SizeT, size *c.SizeT) *c.Char {
+// llgo:link LtoInputT.LtoInputGetDependentLibrary C.lto_input_get_dependent_library
+func (self LtoInputT) LtoInputGetDependentLibrary(index c.SizeT, size *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -657,8 +658,8 @@ func ThinltoCreateCodegen() ThinltoCodeGenT
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenDispose C.thinlto_codegen_dispose
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenDispose() {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenDispose C.thinlto_codegen_dispose
+func (self ThinltoCodeGenT) ThinltoCodegenDispose() {
 }
 
 // Add a module to a ThinLTO code generator. Identifier has to be unique among
@@ -671,8 +672,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenDispose() {
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenAddModule C.thinlto_codegen_add_module
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenAddModule(identifier *c.Char, data *c.Char, length c.Int) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenAddModule C.thinlto_codegen_add_module
+func (self ThinltoCodeGenT) ThinltoCodegenAddModule(identifier *c.Char, data *c.Char, length c.Int) {
 }
 
 // Optimize and codegen all the modules added to the codegenerator using
@@ -680,8 +681,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenAddModule(identifier *c.Ch
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenProcess C.thinlto_codegen_process
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenProcess() {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenProcess C.thinlto_codegen_process
+func (self ThinltoCodeGenT) ThinltoCodegenProcess() {
 }
 
 // Returns the number of object files produced by the ThinLTO CodeGenerator.
@@ -692,8 +693,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenProcess() {
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoModuleGetNumObjects C.thinlto_module_get_num_objects
-func (self *OpaqueThinLTOCodeGenerator) ThinltoModuleGetNumObjects() c.Uint {
+// llgo:link ThinltoCodeGenT.ThinltoModuleGetNumObjects C.thinlto_module_get_num_objects
+func (self ThinltoCodeGenT) ThinltoModuleGetNumObjects() c.Uint {
 	return 0
 }
 
@@ -705,8 +706,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoModuleGetNumObjects() c.Uint {
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoModuleGetObject C.thinlto_module_get_object
-func (self *OpaqueThinLTOCodeGenerator) ThinltoModuleGetObject(index c.Uint) LTOObjectBuffer {
+// llgo:link ThinltoCodeGenT.ThinltoModuleGetObject C.thinlto_module_get_object
+func (self ThinltoCodeGenT) ThinltoModuleGetObject(index c.Uint) LTOObjectBuffer {
 	return LTOObjectBuffer{}
 }
 
@@ -718,8 +719,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoModuleGetObject(index c.Uint) LTO
 //
 // \since LTO_API_VERSION=21
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoModuleGetNumObjectFiles C.thinlto_module_get_num_object_files
-func (self *OpaqueThinLTOCodeGenerator) ThinltoModuleGetNumObjectFiles() c.Uint {
+// llgo:link ThinltoCodeGenT.ThinltoModuleGetNumObjectFiles C.thinlto_module_get_num_object_files
+func (self ThinltoCodeGenT) ThinltoModuleGetNumObjectFiles() c.Uint {
 	return 0
 }
 
@@ -731,8 +732,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoModuleGetNumObjectFiles() c.Uint 
 //
 // \since LTO_API_VERSION=21
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoModuleGetObjectFile C.thinlto_module_get_object_file
-func (self *OpaqueThinLTOCodeGenerator) ThinltoModuleGetObjectFile(index c.Uint) *c.Char {
+// llgo:link ThinltoCodeGenT.ThinltoModuleGetObjectFile C.thinlto_module_get_object_file
+func (self ThinltoCodeGenT) ThinltoModuleGetObjectFile(index c.Uint) *c.Char {
 	return nil
 }
 
@@ -741,8 +742,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoModuleGetObjectFile(index c.Uint)
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetPicModel C.thinlto_codegen_set_pic_model
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetPicModel(_llcppg_param2 LtoCodegenModel) LtoBoolT {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetPicModel C.thinlto_codegen_set_pic_model
+func (self ThinltoCodeGenT) ThinltoCodegenSetPicModel(_llcppg_param2 LtoCodegenModel) LtoBoolT {
 	return false
 }
 
@@ -752,8 +753,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetPicModel(_llcppg_param2
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetSavetempsDir C.thinlto_codegen_set_savetemps_dir
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetSavetempsDir(save_temps_dir *c.Char) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetSavetempsDir C.thinlto_codegen_set_savetemps_dir
+func (self ThinltoCodeGenT) ThinltoCodegenSetSavetempsDir(save_temps_dir *c.Char) {
 }
 
 // Set the path to a directory where to save generated object files. This
@@ -763,16 +764,16 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetSavetempsDir(save_temps
 //
 // \since LTO_API_VERSION=21
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoSetGeneratedObjectsDir C.thinlto_set_generated_objects_dir
-func (self *OpaqueThinLTOCodeGenerator) ThinltoSetGeneratedObjectsDir(save_temps_dir *c.Char) {
+// llgo:link ThinltoCodeGenT.ThinltoSetGeneratedObjectsDir C.thinlto_set_generated_objects_dir
+func (self ThinltoCodeGenT) ThinltoSetGeneratedObjectsDir(save_temps_dir *c.Char) {
 }
 
 // Sets the cpu to generate code for.
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetCpu C.thinlto_codegen_set_cpu
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCpu(cpu *c.Char) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetCpu C.thinlto_codegen_set_cpu
+func (self ThinltoCodeGenT) ThinltoCodegenSetCpu(cpu *c.Char) {
 }
 
 // Disable CodeGen, only run the stages till codegen and stop. The output will
@@ -780,16 +781,16 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCpu(cpu *c.Char) {
 //
 // \since LTO_API_VERSION=19
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenDisableCodegen C.thinlto_codegen_disable_codegen
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenDisableCodegen(disable LtoBoolT) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenDisableCodegen C.thinlto_codegen_disable_codegen
+func (self ThinltoCodeGenT) ThinltoCodegenDisableCodegen(disable LtoBoolT) {
 }
 
 // Perform CodeGen only: disable all other stages.
 //
 // \since LTO_API_VERSION=19
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetCodegenOnly C.thinlto_codegen_set_codegen_only
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCodegenOnly(codegen_only LtoBoolT) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetCodegenOnly C.thinlto_codegen_set_codegen_only
+func (self ThinltoCodeGenT) ThinltoCodegenSetCodegenOnly(codegen_only LtoBoolT) {
 }
 
 // Parse -mllvm style debug options.
@@ -803,8 +804,8 @@ func ThinltoDebugOptions(options **c.Char, number c.Int)
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueLTOModule).LtoModuleIsThinlto C.lto_module_is_thinlto
-func (self *OpaqueLTOModule) LtoModuleIsThinlto() LtoBoolT {
+// llgo:link LtoModuleT.LtoModuleIsThinlto C.lto_module_is_thinlto
+func (self LtoModuleT) LtoModuleIsThinlto() LtoBoolT {
 	return false
 }
 
@@ -815,8 +816,8 @@ func (self *OpaqueLTOModule) LtoModuleIsThinlto() LtoBoolT {
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenAddMustPreserveSymbol C.thinlto_codegen_add_must_preserve_symbol
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenAddMustPreserveSymbol(name *c.Char, length c.Int) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenAddMustPreserveSymbol C.thinlto_codegen_add_must_preserve_symbol
+func (self ThinltoCodeGenT) ThinltoCodegenAddMustPreserveSymbol(name *c.Char, length c.Int) {
 }
 
 // Adds a symbol to the list of global symbols that are cross-referenced between
@@ -826,8 +827,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenAddMustPreserveSymbol(name
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenAddCrossReferencedSymbol C.thinlto_codegen_add_cross_referenced_symbol
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenAddCrossReferencedSymbol(name *c.Char, length c.Int) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenAddCrossReferencedSymbol C.thinlto_codegen_add_cross_referenced_symbol
+func (self ThinltoCodeGenT) ThinltoCodegenAddCrossReferencedSymbol(name *c.Char, length c.Int) {
 }
 
 // Sets the path to a directory to use as a cache storage for incremental build.
@@ -835,8 +836,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenAddCrossReferencedSymbol(n
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetCacheDir C.thinlto_codegen_set_cache_dir
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCacheDir(cache_dir *c.Char) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetCacheDir C.thinlto_codegen_set_cache_dir
+func (self ThinltoCodeGenT) ThinltoCodegenSetCacheDir(cache_dir *c.Char) {
 }
 
 // Sets the cache pruning interval (in seconds). A negative value disables the
@@ -845,8 +846,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCacheDir(cache_dir *c.C
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetCachePruningInterval C.thinlto_codegen_set_cache_pruning_interval
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCachePruningInterval(interval c.Int) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetCachePruningInterval C.thinlto_codegen_set_cache_pruning_interval
+func (self ThinltoCodeGenT) ThinltoCodegenSetCachePruningInterval(interval c.Int) {
 }
 
 // Sets the maximum cache size that can be persistent across build, in terms of
@@ -861,8 +862,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCachePruningInterval(in
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetFinalCacheSizeRelativeToAvailableSpace C.thinlto_codegen_set_final_cache_size_relative_to_available_space
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetFinalCacheSizeRelativeToAvailableSpace(percentage c.Uint) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetFinalCacheSizeRelativeToAvailableSpace C.thinlto_codegen_set_final_cache_size_relative_to_available_space
+func (self ThinltoCodeGenT) ThinltoCodegenSetFinalCacheSizeRelativeToAvailableSpace(percentage c.Uint) {
 }
 
 // Sets the expiration (in seconds) for an entry in the cache. An unspecified
@@ -870,8 +871,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetFinalCacheSizeRelativeT
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetCacheEntryExpiration C.thinlto_codegen_set_cache_entry_expiration
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCacheEntryExpiration(expiration c.Uint) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetCacheEntryExpiration C.thinlto_codegen_set_cache_entry_expiration
+func (self ThinltoCodeGenT) ThinltoCodegenSetCacheEntryExpiration(expiration c.Uint) {
 }
 
 // Sets the maximum size of the cache directory (in bytes). A value over the
@@ -881,8 +882,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCacheEntryExpiration(ex
 //
 // \since LTO_API_VERSION=22
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetCacheSizeBytes C.thinlto_codegen_set_cache_size_bytes
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCacheSizeBytes(max_size_bytes c.Uint) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetCacheSizeBytes C.thinlto_codegen_set_cache_size_bytes
+func (self ThinltoCodeGenT) ThinltoCodegenSetCacheSizeBytes(max_size_bytes c.Uint) {
 }
 
 // Same as thinlto_codegen_set_cache_size_bytes, except the maximum size is in
@@ -890,8 +891,8 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCacheSizeBytes(max_size
 //
 // \since LTO_API_VERSION=23
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetCacheSizeMegabytes C.thinlto_codegen_set_cache_size_megabytes
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCacheSizeMegabytes(max_size_megabytes c.Uint) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetCacheSizeMegabytes C.thinlto_codegen_set_cache_size_megabytes
+func (self ThinltoCodeGenT) ThinltoCodegenSetCacheSizeMegabytes(max_size_megabytes c.Uint) {
 }
 
 // Sets the maximum number of files in the cache directory. An unspecified
@@ -899,6 +900,6 @@ func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCacheSizeMegabytes(max_
 //
 // \since LTO_API_VERSION=22
 //
-// llgo:link (*OpaqueThinLTOCodeGenerator).ThinltoCodegenSetCacheSizeFiles C.thinlto_codegen_set_cache_size_files
-func (self *OpaqueThinLTOCodeGenerator) ThinltoCodegenSetCacheSizeFiles(max_size_files c.Uint) {
+// llgo:link ThinltoCodeGenT.ThinltoCodegenSetCacheSizeFiles C.thinlto_codegen_set_cache_size_files
+func (self ThinltoCodeGenT) ThinltoCodegenSetCacheSizeFiles(max_size_files c.Uint) {
 }

@@ -18,7 +18,7 @@ type SymbolIteratorRef = *OpaqueSymbolIterator
 type OpaqueRelocationIterator struct {
 }
 type RelocationIteratorRef = *OpaqueRelocationIterator
-type BinaryType c.Int
+type BinaryType c.Uint
 
 const (
 	// < Archive file.
@@ -78,8 +78,8 @@ type ObjectFileRef = *OpaqueObjectFile
 //
 // @see llvm::object::createBinary
 //
-// llgo:link (*OpaqueMemoryBuffer).CreateBinary C.LLVMCreateBinary
-func (self *OpaqueMemoryBuffer) CreateBinary(Context ContextRef, ErrorMessage **c.Char) BinaryRef {
+// llgo:link MemoryBufferRef.CreateBinary C.LLVMCreateBinary
+func (self MemoryBufferRef) CreateBinary(Context ContextRef, ErrorMessage **c.Char) BinaryRef {
 	return nil
 }
 
@@ -88,8 +88,8 @@ func (self *OpaqueMemoryBuffer) CreateBinary(Context ContextRef, ErrorMessage **
 // The binary file does not own its backing buffer. It is the responsibility
 // of the caller to free it with \c LLVMDisposeMemoryBuffer.
 //
-// llgo:link (*OpaqueBinary).Dispose C.LLVMDisposeBinary
-func (self *OpaqueBinary) Dispose() {
+// llgo:link BinaryRef.DisposeBinary C.LLVMDisposeBinary
+func (self BinaryRef) DisposeBinary() {
 }
 
 // Retrieves a copy of the memory buffer associated with this object file.
@@ -100,8 +100,8 @@ func (self *OpaqueBinary) Dispose() {
 //
 // @see llvm::object::getMemoryBufferRef
 //
-// llgo:link (*OpaqueBinary).CopyMemoryBuffer C.LLVMBinaryCopyMemoryBuffer
-func (self *OpaqueBinary) CopyMemoryBuffer() MemoryBufferRef {
+// llgo:link BinaryRef.BinaryCopyMemoryBuffer C.LLVMBinaryCopyMemoryBuffer
+func (self BinaryRef) BinaryCopyMemoryBuffer() MemoryBufferRef {
 	return nil
 }
 
@@ -109,13 +109,13 @@ func (self *OpaqueBinary) CopyMemoryBuffer() MemoryBufferRef {
 //
 // @see llvm::object::Binary::getType
 //
-// llgo:link (*OpaqueBinary).Type C.LLVMBinaryGetType
-func (self *OpaqueBinary) Type() BinaryType {
+// llgo:link BinaryRef.BinaryGetType C.LLVMBinaryGetType
+func (self BinaryRef) BinaryGetType() BinaryType {
 	return 0
 }
 
-// llgo:link (*OpaqueBinary).MachOUniversalBinaryCopyObjectForArch C.LLVMMachOUniversalBinaryCopyObjectForArch
-func (self *OpaqueBinary) MachOUniversalBinaryCopyObjectForArch(Arch *c.Char, ArchLen c.SizeT, ErrorMessage **c.Char) BinaryRef {
+// llgo:link BinaryRef.MachOUniversalBinaryCopyObjectForArch C.LLVMMachOUniversalBinaryCopyObjectForArch
+func (self BinaryRef) MachOUniversalBinaryCopyObjectForArch(Arch *c.Char, ArchLen c.SizeT, ErrorMessage **c.Char) BinaryRef {
 	return self
 }
 
@@ -129,8 +129,8 @@ func (self *OpaqueBinary) MachOUniversalBinaryCopyObjectForArch(Arch *c.Char, Ar
 //
 // @see llvm::object::sections()
 //
-// llgo:link (*OpaqueBinary).ObjectFileCopySectionIterator C.LLVMObjectFileCopySectionIterator
-func (self *OpaqueBinary) ObjectFileCopySectionIterator() SectionIteratorRef {
+// llgo:link BinaryRef.ObjectFileCopySectionIterator C.LLVMObjectFileCopySectionIterator
+func (self BinaryRef) ObjectFileCopySectionIterator() SectionIteratorRef {
 	return nil
 }
 
@@ -138,8 +138,8 @@ func (self *OpaqueBinary) ObjectFileCopySectionIterator() SectionIteratorRef {
 //
 // @see llvm::object::section_end
 //
-// llgo:link (*OpaqueBinary).ObjectFileIsSectionIteratorAtEnd C.LLVMObjectFileIsSectionIteratorAtEnd
-func (self *OpaqueBinary) ObjectFileIsSectionIteratorAtEnd(SI SectionIteratorRef) Bool {
+// llgo:link BinaryRef.ObjectFileIsSectionIteratorAtEnd C.LLVMObjectFileIsSectionIteratorAtEnd
+func (self BinaryRef) ObjectFileIsSectionIteratorAtEnd(SI SectionIteratorRef) Bool {
 	return 0
 }
 
@@ -153,8 +153,8 @@ func (self *OpaqueBinary) ObjectFileIsSectionIteratorAtEnd(SI SectionIteratorRef
 //
 // @see llvm::object::symbols()
 //
-// llgo:link (*OpaqueBinary).ObjectFileCopySymbolIterator C.LLVMObjectFileCopySymbolIterator
-func (self *OpaqueBinary) ObjectFileCopySymbolIterator() SymbolIteratorRef {
+// llgo:link BinaryRef.ObjectFileCopySymbolIterator C.LLVMObjectFileCopySymbolIterator
+func (self BinaryRef) ObjectFileCopySymbolIterator() SymbolIteratorRef {
 	return nil
 }
 
@@ -162,151 +162,151 @@ func (self *OpaqueBinary) ObjectFileCopySymbolIterator() SymbolIteratorRef {
 //
 // @see llvm::object::symbol_end
 //
-// llgo:link (*OpaqueBinary).ObjectFileIsSymbolIteratorAtEnd C.LLVMObjectFileIsSymbolIteratorAtEnd
-func (self *OpaqueBinary) ObjectFileIsSymbolIteratorAtEnd(SI SymbolIteratorRef) Bool {
+// llgo:link BinaryRef.ObjectFileIsSymbolIteratorAtEnd C.LLVMObjectFileIsSymbolIteratorAtEnd
+func (self BinaryRef) ObjectFileIsSymbolIteratorAtEnd(SI SymbolIteratorRef) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueSectionIterator).DisposeSectionIterator C.LLVMDisposeSectionIterator
-func (self *OpaqueSectionIterator) DisposeSectionIterator() {
+// llgo:link SectionIteratorRef.DisposeSectionIterator C.LLVMDisposeSectionIterator
+func (self SectionIteratorRef) DisposeSectionIterator() {
 }
 
-// llgo:link (*OpaqueSectionIterator).MoveToNextSection C.LLVMMoveToNextSection
-func (self *OpaqueSectionIterator) MoveToNextSection() {
+// llgo:link SectionIteratorRef.MoveToNextSection C.LLVMMoveToNextSection
+func (self SectionIteratorRef) MoveToNextSection() {
 }
 
-// llgo:link (*OpaqueSectionIterator).MoveToContainingSection C.LLVMMoveToContainingSection
-func (self *OpaqueSectionIterator) MoveToContainingSection(Sym SymbolIteratorRef) {
+// llgo:link SectionIteratorRef.MoveToContainingSection C.LLVMMoveToContainingSection
+func (self SectionIteratorRef) MoveToContainingSection(Sym SymbolIteratorRef) {
 }
 
-// llgo:link (*OpaqueSymbolIterator).DisposeSymbolIterator C.LLVMDisposeSymbolIterator
-func (self *OpaqueSymbolIterator) DisposeSymbolIterator() {
+// llgo:link SymbolIteratorRef.DisposeSymbolIterator C.LLVMDisposeSymbolIterator
+func (self SymbolIteratorRef) DisposeSymbolIterator() {
 }
 
-// llgo:link (*OpaqueSymbolIterator).MoveToNextSymbol C.LLVMMoveToNextSymbol
-func (self *OpaqueSymbolIterator) MoveToNextSymbol() {
+// llgo:link SymbolIteratorRef.MoveToNextSymbol C.LLVMMoveToNextSymbol
+func (self SymbolIteratorRef) MoveToNextSymbol() {
 }
 
-// llgo:link (*OpaqueSectionIterator).SectionName C.LLVMGetSectionName
-func (self *OpaqueSectionIterator) SectionName() *c.Char {
+// llgo:link SectionIteratorRef.SectionName C.LLVMGetSectionName
+func (self SectionIteratorRef) SectionName() *c.Char {
 	return nil
 }
 
-// llgo:link (*OpaqueSectionIterator).SectionSize C.LLVMGetSectionSize
-func (self *OpaqueSectionIterator) SectionSize() c.Uint64T {
+// llgo:link SectionIteratorRef.SectionSize C.LLVMGetSectionSize
+func (self SectionIteratorRef) SectionSize() c.Uint64T {
 	return 0
 }
 
-// llgo:link (*OpaqueSectionIterator).SectionContents C.LLVMGetSectionContents
-func (self *OpaqueSectionIterator) SectionContents() *c.Char {
+// llgo:link SectionIteratorRef.SectionContents C.LLVMGetSectionContents
+func (self SectionIteratorRef) SectionContents() *c.Char {
 	return nil
 }
 
-// llgo:link (*OpaqueSectionIterator).SectionAddress C.LLVMGetSectionAddress
-func (self *OpaqueSectionIterator) SectionAddress() c.Uint64T {
+// llgo:link SectionIteratorRef.SectionAddress C.LLVMGetSectionAddress
+func (self SectionIteratorRef) SectionAddress() c.Uint64T {
 	return 0
 }
 
-// llgo:link (*OpaqueSectionIterator).SectionContainsSymbol C.LLVMGetSectionContainsSymbol
-func (self *OpaqueSectionIterator) SectionContainsSymbol(Sym SymbolIteratorRef) Bool {
+// llgo:link SectionIteratorRef.SectionContainsSymbol C.LLVMGetSectionContainsSymbol
+func (self SectionIteratorRef) SectionContainsSymbol(Sym SymbolIteratorRef) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueSectionIterator).Relocations C.LLVMGetRelocations
-func (self *OpaqueSectionIterator) Relocations() RelocationIteratorRef {
+// llgo:link SectionIteratorRef.Relocations C.LLVMGetRelocations
+func (self SectionIteratorRef) Relocations() RelocationIteratorRef {
 	return nil
 }
 
-// llgo:link (*OpaqueRelocationIterator).DisposeRelocationIterator C.LLVMDisposeRelocationIterator
-func (self *OpaqueRelocationIterator) DisposeRelocationIterator() {
+// llgo:link RelocationIteratorRef.DisposeRelocationIterator C.LLVMDisposeRelocationIterator
+func (self RelocationIteratorRef) DisposeRelocationIterator() {
 }
 
-// llgo:link (*OpaqueSectionIterator).IsRelocationIteratorAtEnd C.LLVMIsRelocationIteratorAtEnd
-func (self *OpaqueSectionIterator) IsRelocationIteratorAtEnd(RI RelocationIteratorRef) Bool {
+// llgo:link SectionIteratorRef.IsRelocationIteratorAtEnd C.LLVMIsRelocationIteratorAtEnd
+func (self SectionIteratorRef) IsRelocationIteratorAtEnd(RI RelocationIteratorRef) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueRelocationIterator).MoveToNextRelocation C.LLVMMoveToNextRelocation
-func (self *OpaqueRelocationIterator) MoveToNextRelocation() {
+// llgo:link RelocationIteratorRef.MoveToNextRelocation C.LLVMMoveToNextRelocation
+func (self RelocationIteratorRef) MoveToNextRelocation() {
 }
 
-// llgo:link (*OpaqueSymbolIterator).SymbolName C.LLVMGetSymbolName
-func (self *OpaqueSymbolIterator) SymbolName() *c.Char {
+// llgo:link SymbolIteratorRef.SymbolName C.LLVMGetSymbolName
+func (self SymbolIteratorRef) SymbolName() *c.Char {
 	return nil
 }
 
-// llgo:link (*OpaqueSymbolIterator).SymbolAddress C.LLVMGetSymbolAddress
-func (self *OpaqueSymbolIterator) SymbolAddress() c.Uint64T {
+// llgo:link SymbolIteratorRef.SymbolAddress C.LLVMGetSymbolAddress
+func (self SymbolIteratorRef) SymbolAddress() c.Uint64T {
 	return 0
 }
 
-// llgo:link (*OpaqueSymbolIterator).SymbolSize C.LLVMGetSymbolSize
-func (self *OpaqueSymbolIterator) SymbolSize() c.Uint64T {
+// llgo:link SymbolIteratorRef.SymbolSize C.LLVMGetSymbolSize
+func (self SymbolIteratorRef) SymbolSize() c.Uint64T {
 	return 0
 }
 
-// llgo:link (*OpaqueRelocationIterator).RelocationOffset C.LLVMGetRelocationOffset
-func (self *OpaqueRelocationIterator) RelocationOffset() c.Uint64T {
+// llgo:link RelocationIteratorRef.RelocationOffset C.LLVMGetRelocationOffset
+func (self RelocationIteratorRef) RelocationOffset() c.Uint64T {
 	return 0
 }
 
-// llgo:link (*OpaqueRelocationIterator).RelocationSymbol C.LLVMGetRelocationSymbol
-func (self *OpaqueRelocationIterator) RelocationSymbol() SymbolIteratorRef {
+// llgo:link RelocationIteratorRef.RelocationSymbol C.LLVMGetRelocationSymbol
+func (self RelocationIteratorRef) RelocationSymbol() SymbolIteratorRef {
 	return nil
 }
 
-// llgo:link (*OpaqueRelocationIterator).RelocationType C.LLVMGetRelocationType
-func (self *OpaqueRelocationIterator) RelocationType() c.Uint64T {
+// llgo:link RelocationIteratorRef.RelocationType C.LLVMGetRelocationType
+func (self RelocationIteratorRef) RelocationType() c.Uint64T {
 	return 0
 }
 
-// llgo:link (*OpaqueRelocationIterator).RelocationTypeName C.LLVMGetRelocationTypeName
-func (self *OpaqueRelocationIterator) RelocationTypeName() *c.Char {
+// llgo:link RelocationIteratorRef.RelocationTypeName C.LLVMGetRelocationTypeName
+func (self RelocationIteratorRef) RelocationTypeName() *c.Char {
 	return nil
 }
 
-// llgo:link (*OpaqueRelocationIterator).RelocationValueString C.LLVMGetRelocationValueString
-func (self *OpaqueRelocationIterator) RelocationValueString() *c.Char {
+// llgo:link RelocationIteratorRef.RelocationValueString C.LLVMGetRelocationValueString
+func (self RelocationIteratorRef) RelocationValueString() *c.Char {
 	return nil
 }
 
 // Deprecated: Use LLVMCreateBinary instead.
 //
-// llgo:link (*OpaqueMemoryBuffer).CreateObjectFile C.LLVMCreateObjectFile
-func (self *OpaqueMemoryBuffer) CreateObjectFile() ObjectFileRef {
+// llgo:link MemoryBufferRef.CreateObjectFile C.LLVMCreateObjectFile
+func (self MemoryBufferRef) CreateObjectFile() ObjectFileRef {
 	return nil
 }
 
 // Deprecated: Use LLVMDisposeBinary instead.
 //
-// llgo:link (*OpaqueObjectFile).DisposeObjectFile C.LLVMDisposeObjectFile
-func (self *OpaqueObjectFile) DisposeObjectFile() {
+// llgo:link ObjectFileRef.DisposeObjectFile C.LLVMDisposeObjectFile
+func (self ObjectFileRef) DisposeObjectFile() {
 }
 
 // Deprecated: Use LLVMObjectFileCopySectionIterator instead.
 //
-// llgo:link (*OpaqueObjectFile).Sections C.LLVMGetSections
-func (self *OpaqueObjectFile) Sections() SectionIteratorRef {
+// llgo:link ObjectFileRef.Sections C.LLVMGetSections
+func (self ObjectFileRef) Sections() SectionIteratorRef {
 	return nil
 }
 
 // Deprecated: Use LLVMObjectFileIsSectionIteratorAtEnd instead.
 //
-// llgo:link (*OpaqueObjectFile).IsSectionIteratorAtEnd C.LLVMIsSectionIteratorAtEnd
-func (self *OpaqueObjectFile) IsSectionIteratorAtEnd(SI SectionIteratorRef) Bool {
+// llgo:link ObjectFileRef.IsSectionIteratorAtEnd C.LLVMIsSectionIteratorAtEnd
+func (self ObjectFileRef) IsSectionIteratorAtEnd(SI SectionIteratorRef) Bool {
 	return 0
 }
 
 // Deprecated: Use LLVMObjectFileCopySymbolIterator instead.
 //
-// llgo:link (*OpaqueObjectFile).Symbols C.LLVMGetSymbols
-func (self *OpaqueObjectFile) Symbols() SymbolIteratorRef {
+// llgo:link ObjectFileRef.Symbols C.LLVMGetSymbols
+func (self ObjectFileRef) Symbols() SymbolIteratorRef {
 	return nil
 }
 
 // Deprecated: Use LLVMObjectFileIsSymbolIteratorAtEnd instead.
 //
-// llgo:link (*OpaqueObjectFile).IsSymbolIteratorAtEnd C.LLVMIsSymbolIteratorAtEnd
-func (self *OpaqueObjectFile) IsSymbolIteratorAtEnd(SI SymbolIteratorRef) Bool {
+// llgo:link ObjectFileRef.IsSymbolIteratorAtEnd C.LLVMIsSymbolIteratorAtEnd
+func (self ObjectFileRef) IsSymbolIteratorAtEnd(SI SymbolIteratorRef) Bool {
 	return 0
 }

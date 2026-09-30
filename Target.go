@@ -11,7 +11,7 @@ import (
 // @ingroup LLVMC
 //
 // @{
-type ByteOrdering c.Int
+type ByteOrdering c.Uint
 
 const (
 	BigEndian    ByteOrdering = 0
@@ -29,8 +29,8 @@ type TargetLibraryInfoRef = *OpaqueTargetLibraryInfotData
 //
 // @see Module::getDataLayout()
 //
-// llgo:link (*OpaqueModule).ModuleDataLayout C.LLVMGetModuleDataLayout
-func (self *OpaqueModule) ModuleDataLayout() TargetDataRef {
+// llgo:link ModuleRef.ModuleDataLayout C.LLVMGetModuleDataLayout
+func (self ModuleRef) ModuleDataLayout() TargetDataRef {
 	return nil
 }
 
@@ -38,8 +38,8 @@ func (self *OpaqueModule) ModuleDataLayout() TargetDataRef {
 //
 // @see Module::setDataLayout()
 //
-// llgo:link (*OpaqueModule).SetModuleDataLayout C.LLVMSetModuleDataLayout
-func (self *OpaqueModule) SetModuleDataLayout(DL TargetDataRef) {
+// llgo:link ModuleRef.SetModuleDataLayout C.LLVMSetModuleDataLayout
+func (self ModuleRef) SetModuleDataLayout(DL TargetDataRef) {
 }
 
 // Creates target data from a target layout string.
@@ -51,24 +51,24 @@ func CreateTargetData(StringRep *c.Char) TargetDataRef
 // Deallocates a TargetData.
 // See the destructor llvm::DataLayout::~DataLayout.
 //
-// llgo:link (*OpaqueTargetData).DisposeTargetData C.LLVMDisposeTargetData
-func (self *OpaqueTargetData) DisposeTargetData() {
+// llgo:link TargetDataRef.DisposeTargetData C.LLVMDisposeTargetData
+func (self TargetDataRef) DisposeTargetData() {
 }
 
 // Adds target library information to a pass manager. This does not take
 // ownership of the target library info.
 // See the method llvm::PassManagerBase::add.
 //
-// llgo:link (*OpaqueTargetLibraryInfotData).AddTargetLibraryInfo C.LLVMAddTargetLibraryInfo
-func (self *OpaqueTargetLibraryInfotData) AddTargetLibraryInfo(PM PassManagerRef) {
+// llgo:link TargetLibraryInfoRef.AddTargetLibraryInfo C.LLVMAddTargetLibraryInfo
+func (self TargetLibraryInfoRef) AddTargetLibraryInfo(PM PassManagerRef) {
 }
 
 // Converts target data to a target layout string. The string must be disposed
 // with LLVMDisposeMessage.
 // See the constructor llvm::DataLayout::DataLayout.
 //
-// llgo:link (*OpaqueTargetData).CopyStringRepOfTargetData C.LLVMCopyStringRepOfTargetData
-func (self *OpaqueTargetData) CopyStringRepOfTargetData() *c.Char {
+// llgo:link TargetDataRef.CopyStringRepOfTargetData C.LLVMCopyStringRepOfTargetData
+func (self TargetDataRef) CopyStringRepOfTargetData() *c.Char {
 	return nil
 }
 
@@ -76,16 +76,16 @@ func (self *OpaqueTargetData) CopyStringRepOfTargetData() *c.Char {
 // LLVMLittleEndian.
 // See the method llvm::DataLayout::isLittleEndian.
 //
-// llgo:link (*OpaqueTargetData).ByteOrder C.LLVMByteOrder
-func (self *OpaqueTargetData) ByteOrder() ByteOrdering {
+// llgo:link TargetDataRef.ByteOrder C.LLVMByteOrder
+func (self TargetDataRef) ByteOrder() ByteOrdering {
 	return 0
 }
 
 // Returns the pointer size in bytes for a target.
 // See the method llvm::DataLayout::getPointerSize.
 //
-// llgo:link (*OpaqueTargetData).PointerSize C.LLVMPointerSize
-func (self *OpaqueTargetData) PointerSize() c.Uint {
+// llgo:link TargetDataRef.PointerSize C.LLVMPointerSize
+func (self TargetDataRef) PointerSize() c.Uint {
 	return 0
 }
 
@@ -93,16 +93,16 @@ func (self *OpaqueTargetData) PointerSize() c.Uint {
 // address space.
 // See the method llvm::DataLayout::getPointerSize.
 //
-// llgo:link (*OpaqueTargetData).PointerSizeForAS C.LLVMPointerSizeForAS
-func (self *OpaqueTargetData) PointerSizeForAS(AS c.Uint) c.Uint {
+// llgo:link TargetDataRef.PointerSizeForAS C.LLVMPointerSizeForAS
+func (self TargetDataRef) PointerSizeForAS(AS c.Uint) c.Uint {
 	return 0
 }
 
 // Returns the integer type that is the same size as a pointer on a target.
 // See the method llvm::DataLayout::getIntPtrType.
 //
-// llgo:link (*OpaqueTargetData).IntPtrType C.LLVMIntPtrType
-func (self *OpaqueTargetData) IntPtrType() TypeRef {
+// llgo:link TargetDataRef.IntPtrType C.LLVMIntPtrType
+func (self TargetDataRef) IntPtrType() TypeRef {
 	return nil
 }
 
@@ -110,16 +110,16 @@ func (self *OpaqueTargetData) IntPtrType() TypeRef {
 // This version allows the address space to be specified.
 // See the method llvm::DataLayout::getIntPtrType.
 //
-// llgo:link (*OpaqueTargetData).IntPtrTypeForAS C.LLVMIntPtrTypeForAS
-func (self *OpaqueTargetData) IntPtrTypeForAS(AS c.Uint) TypeRef {
+// llgo:link TargetDataRef.IntPtrTypeForAS C.LLVMIntPtrTypeForAS
+func (self TargetDataRef) IntPtrTypeForAS(AS c.Uint) TypeRef {
 	return nil
 }
 
 // Returns the integer type that is the same size as a pointer on a target.
 // See the method llvm::DataLayout::getIntPtrType.
 //
-// llgo:link (*OpaqueContext).IntPtrTypeInContext C.LLVMIntPtrTypeInContext
-func (self *OpaqueContext) IntPtrTypeInContext(TD TargetDataRef) TypeRef {
+// llgo:link ContextRef.IntPtrTypeInContext C.LLVMIntPtrTypeInContext
+func (self ContextRef) IntPtrTypeInContext(TD TargetDataRef) TypeRef {
 	return nil
 }
 
@@ -127,79 +127,79 @@ func (self *OpaqueContext) IntPtrTypeInContext(TD TargetDataRef) TypeRef {
 // This version allows the address space to be specified.
 // See the method llvm::DataLayout::getIntPtrType.
 //
-// llgo:link (*OpaqueContext).IntPtrTypeForASInContext C.LLVMIntPtrTypeForASInContext
-func (self *OpaqueContext) IntPtrTypeForASInContext(TD TargetDataRef, AS c.Uint) TypeRef {
+// llgo:link ContextRef.IntPtrTypeForASInContext C.LLVMIntPtrTypeForASInContext
+func (self ContextRef) IntPtrTypeForASInContext(TD TargetDataRef, AS c.Uint) TypeRef {
 	return nil
 }
 
 // Computes the size of a type in bits for a target.
 // See the method llvm::DataLayout::getTypeSizeInBits.
 //
-// llgo:link (*OpaqueTargetData).SizeOfTypeInBits C.LLVMSizeOfTypeInBits
-func (self *OpaqueTargetData) SizeOfTypeInBits(Ty TypeRef) c.UlongLong {
+// llgo:link TargetDataRef.SizeOfTypeInBits C.LLVMSizeOfTypeInBits
+func (self TargetDataRef) SizeOfTypeInBits(Ty TypeRef) c.UlongLong {
 	return 0
 }
 
 // Computes the storage size of a type in bytes for a target.
 // See the method llvm::DataLayout::getTypeStoreSize.
 //
-// llgo:link (*OpaqueTargetData).StoreSizeOfType C.LLVMStoreSizeOfType
-func (self *OpaqueTargetData) StoreSizeOfType(Ty TypeRef) c.UlongLong {
+// llgo:link TargetDataRef.StoreSizeOfType C.LLVMStoreSizeOfType
+func (self TargetDataRef) StoreSizeOfType(Ty TypeRef) c.UlongLong {
 	return 0
 }
 
 // Computes the ABI size of a type in bytes for a target.
 // See the method llvm::DataLayout::getTypeAllocSize.
 //
-// llgo:link (*OpaqueTargetData).ABISizeOfType C.LLVMABISizeOfType
-func (self *OpaqueTargetData) ABISizeOfType(Ty TypeRef) c.UlongLong {
+// llgo:link TargetDataRef.ABISizeOfType C.LLVMABISizeOfType
+func (self TargetDataRef) ABISizeOfType(Ty TypeRef) c.UlongLong {
 	return 0
 }
 
 // Computes the ABI alignment of a type in bytes for a target.
 // See the method llvm::DataLayout::getTypeABISize.
 //
-// llgo:link (*OpaqueTargetData).ABIAlignmentOfType C.LLVMABIAlignmentOfType
-func (self *OpaqueTargetData) ABIAlignmentOfType(Ty TypeRef) c.Uint {
+// llgo:link TargetDataRef.ABIAlignmentOfType C.LLVMABIAlignmentOfType
+func (self TargetDataRef) ABIAlignmentOfType(Ty TypeRef) c.Uint {
 	return 0
 }
 
 // Computes the call frame alignment of a type in bytes for a target.
 // See the method llvm::DataLayout::getTypeABISize.
 //
-// llgo:link (*OpaqueTargetData).CallFrameAlignmentOfType C.LLVMCallFrameAlignmentOfType
-func (self *OpaqueTargetData) CallFrameAlignmentOfType(Ty TypeRef) c.Uint {
+// llgo:link TargetDataRef.CallFrameAlignmentOfType C.LLVMCallFrameAlignmentOfType
+func (self TargetDataRef) CallFrameAlignmentOfType(Ty TypeRef) c.Uint {
 	return 0
 }
 
 // Computes the preferred alignment of a type in bytes for a target.
 // See the method llvm::DataLayout::getTypeABISize.
 //
-// llgo:link (*OpaqueTargetData).PreferredAlignmentOfType C.LLVMPreferredAlignmentOfType
-func (self *OpaqueTargetData) PreferredAlignmentOfType(Ty TypeRef) c.Uint {
+// llgo:link TargetDataRef.PreferredAlignmentOfType C.LLVMPreferredAlignmentOfType
+func (self TargetDataRef) PreferredAlignmentOfType(Ty TypeRef) c.Uint {
 	return 0
 }
 
 // Computes the preferred alignment of a global variable in bytes for a target.
 // See the method llvm::DataLayout::getPreferredAlignment.
 //
-// llgo:link (*OpaqueTargetData).PreferredAlignmentOfGlobal C.LLVMPreferredAlignmentOfGlobal
-func (self *OpaqueTargetData) PreferredAlignmentOfGlobal(GlobalVar ValueRef) c.Uint {
+// llgo:link TargetDataRef.PreferredAlignmentOfGlobal C.LLVMPreferredAlignmentOfGlobal
+func (self TargetDataRef) PreferredAlignmentOfGlobal(GlobalVar ValueRef) c.Uint {
 	return 0
 }
 
 // Computes the structure element that contains the byte offset for a target.
 // See the method llvm::StructLayout::getElementContainingOffset.
 //
-// llgo:link (*OpaqueTargetData).ElementAtOffset C.LLVMElementAtOffset
-func (self *OpaqueTargetData) ElementAtOffset(StructTy TypeRef, Offset c.UlongLong) c.Uint {
+// llgo:link TargetDataRef.ElementAtOffset C.LLVMElementAtOffset
+func (self TargetDataRef) ElementAtOffset(StructTy TypeRef, Offset c.UlongLong) c.Uint {
 	return 0
 }
 
 // Computes the byte offset of the indexed struct element for a target.
 // See the method llvm::StructLayout::getElementContainingOffset.
 //
-// llgo:link (*OpaqueTargetData).OffsetOfElement C.LLVMOffsetOfElement
-func (self *OpaqueTargetData) OffsetOfElement(StructTy TypeRef, Element c.Uint) c.UlongLong {
+// llgo:link TargetDataRef.OffsetOfElement C.LLVMOffsetOfElement
+func (self TargetDataRef) OffsetOfElement(StructTy TypeRef, Element c.Uint) c.UlongLong {
 	return 0
 }

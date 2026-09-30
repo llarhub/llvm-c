@@ -9,7 +9,7 @@ import (
 
 // External users depend on the following values being stable. It is not safe
 // to reorder them.
-type Opcode c.Int
+type Opcode c.Uint
 
 const (
 	Ret            Opcode = 1
@@ -82,7 +82,7 @@ const (
 	CatchSwitch    Opcode = 65
 )
 
-type TypeKind c.Int
+type TypeKind c.Uint
 
 const (
 	// < type with no size
@@ -127,7 +127,7 @@ const (
 	TargetExtTypeKind TypeKind = 20
 )
 
-type Linkage c.Int
+type Linkage c.Uint
 
 const (
 	// < Externally visible function
@@ -168,7 +168,7 @@ const (
 	LinkerPrivateWeakLinkage Linkage = 16
 )
 
-type Visibility c.Int
+type Visibility c.Uint
 
 const (
 	// < The GV is visible
@@ -179,7 +179,7 @@ const (
 	ProtectedVisibility Visibility = 2
 )
 
-type UnnamedAddr c.Int
+type UnnamedAddr c.Uint
 
 const (
 	// < Address of the GV is significant.
@@ -190,7 +190,7 @@ const (
 	GlobalUnnamedAddr UnnamedAddr = 2
 )
 
-type DLLStorageClass c.Int
+type DLLStorageClass c.Uint
 
 const (
 	DefaultStorageClass DLLStorageClass = 0
@@ -200,7 +200,7 @@ const (
 	DLLExportStorageClass DLLStorageClass = 2
 )
 
-type CallConv c.Int
+type CallConv c.Uint
 
 const (
 	CCallConv             CallConv = 0
@@ -246,7 +246,7 @@ const (
 	AMDGPUESCallConv      CallConv = 96
 )
 
-type ValueKind c.Int
+type ValueKind c.Uint
 
 const (
 	ArgumentValueKind              ValueKind = 0
@@ -279,7 +279,7 @@ const (
 	ConstantPtrAuthValueKind       ValueKind = 27
 )
 
-type IntPredicate c.Int
+type IntPredicate c.Uint
 
 const (
 	// < equal
@@ -304,7 +304,7 @@ const (
 	IntSLE IntPredicate = 41
 )
 
-type RealPredicate c.Int
+type RealPredicate c.Uint
 
 const (
 	// < Always false (always folded)
@@ -341,7 +341,7 @@ const (
 	RealPredicateTrue RealPredicate = 15
 )
 
-type ThreadLocalMode c.Int
+type ThreadLocalMode c.Uint
 
 const (
 	NotThreadLocal         ThreadLocalMode = 0
@@ -351,7 +351,7 @@ const (
 	LocalExecTLSModel      ThreadLocalMode = 4
 )
 
-type AtomicOrdering c.Int
+type AtomicOrdering c.Uint
 
 const (
 	// < A load or store which is not atomic
@@ -387,7 +387,7 @@ const (
 	AtomicOrderingSequentiallyConsistent AtomicOrdering = 7
 )
 
-type AtomicRMWBinOp c.Int
+type AtomicRMWBinOp c.Uint
 
 const (
 	// < Set the new value and return the one old
@@ -455,7 +455,7 @@ const (
 	AtomicRMWBinOpFMinimum AtomicRMWBinOp = 20
 )
 
-type DiagnosticSeverity c.Int
+type DiagnosticSeverity c.Uint
 
 const (
 	DSError   DiagnosticSeverity = 0
@@ -464,14 +464,14 @@ const (
 	DSNote    DiagnosticSeverity = 3
 )
 
-type InlineAsmDialect c.Int
+type InlineAsmDialect c.Uint
 
 const (
 	InlineAsmDialectATT   InlineAsmDialect = 0
 	InlineAsmDialectIntel InlineAsmDialect = 1
 )
 
-type ModuleFlagBehavior c.Int
+type ModuleFlagBehavior c.Uint
 
 const (
 	// Emits an error if two values disagree, otherwise the resulting value is
@@ -526,7 +526,7 @@ type AttributeIndex = c.Uint
 // Note that 'musttail' implies 'tail'.
 //
 // @see CallInst::TailCallKind
-type TailCallKind c.Int
+type TailCallKind c.Uint
 
 const (
 	TailCallKindNone     TailCallKind = 0
@@ -563,7 +563,7 @@ const (
 //
 // See https://llvm.org/docs/LangRef.html#getelementptr-instruction
 type GEPNoWrapFlags = c.Uint
-type DbgRecordKind c.Int
+type DbgRecordKind c.Uint
 
 const (
 	DbgRecordLabel   DbgRecordKind = 0
@@ -624,18 +624,21 @@ func GetGlobalContext() ContextRef
 
 // Set the diagnostic handler for this context.
 //
-//go:linkname ContextSetDiagnosticHandler C.LLVMContextSetDiagnosticHandler
-func ContextSetDiagnosticHandler(C ContextRef, Handler DiagnosticHandler, DiagnosticContext unsafe.Pointer)
+// llgo:link ContextRef.ContextSetDiagnosticHandler C.LLVMContextSetDiagnosticHandler
+func (self ContextRef) ContextSetDiagnosticHandler(Handler DiagnosticHandler, DiagnosticContext unsafe.Pointer) {
+}
 
 // Get the diagnostic handler of this context.
 //
-//go:linkname ContextGetDiagnosticHandler C.LLVMContextGetDiagnosticHandler
-func ContextGetDiagnosticHandler(C ContextRef) DiagnosticHandler
+// llgo:link ContextRef.ContextGetDiagnosticHandler C.LLVMContextGetDiagnosticHandler
+func (self ContextRef) ContextGetDiagnosticHandler() DiagnosticHandler {
+	return nil
+}
 
 // Get the diagnostic context of this context.
 //
-// llgo:link (*OpaqueContext).ContextGetDiagnosticContext C.LLVMContextGetDiagnosticContext
-func (self *OpaqueContext) ContextGetDiagnosticContext() unsafe.Pointer {
+// llgo:link ContextRef.ContextGetDiagnosticContext C.LLVMContextGetDiagnosticContext
+func (self ContextRef) ContextGetDiagnosticContext() unsafe.Pointer {
 	return nil
 }
 
@@ -643,15 +646,16 @@ func (self *OpaqueContext) ContextGetDiagnosticContext() unsafe.Pointer {
 //
 // @see LLVMContext::setYieldCallback()
 //
-//go:linkname ContextSetYieldCallback C.LLVMContextSetYieldCallback
-func ContextSetYieldCallback(C ContextRef, Callback YieldCallback, OpaqueHandle unsafe.Pointer)
+// llgo:link ContextRef.ContextSetYieldCallback C.LLVMContextSetYieldCallback
+func (self ContextRef) ContextSetYieldCallback(Callback YieldCallback, OpaqueHandle unsafe.Pointer) {
+}
 
 // Retrieve whether the given context is set to discard all value names.
 //
 // @see LLVMContext::shouldDiscardValueNames()
 //
-// llgo:link (*OpaqueContext).ContextShouldDiscardValueNames C.LLVMContextShouldDiscardValueNames
-func (self *OpaqueContext) ContextShouldDiscardValueNames() Bool {
+// llgo:link ContextRef.ContextShouldDiscardValueNames C.LLVMContextShouldDiscardValueNames
+func (self ContextRef) ContextShouldDiscardValueNames() Bool {
 	return 0
 }
 
@@ -662,8 +666,8 @@ func (self *OpaqueContext) ContextShouldDiscardValueNames() Bool {
 //
 // @see LLVMContext::setDiscardValueNames()
 //
-// llgo:link (*OpaqueContext).ContextSetDiscardValueNames C.LLVMContextSetDiscardValueNames
-func (self *OpaqueContext) ContextSetDiscardValueNames(Discard Bool) {
+// llgo:link ContextRef.ContextSetDiscardValueNames C.LLVMContextSetDiscardValueNames
+func (self ContextRef) ContextSetDiscardValueNames(Discard Bool) {
 }
 
 // Destroy a context instance.
@@ -671,8 +675,8 @@ func (self *OpaqueContext) ContextSetDiscardValueNames(Discard Bool) {
 // This should be called for every call to LLVMContextCreate() or memory
 // will be leaked.
 //
-// llgo:link (*OpaqueContext).ContextDispose C.LLVMContextDispose
-func (self *OpaqueContext) ContextDispose() {
+// llgo:link ContextRef.ContextDispose C.LLVMContextDispose
+func (self ContextRef) ContextDispose() {
 }
 
 // Return a string representation of the DiagnosticInfo. Use
@@ -680,8 +684,8 @@ func (self *OpaqueContext) ContextDispose() {
 //
 // @see DiagnosticInfo::print()
 //
-// llgo:link (*OpaqueDiagnosticInfo).DiagInfoDescription C.LLVMGetDiagInfoDescription
-func (self *OpaqueDiagnosticInfo) DiagInfoDescription() *c.Char {
+// llgo:link DiagnosticInfoRef.DiagInfoDescription C.LLVMGetDiagInfoDescription
+func (self DiagnosticInfoRef) DiagInfoDescription() *c.Char {
 	return nil
 }
 
@@ -689,13 +693,13 @@ func (self *OpaqueDiagnosticInfo) DiagInfoDescription() *c.Char {
 //
 // @see DiagnosticInfo::getSeverity()
 //
-// llgo:link (*OpaqueDiagnosticInfo).DiagInfoSeverity C.LLVMGetDiagInfoSeverity
-func (self *OpaqueDiagnosticInfo) DiagInfoSeverity() DiagnosticSeverity {
+// llgo:link DiagnosticInfoRef.DiagInfoSeverity C.LLVMGetDiagInfoSeverity
+func (self DiagnosticInfoRef) DiagInfoSeverity() DiagnosticSeverity {
 	return 0
 }
 
-// llgo:link (*OpaqueContext).MDKindIDInContext C.LLVMGetMDKindIDInContext
-func (self *OpaqueContext) MDKindIDInContext(Name *c.Char, SLen c.Uint) c.Uint {
+// llgo:link ContextRef.MDKindIDInContext C.LLVMGetMDKindIDInContext
+func (self ContextRef) MDKindIDInContext(Name *c.Char, SLen c.Uint) c.Uint {
 	return 0
 }
 
@@ -704,8 +708,8 @@ func GetMDKindID(Name *c.Char, SLen c.Uint) c.Uint
 
 // Maps a synchronization scope name to a ID unique within this context.
 //
-// llgo:link (*OpaqueContext).SyncScopeID C.LLVMGetSyncScopeID
-func (self *OpaqueContext) SyncScopeID(Name *c.Char, SLen c.SizeT) c.Uint {
+// llgo:link ContextRef.SyncScopeID C.LLVMGetSyncScopeID
+func (self ContextRef) SyncScopeID(Name *c.Char, SLen c.SizeT) c.Uint {
 	return 0
 }
 
@@ -727,37 +731,37 @@ func GetLastEnumAttributeKind() c.Uint
 
 // Create an enum attribute.
 //
-// llgo:link (*OpaqueContext).CreateEnumAttribute C.LLVMCreateEnumAttribute
-func (self *OpaqueContext) CreateEnumAttribute(KindID c.Uint, Val c.Uint64T) AttributeRef {
+// llgo:link ContextRef.CreateEnumAttribute C.LLVMCreateEnumAttribute
+func (self ContextRef) CreateEnumAttribute(KindID c.Uint, Val c.Uint64T) AttributeRef {
 	return nil
 }
 
 // Get the unique id corresponding to the enum attribute
 // passed as argument.
 //
-// llgo:link (*OpaqueAttributeRef).EnumAttributeKind C.LLVMGetEnumAttributeKind
-func (self *OpaqueAttributeRef) EnumAttributeKind() c.Uint {
+// llgo:link AttributeRef.EnumAttributeKind C.LLVMGetEnumAttributeKind
+func (self AttributeRef) EnumAttributeKind() c.Uint {
 	return 0
 }
 
 // Get the enum attribute's value. 0 is returned if none exists.
 //
-// llgo:link (*OpaqueAttributeRef).EnumAttributeValue C.LLVMGetEnumAttributeValue
-func (self *OpaqueAttributeRef) EnumAttributeValue() c.Uint64T {
+// llgo:link AttributeRef.EnumAttributeValue C.LLVMGetEnumAttributeValue
+func (self AttributeRef) EnumAttributeValue() c.Uint64T {
 	return 0
 }
 
 // Create a type attribute
 //
-// llgo:link (*OpaqueContext).CreateTypeAttribute C.LLVMCreateTypeAttribute
-func (self *OpaqueContext) CreateTypeAttribute(KindID c.Uint, type_ref TypeRef) AttributeRef {
+// llgo:link ContextRef.CreateTypeAttribute C.LLVMCreateTypeAttribute
+func (self ContextRef) CreateTypeAttribute(KindID c.Uint, type_ref TypeRef) AttributeRef {
 	return nil
 }
 
 // Get the type attribute's value.
 //
-// llgo:link (*OpaqueAttributeRef).TypeAttributeValue C.LLVMGetTypeAttributeValue
-func (self *OpaqueAttributeRef) TypeAttributeValue() TypeRef {
+// llgo:link AttributeRef.TypeAttributeValue C.LLVMGetTypeAttributeValue
+func (self AttributeRef) TypeAttributeValue() TypeRef {
 	return nil
 }
 
@@ -766,53 +770,53 @@ func (self *OpaqueAttributeRef) TypeAttributeValue() TypeRef {
 // LowerWords and UpperWords need to be NumBits divided by 64 rounded up
 // elements long.
 //
-// llgo:link (*OpaqueContext).CreateConstantRangeAttribute C.LLVMCreateConstantRangeAttribute
-func (self *OpaqueContext) CreateConstantRangeAttribute(KindID c.Uint, NumBits c.Uint, LowerWords *c.Uint64T, UpperWords *c.Uint64T) AttributeRef {
+// llgo:link ContextRef.CreateConstantRangeAttribute C.LLVMCreateConstantRangeAttribute
+func (self ContextRef) CreateConstantRangeAttribute(KindID c.Uint, NumBits c.Uint, LowerWords *c.Uint64T, UpperWords *c.Uint64T) AttributeRef {
 	return nil
 }
 
 // Create a string attribute.
 //
-// llgo:link (*OpaqueContext).CreateStringAttribute C.LLVMCreateStringAttribute
-func (self *OpaqueContext) CreateStringAttribute(K *c.Char, KLength c.Uint, V *c.Char, VLength c.Uint) AttributeRef {
+// llgo:link ContextRef.CreateStringAttribute C.LLVMCreateStringAttribute
+func (self ContextRef) CreateStringAttribute(K *c.Char, KLength c.Uint, V *c.Char, VLength c.Uint) AttributeRef {
 	return nil
 }
 
 // Get the string attribute's kind.
 //
-// llgo:link (*OpaqueAttributeRef).StringAttributeKind C.LLVMGetStringAttributeKind
-func (self *OpaqueAttributeRef) StringAttributeKind(Length *c.Uint) *c.Char {
+// llgo:link AttributeRef.StringAttributeKind C.LLVMGetStringAttributeKind
+func (self AttributeRef) StringAttributeKind(Length *c.Uint) *c.Char {
 	return nil
 }
 
 // Get the string attribute's value.
 //
-// llgo:link (*OpaqueAttributeRef).StringAttributeValue C.LLVMGetStringAttributeValue
-func (self *OpaqueAttributeRef) StringAttributeValue(Length *c.Uint) *c.Char {
+// llgo:link AttributeRef.StringAttributeValue C.LLVMGetStringAttributeValue
+func (self AttributeRef) StringAttributeValue(Length *c.Uint) *c.Char {
 	return nil
 }
 
 // Check for the different types of attributes.
 //
-// llgo:link (*OpaqueAttributeRef).IsEnumAttribute C.LLVMIsEnumAttribute
-func (self *OpaqueAttributeRef) IsEnumAttribute() Bool {
+// llgo:link AttributeRef.IsEnumAttribute C.LLVMIsEnumAttribute
+func (self AttributeRef) IsEnumAttribute() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueAttributeRef).IsStringAttribute C.LLVMIsStringAttribute
-func (self *OpaqueAttributeRef) IsStringAttribute() Bool {
+// llgo:link AttributeRef.IsStringAttribute C.LLVMIsStringAttribute
+func (self AttributeRef) IsStringAttribute() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueAttributeRef).IsTypeAttribute C.LLVMIsTypeAttribute
-func (self *OpaqueAttributeRef) IsTypeAttribute() Bool {
+// llgo:link AttributeRef.IsTypeAttribute C.LLVMIsTypeAttribute
+func (self AttributeRef) IsTypeAttribute() Bool {
 	return 0
 }
 
 // Obtain a Type from a context by its registered name.
 //
-// llgo:link (*OpaqueContext).TypeByName2 C.LLVMGetTypeByName2
-func (self *OpaqueContext) TypeByName2(Name *c.Char) TypeRef {
+// llgo:link ContextRef.TypeByName2 C.LLVMGetTypeByName2
+func (self ContextRef) TypeByName2(Name *c.Char) TypeRef {
 	return nil
 }
 
@@ -837,8 +841,8 @@ func ModuleCreateWithNameInContext(ModuleID *c.Char, C ContextRef) ModuleRef
 
 // Return an exact copy of the specified module.
 //
-// llgo:link (*OpaqueModule).CloneModule C.LLVMCloneModule
-func (self *OpaqueModule) CloneModule() ModuleRef {
+// llgo:link ModuleRef.CloneModule C.LLVMCloneModule
+func (self ModuleRef) CloneModule() ModuleRef {
 	return self
 }
 
@@ -847,8 +851,8 @@ func (self *OpaqueModule) CloneModule() ModuleRef {
 // This must be called for every created module or memory will be
 // leaked.
 //
-// llgo:link (*OpaqueModule).DisposeModule C.LLVMDisposeModule
-func (self *OpaqueModule) DisposeModule() {
+// llgo:link ModuleRef.DisposeModule C.LLVMDisposeModule
+func (self ModuleRef) DisposeModule() {
 }
 
 // Soon to be deprecated.
@@ -858,8 +862,8 @@ func (self *OpaqueModule) DisposeModule() {
 // non-instruction debug records instead of debug intrinsics for variable
 // location tracking.
 //
-// llgo:link (*OpaqueModule).IsNewDbgInfoFormat C.LLVMIsNewDbgInfoFormat
-func (self *OpaqueModule) IsNewDbgInfoFormat() Bool {
+// llgo:link ModuleRef.IsNewDbgInfoFormat C.LLVMIsNewDbgInfoFormat
+func (self ModuleRef) IsNewDbgInfoFormat() Bool {
 	return 0
 }
 
@@ -868,8 +872,8 @@ func (self *OpaqueModule) IsNewDbgInfoFormat() Bool {
 //
 // Convert module into desired debug info format.
 //
-// llgo:link (*OpaqueModule).SetIsNewDbgInfoFormat C.LLVMSetIsNewDbgInfoFormat
-func (self *OpaqueModule) SetIsNewDbgInfoFormat(UseNewFormat Bool) {
+// llgo:link ModuleRef.SetIsNewDbgInfoFormat C.LLVMSetIsNewDbgInfoFormat
+func (self ModuleRef) SetIsNewDbgInfoFormat(UseNewFormat Bool) {
 }
 
 // Obtain the identifier of a module.
@@ -879,8 +883,8 @@ func (self *OpaqueModule) SetIsNewDbgInfoFormat(UseNewFormat Bool) {
 // @return The identifier of M.
 // @see Module::getModuleIdentifier()
 //
-// llgo:link (*OpaqueModule).ModuleIdentifier C.LLVMGetModuleIdentifier
-func (self *OpaqueModule) ModuleIdentifier(Len *c.SizeT) *c.Char {
+// llgo:link ModuleRef.ModuleIdentifier C.LLVMGetModuleIdentifier
+func (self ModuleRef) ModuleIdentifier(Len *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -891,8 +895,8 @@ func (self *OpaqueModule) ModuleIdentifier(Len *c.SizeT) *c.Char {
 // @param Len Length of Ident
 // @see Module::setModuleIdentifier()
 //
-// llgo:link (*OpaqueModule).SetModuleIdentifier C.LLVMSetModuleIdentifier
-func (self *OpaqueModule) SetModuleIdentifier(Ident *c.Char, Len c.SizeT) {
+// llgo:link ModuleRef.SetModuleIdentifier C.LLVMSetModuleIdentifier
+func (self ModuleRef) SetModuleIdentifier(Ident *c.Char, Len c.SizeT) {
 }
 
 // Obtain the module's original source file name.
@@ -902,8 +906,8 @@ func (self *OpaqueModule) SetModuleIdentifier(Ident *c.Char, Len c.SizeT) {
 // @return The original source file name of M
 // @see Module::getSourceFileName()
 //
-// llgo:link (*OpaqueModule).SourceFileName C.LLVMGetSourceFileName
-func (self *OpaqueModule) SourceFileName(Len *c.SizeT) *c.Char {
+// llgo:link ModuleRef.SourceFileName C.LLVMGetSourceFileName
+func (self ModuleRef) SourceFileName(Len *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -915,8 +919,8 @@ func (self *OpaqueModule) SourceFileName(Len *c.SizeT) *c.Char {
 // @param Len Length of Name
 // @see Module::setSourceFileName()
 //
-// llgo:link (*OpaqueModule).SetSourceFileName C.LLVMSetSourceFileName
-func (self *OpaqueModule) SetSourceFileName(Name *c.Char, Len c.SizeT) {
+// llgo:link ModuleRef.SetSourceFileName C.LLVMSetSourceFileName
+func (self ModuleRef) SetSourceFileName(Name *c.Char, Len c.SizeT) {
 }
 
 // Obtain the data layout for a module.
@@ -927,13 +931,13 @@ func (self *OpaqueModule) SetSourceFileName(Name *c.Char, Len c.SizeT) {
 // but match the name of another method on the module. Prefer the use
 // of LLVMGetDataLayoutStr, which is not ambiguous.
 //
-// llgo:link (*OpaqueModule).DataLayoutStr C.LLVMGetDataLayoutStr
-func (self *OpaqueModule) DataLayoutStr() *c.Char {
+// llgo:link ModuleRef.DataLayoutStr C.LLVMGetDataLayoutStr
+func (self ModuleRef) DataLayoutStr() *c.Char {
 	return nil
 }
 
-// llgo:link (*OpaqueModule).DataLayout C.LLVMGetDataLayout
-func (self *OpaqueModule) DataLayout() *c.Char {
+// llgo:link ModuleRef.DataLayout C.LLVMGetDataLayout
+func (self ModuleRef) DataLayout() *c.Char {
 	return nil
 }
 
@@ -941,16 +945,16 @@ func (self *OpaqueModule) DataLayout() *c.Char {
 //
 // @see Module::setDataLayout()
 //
-// llgo:link (*OpaqueModule).SetDataLayout C.LLVMSetDataLayout
-func (self *OpaqueModule) SetDataLayout(DataLayoutStr *c.Char) {
+// llgo:link ModuleRef.SetDataLayout C.LLVMSetDataLayout
+func (self ModuleRef) SetDataLayout(DataLayoutStr *c.Char) {
 }
 
 // Obtain the target triple for a module.
 //
 // @see Module::getTargetTriple()
 //
-// llgo:link (*OpaqueModule).Target C.LLVMGetTarget
-func (self *OpaqueModule) Target() *c.Char {
+// llgo:link ModuleRef.Target C.LLVMGetTarget
+func (self ModuleRef) Target() *c.Char {
 	return nil
 }
 
@@ -958,8 +962,8 @@ func (self *OpaqueModule) Target() *c.Char {
 //
 // @see Module::setTargetTriple()
 //
-// llgo:link (*OpaqueModule).SetTarget C.LLVMSetTarget
-func (self *OpaqueModule) SetTarget(Triple *c.Char) {
+// llgo:link ModuleRef.SetTarget C.LLVMSetTarget
+func (self ModuleRef) SetTarget(Triple *c.Char) {
 }
 
 // Returns the module flags as an array of flag-key-value triples.  The caller
@@ -968,23 +972,23 @@ func (self *OpaqueModule) SetTarget(Triple *c.Char) {
 //
 // @see Module::getModuleFlagsMetadata()
 //
-// llgo:link (*OpaqueModule).CopyModuleFlagsMetadata C.LLVMCopyModuleFlagsMetadata
-func (self *OpaqueModule) CopyModuleFlagsMetadata(Len *c.SizeT) *ModuleFlagEntry {
+// llgo:link ModuleRef.CopyModuleFlagsMetadata C.LLVMCopyModuleFlagsMetadata
+func (self ModuleRef) CopyModuleFlagsMetadata(Len *c.SizeT) *ModuleFlagEntry {
 	return nil
 }
 
 // Destroys module flags metadata entries.
 //
-// llgo:link OpaqueModuleFlagEntry.DisposeModuleFlagsMetadata C.LLVMDisposeModuleFlagsMetadata
-func (self OpaqueModuleFlagEntry) DisposeModuleFlagsMetadata() {
+// llgo:link (*ModuleFlagEntry).DisposeModuleFlagsMetadata C.LLVMDisposeModuleFlagsMetadata
+func (self *ModuleFlagEntry) DisposeModuleFlagsMetadata() {
 }
 
 // Returns the flag behavior for a module flag entry at a specific index.
 //
 // @see Module::ModuleFlagEntry::Behavior
 //
-// llgo:link OpaqueModuleFlagEntry.ModuleFlagEntriesGetFlagBehavior C.LLVMModuleFlagEntriesGetFlagBehavior
-func (self OpaqueModuleFlagEntry) ModuleFlagEntriesGetFlagBehavior(Index c.Uint) ModuleFlagBehavior {
+// llgo:link (*ModuleFlagEntry).ModuleFlagEntriesGetFlagBehavior C.LLVMModuleFlagEntriesGetFlagBehavior
+func (self *ModuleFlagEntry) ModuleFlagEntriesGetFlagBehavior(Index c.Uint) ModuleFlagBehavior {
 	return 0
 }
 
@@ -992,8 +996,8 @@ func (self OpaqueModuleFlagEntry) ModuleFlagEntriesGetFlagBehavior(Index c.Uint)
 //
 // @see Module::ModuleFlagEntry::Key
 //
-// llgo:link OpaqueModuleFlagEntry.ModuleFlagEntriesGetKey C.LLVMModuleFlagEntriesGetKey
-func (self OpaqueModuleFlagEntry) ModuleFlagEntriesGetKey(Index c.Uint, Len *c.SizeT) *c.Char {
+// llgo:link (*ModuleFlagEntry).ModuleFlagEntriesGetKey C.LLVMModuleFlagEntriesGetKey
+func (self *ModuleFlagEntry) ModuleFlagEntriesGetKey(Index c.Uint, Len *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -1001,8 +1005,8 @@ func (self OpaqueModuleFlagEntry) ModuleFlagEntriesGetKey(Index c.Uint, Len *c.S
 //
 // @see Module::ModuleFlagEntry::Val
 //
-// llgo:link OpaqueModuleFlagEntry.ModuleFlagEntriesGetMetadata C.LLVMModuleFlagEntriesGetMetadata
-func (self OpaqueModuleFlagEntry) ModuleFlagEntriesGetMetadata(Index c.Uint) MetadataRef {
+// llgo:link (*ModuleFlagEntry).ModuleFlagEntriesGetMetadata C.LLVMModuleFlagEntriesGetMetadata
+func (self *ModuleFlagEntry) ModuleFlagEntriesGetMetadata(Index c.Uint) MetadataRef {
 	return nil
 }
 
@@ -1011,8 +1015,8 @@ func (self OpaqueModuleFlagEntry) ModuleFlagEntriesGetMetadata(Index c.Uint) Met
 //
 // @see Module::getModuleFlag()
 //
-// llgo:link (*OpaqueModule).ModuleFlag C.LLVMGetModuleFlag
-func (self *OpaqueModule) ModuleFlag(Key *c.Char, KeyLen c.SizeT) MetadataRef {
+// llgo:link ModuleRef.ModuleFlag C.LLVMGetModuleFlag
+func (self ModuleRef) ModuleFlag(Key *c.Char, KeyLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -1021,16 +1025,16 @@ func (self *OpaqueModule) ModuleFlag(Key *c.Char, KeyLen c.SizeT) MetadataRef {
 //
 // @see Module::addModuleFlag()
 //
-// llgo:link (*OpaqueModule).AddModuleFlag C.LLVMAddModuleFlag
-func (self *OpaqueModule) AddModuleFlag(Behavior ModuleFlagBehavior, Key *c.Char, KeyLen c.SizeT, Val MetadataRef) {
+// llgo:link ModuleRef.AddModuleFlag C.LLVMAddModuleFlag
+func (self ModuleRef) AddModuleFlag(Behavior ModuleFlagBehavior, Key *c.Char, KeyLen c.SizeT, Val MetadataRef) {
 }
 
 // Dump a representation of a module to stderr.
 //
 // @see Module::dump()
 //
-// llgo:link (*OpaqueModule).DumpModule C.LLVMDumpModule
-func (self *OpaqueModule) DumpModule() {
+// llgo:link ModuleRef.DumpModule C.LLVMDumpModule
+func (self ModuleRef) DumpModule() {
 }
 
 // Print a representation of a module to a file. The ErrorMessage needs to be
@@ -1038,8 +1042,8 @@ func (self *OpaqueModule) DumpModule() {
 //
 // @see Module::print()
 //
-// llgo:link (*OpaqueModule).PrintModuleToFile C.LLVMPrintModuleToFile
-func (self *OpaqueModule) PrintModuleToFile(Filename *c.Char, ErrorMessage **c.Char) Bool {
+// llgo:link ModuleRef.PrintModuleToFile C.LLVMPrintModuleToFile
+func (self ModuleRef) PrintModuleToFile(Filename *c.Char, ErrorMessage **c.Char) Bool {
 	return 0
 }
 
@@ -1048,8 +1052,8 @@ func (self *OpaqueModule) PrintModuleToFile(Filename *c.Char, ErrorMessage **c.C
 //
 // @see Module::print()
 //
-// llgo:link (*OpaqueModule).PrintModuleToString C.LLVMPrintModuleToString
-func (self *OpaqueModule) PrintModuleToString() *c.Char {
+// llgo:link ModuleRef.PrintModuleToString C.LLVMPrintModuleToString
+func (self ModuleRef) PrintModuleToString() *c.Char {
 	return nil
 }
 
@@ -1057,8 +1061,8 @@ func (self *OpaqueModule) PrintModuleToString() *c.Char {
 //
 // @see Module::getModuleInlineAsm()
 //
-// llgo:link (*OpaqueModule).ModuleInlineAsm C.LLVMGetModuleInlineAsm
-func (self *OpaqueModule) ModuleInlineAsm(Len *c.SizeT) *c.Char {
+// llgo:link ModuleRef.ModuleInlineAsm C.LLVMGetModuleInlineAsm
+func (self ModuleRef) ModuleInlineAsm(Len *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -1066,45 +1070,45 @@ func (self *OpaqueModule) ModuleInlineAsm(Len *c.SizeT) *c.Char {
 //
 // @see Module::setModuleInlineAsm()
 //
-// llgo:link (*OpaqueModule).SetModuleInlineAsm2 C.LLVMSetModuleInlineAsm2
-func (self *OpaqueModule) SetModuleInlineAsm2(Asm *c.Char, Len c.SizeT) {
+// llgo:link ModuleRef.SetModuleInlineAsm2 C.LLVMSetModuleInlineAsm2
+func (self ModuleRef) SetModuleInlineAsm2(Asm *c.Char, Len c.SizeT) {
 }
 
 // Append inline assembly to a module.
 //
 // @see Module::appendModuleInlineAsm()
 //
-// llgo:link (*OpaqueModule).AppendModuleInlineAsm C.LLVMAppendModuleInlineAsm
-func (self *OpaqueModule) AppendModuleInlineAsm(Asm *c.Char, Len c.SizeT) {
+// llgo:link ModuleRef.AppendModuleInlineAsm C.LLVMAppendModuleInlineAsm
+func (self ModuleRef) AppendModuleInlineAsm(Asm *c.Char, Len c.SizeT) {
 }
 
 // Create the specified uniqued inline asm string.
 //
 // @see InlineAsm::get()
 //
-// llgo:link (*OpaqueType).InlineAsm C.LLVMGetInlineAsm
-func (self *OpaqueType) InlineAsm(AsmString *c.Char, AsmStringSize c.SizeT, Constraints *c.Char, ConstraintsSize c.SizeT, HasSideEffects Bool, IsAlignStack Bool, Dialect InlineAsmDialect, CanThrow Bool) ValueRef {
+// llgo:link TypeRef.InlineAsm C.LLVMGetInlineAsm
+func (self TypeRef) InlineAsm(AsmString *c.Char, AsmStringSize c.SizeT, Constraints *c.Char, ConstraintsSize c.SizeT, HasSideEffects Bool, IsAlignStack Bool, Dialect InlineAsmDialect, CanThrow Bool) ValueRef {
 	return nil
 }
 
 // Get the template string used for an inline assembly snippet
 //
-// llgo:link (*OpaqueValue).InlineAsmAsmString C.LLVMGetInlineAsmAsmString
-func (self *OpaqueValue) InlineAsmAsmString(Len *c.SizeT) *c.Char {
+// llgo:link ValueRef.InlineAsmAsmString C.LLVMGetInlineAsmAsmString
+func (self ValueRef) InlineAsmAsmString(Len *c.SizeT) *c.Char {
 	return nil
 }
 
 // Get the raw constraint string for an inline assembly snippet
 //
-// llgo:link (*OpaqueValue).InlineAsmConstraintString C.LLVMGetInlineAsmConstraintString
-func (self *OpaqueValue) InlineAsmConstraintString(Len *c.SizeT) *c.Char {
+// llgo:link ValueRef.InlineAsmConstraintString C.LLVMGetInlineAsmConstraintString
+func (self ValueRef) InlineAsmConstraintString(Len *c.SizeT) *c.Char {
 	return nil
 }
 
 // Get the dialect used by the inline asm snippet
 //
-// llgo:link (*OpaqueValue).InlineAsmDialect C.LLVMGetInlineAsmDialect
-func (self *OpaqueValue) InlineAsmDialect() InlineAsmDialect {
+// llgo:link ValueRef.InlineAsmDialect C.LLVMGetInlineAsmDialect
+func (self ValueRef) InlineAsmDialect() InlineAsmDialect {
 	return 0
 }
 
@@ -1113,29 +1117,29 @@ func (self *OpaqueValue) InlineAsmDialect() InlineAsmDialect {
 //
 // @see LLVMGetInlineAsm
 //
-// llgo:link (*OpaqueValue).InlineAsmFunctionType C.LLVMGetInlineAsmFunctionType
-func (self *OpaqueValue) InlineAsmFunctionType() TypeRef {
+// llgo:link ValueRef.InlineAsmFunctionType C.LLVMGetInlineAsmFunctionType
+func (self ValueRef) InlineAsmFunctionType() TypeRef {
 	return nil
 }
 
 // Get if the inline asm snippet has side effects
 //
-// llgo:link (*OpaqueValue).InlineAsmHasSideEffects C.LLVMGetInlineAsmHasSideEffects
-func (self *OpaqueValue) InlineAsmHasSideEffects() Bool {
+// llgo:link ValueRef.InlineAsmHasSideEffects C.LLVMGetInlineAsmHasSideEffects
+func (self ValueRef) InlineAsmHasSideEffects() Bool {
 	return 0
 }
 
 // Get if the inline asm snippet needs an aligned stack
 //
-// llgo:link (*OpaqueValue).InlineAsmNeedsAlignedStack C.LLVMGetInlineAsmNeedsAlignedStack
-func (self *OpaqueValue) InlineAsmNeedsAlignedStack() Bool {
+// llgo:link ValueRef.InlineAsmNeedsAlignedStack C.LLVMGetInlineAsmNeedsAlignedStack
+func (self ValueRef) InlineAsmNeedsAlignedStack() Bool {
 	return 0
 }
 
 // Get if the inline asm snippet may unwind the stack
 //
-// llgo:link (*OpaqueValue).InlineAsmCanUnwind C.LLVMGetInlineAsmCanUnwind
-func (self *OpaqueValue) InlineAsmCanUnwind() Bool {
+// llgo:link ValueRef.InlineAsmCanUnwind C.LLVMGetInlineAsmCanUnwind
+func (self ValueRef) InlineAsmCanUnwind() Bool {
 	return 0
 }
 
@@ -1143,15 +1147,15 @@ func (self *OpaqueValue) InlineAsmCanUnwind() Bool {
 //
 // @see Module::getContext()
 //
-// llgo:link (*OpaqueModule).ModuleContext C.LLVMGetModuleContext
-func (self *OpaqueModule) ModuleContext() ContextRef {
+// llgo:link ModuleRef.ModuleContext C.LLVMGetModuleContext
+func (self ModuleRef) ModuleContext() ContextRef {
 	return nil
 }
 
 // Deprecated: Use LLVMGetTypeByName2 instead.
 //
-// llgo:link (*OpaqueModule).TypeByName C.LLVMGetTypeByName
-func (self *OpaqueModule) TypeByName(Name *c.Char) TypeRef {
+// llgo:link ModuleRef.TypeByName C.LLVMGetTypeByName
+func (self ModuleRef) TypeByName(Name *c.Char) TypeRef {
 	return nil
 }
 
@@ -1159,8 +1163,8 @@ func (self *OpaqueModule) TypeByName(Name *c.Char) TypeRef {
 //
 // @see llvm::Module::named_metadata_begin()
 //
-// llgo:link (*OpaqueModule).FirstNamedMetadata C.LLVMGetFirstNamedMetadata
-func (self *OpaqueModule) FirstNamedMetadata() NamedMDNodeRef {
+// llgo:link ModuleRef.FirstNamedMetadata C.LLVMGetFirstNamedMetadata
+func (self ModuleRef) FirstNamedMetadata() NamedMDNodeRef {
 	return nil
 }
 
@@ -1168,8 +1172,8 @@ func (self *OpaqueModule) FirstNamedMetadata() NamedMDNodeRef {
 //
 // @see llvm::Module::named_metadata_end()
 //
-// llgo:link (*OpaqueModule).LastNamedMetadata C.LLVMGetLastNamedMetadata
-func (self *OpaqueModule) LastNamedMetadata() NamedMDNodeRef {
+// llgo:link ModuleRef.LastNamedMetadata C.LLVMGetLastNamedMetadata
+func (self ModuleRef) LastNamedMetadata() NamedMDNodeRef {
 	return nil
 }
 
@@ -1178,8 +1182,8 @@ func (self *OpaqueModule) LastNamedMetadata() NamedMDNodeRef {
 // Returns NULL if the iterator was already at the end and there are no more
 // named metadata nodes.
 //
-// llgo:link (*OpaqueNamedMDNode).NextNamedMetadata C.LLVMGetNextNamedMetadata
-func (self *OpaqueNamedMDNode) NextNamedMetadata() NamedMDNodeRef {
+// llgo:link NamedMDNodeRef.NextNamedMetadata C.LLVMGetNextNamedMetadata
+func (self NamedMDNodeRef) NextNamedMetadata() NamedMDNodeRef {
 	return self
 }
 
@@ -1188,8 +1192,8 @@ func (self *OpaqueNamedMDNode) NextNamedMetadata() NamedMDNodeRef {
 // Returns NULL if the iterator was already at the beginning and there are
 // no previous named metadata nodes.
 //
-// llgo:link (*OpaqueNamedMDNode).PreviousNamedMetadata C.LLVMGetPreviousNamedMetadata
-func (self *OpaqueNamedMDNode) PreviousNamedMetadata() NamedMDNodeRef {
+// llgo:link NamedMDNodeRef.PreviousNamedMetadata C.LLVMGetPreviousNamedMetadata
+func (self NamedMDNodeRef) PreviousNamedMetadata() NamedMDNodeRef {
 	return self
 }
 
@@ -1198,8 +1202,8 @@ func (self *OpaqueNamedMDNode) PreviousNamedMetadata() NamedMDNodeRef {
 //
 // @see llvm::Module::getNamedMetadata()
 //
-// llgo:link (*OpaqueModule).NamedMetadata C.LLVMGetNamedMetadata
-func (self *OpaqueModule) NamedMetadata(Name *c.Char, NameLen c.SizeT) NamedMDNodeRef {
+// llgo:link ModuleRef.NamedMetadata C.LLVMGetNamedMetadata
+func (self ModuleRef) NamedMetadata(Name *c.Char, NameLen c.SizeT) NamedMDNodeRef {
 	return nil
 }
 
@@ -1208,8 +1212,8 @@ func (self *OpaqueModule) NamedMetadata(Name *c.Char, NameLen c.SizeT) NamedMDNo
 //
 // @see llvm::Module::getOrInsertNamedMetadata()
 //
-// llgo:link (*OpaqueModule).OrInsertNamedMetadata C.LLVMGetOrInsertNamedMetadata
-func (self *OpaqueModule) OrInsertNamedMetadata(Name *c.Char, NameLen c.SizeT) NamedMDNodeRef {
+// llgo:link ModuleRef.OrInsertNamedMetadata C.LLVMGetOrInsertNamedMetadata
+func (self ModuleRef) OrInsertNamedMetadata(Name *c.Char, NameLen c.SizeT) NamedMDNodeRef {
 	return nil
 }
 
@@ -1217,8 +1221,8 @@ func (self *OpaqueModule) OrInsertNamedMetadata(Name *c.Char, NameLen c.SizeT) N
 //
 // @see llvm::NamedMDNode::getName()
 //
-// llgo:link (*OpaqueNamedMDNode).NamedMetadataName C.LLVMGetNamedMetadataName
-func (self *OpaqueNamedMDNode) NamedMetadataName(NameLen *c.SizeT) *c.Char {
+// llgo:link NamedMDNodeRef.NamedMetadataName C.LLVMGetNamedMetadataName
+func (self NamedMDNodeRef) NamedMetadataName(NameLen *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -1226,8 +1230,8 @@ func (self *OpaqueNamedMDNode) NamedMetadataName(NameLen *c.SizeT) *c.Char {
 //
 // @see llvm::Module::getNamedMetadata()
 //
-// llgo:link (*OpaqueModule).NamedMetadataNumOperands C.LLVMGetNamedMetadataNumOperands
-func (self *OpaqueModule) NamedMetadataNumOperands(Name *c.Char) c.Uint {
+// llgo:link ModuleRef.NamedMetadataNumOperands C.LLVMGetNamedMetadataNumOperands
+func (self ModuleRef) NamedMetadataNumOperands(Name *c.Char) c.Uint {
 	return 0
 }
 
@@ -1241,8 +1245,8 @@ func (self *OpaqueModule) NamedMetadataNumOperands(Name *c.Char) c.Uint {
 // @see llvm::Module::getNamedMetadata()
 // @see llvm::MDNode::getOperand()
 //
-// llgo:link (*OpaqueModule).NamedMetadataOperands C.LLVMGetNamedMetadataOperands
-func (self *OpaqueModule) NamedMetadataOperands(Name *c.Char, Dest *ValueRef) {
+// llgo:link ModuleRef.NamedMetadataOperands C.LLVMGetNamedMetadataOperands
+func (self ModuleRef) NamedMetadataOperands(Name *c.Char, Dest *ValueRef) {
 }
 
 // Add an operand to named metadata.
@@ -1250,8 +1254,8 @@ func (self *OpaqueModule) NamedMetadataOperands(Name *c.Char, Dest *ValueRef) {
 // @see llvm::Module::getNamedMetadata()
 // @see llvm::MDNode::addOperand()
 //
-// llgo:link (*OpaqueModule).AddNamedMetadataOperand C.LLVMAddNamedMetadataOperand
-func (self *OpaqueModule) AddNamedMetadataOperand(Name *c.Char, Val ValueRef) {
+// llgo:link ModuleRef.AddNamedMetadataOperand C.LLVMAddNamedMetadataOperand
+func (self ModuleRef) AddNamedMetadataOperand(Name *c.Char, Val ValueRef) {
 }
 
 // Return the directory of the debug location for this value, which must be
@@ -1261,8 +1265,8 @@ func (self *OpaqueModule) AddNamedMetadataOperand(Name *c.Char, Val ValueRef) {
 // @see llvm::GlobalVariable::getDebugInfo()
 // @see llvm::Function::getSubprogram()
 //
-// llgo:link (*OpaqueValue).DebugLocDirectory C.LLVMGetDebugLocDirectory
-func (self *OpaqueValue) DebugLocDirectory(Length *c.Uint) *c.Char {
+// llgo:link ValueRef.DebugLocDirectory C.LLVMGetDebugLocDirectory
+func (self ValueRef) DebugLocDirectory(Length *c.Uint) *c.Char {
 	return nil
 }
 
@@ -1273,8 +1277,8 @@ func (self *OpaqueValue) DebugLocDirectory(Length *c.Uint) *c.Char {
 // @see llvm::GlobalVariable::getDebugInfo()
 // @see llvm::Function::getSubprogram()
 //
-// llgo:link (*OpaqueValue).DebugLocFilename C.LLVMGetDebugLocFilename
-func (self *OpaqueValue) DebugLocFilename(Length *c.Uint) *c.Char {
+// llgo:link ValueRef.DebugLocFilename C.LLVMGetDebugLocFilename
+func (self ValueRef) DebugLocFilename(Length *c.Uint) *c.Char {
 	return nil
 }
 
@@ -1285,8 +1289,8 @@ func (self *OpaqueValue) DebugLocFilename(Length *c.Uint) *c.Char {
 // @see llvm::GlobalVariable::getDebugInfo()
 // @see llvm::Function::getSubprogram()
 //
-// llgo:link (*OpaqueValue).DebugLocLine C.LLVMGetDebugLocLine
-func (self *OpaqueValue) DebugLocLine() c.Uint {
+// llgo:link ValueRef.DebugLocLine C.LLVMGetDebugLocLine
+func (self ValueRef) DebugLocLine() c.Uint {
 	return 0
 }
 
@@ -1295,8 +1299,8 @@ func (self *OpaqueValue) DebugLocLine() c.Uint {
 //
 // @see llvm::Instruction::getDebugLoc()
 //
-// llgo:link (*OpaqueValue).DebugLocColumn C.LLVMGetDebugLocColumn
-func (self *OpaqueValue) DebugLocColumn() c.Uint {
+// llgo:link ValueRef.DebugLocColumn C.LLVMGetDebugLocColumn
+func (self ValueRef) DebugLocColumn() c.Uint {
 	return 0
 }
 
@@ -1304,8 +1308,8 @@ func (self *OpaqueValue) DebugLocColumn() c.Uint {
 //
 // @see llvm::Function::Create()
 //
-// llgo:link (*OpaqueModule).AddFunction C.LLVMAddFunction
-func (self *OpaqueModule) AddFunction(Name *c.Char, FunctionTy TypeRef) ValueRef {
+// llgo:link ModuleRef.AddFunction C.LLVMAddFunction
+func (self ModuleRef) AddFunction(Name *c.Char, FunctionTy TypeRef) ValueRef {
 	return nil
 }
 
@@ -1319,8 +1323,8 @@ func (self *OpaqueModule) AddFunction(Name *c.Char, FunctionTy TypeRef) ValueRef
 //
 // @see llvm::Module::getOrInsertFunction()
 //
-// llgo:link (*OpaqueModule).OrInsertFunction C.LLVMGetOrInsertFunction
-func (self *OpaqueModule) OrInsertFunction(Name *c.Char, NameLen c.SizeT, FunctionTy TypeRef) ValueRef {
+// llgo:link ModuleRef.OrInsertFunction C.LLVMGetOrInsertFunction
+func (self ModuleRef) OrInsertFunction(Name *c.Char, NameLen c.SizeT, FunctionTy TypeRef) ValueRef {
 	return nil
 }
 
@@ -1330,8 +1334,8 @@ func (self *OpaqueModule) OrInsertFunction(Name *c.Char, NameLen c.SizeT, Functi
 //
 // @see llvm::Module::getFunction()
 //
-// llgo:link (*OpaqueModule).NamedFunction C.LLVMGetNamedFunction
-func (self *OpaqueModule) NamedFunction(Name *c.Char) ValueRef {
+// llgo:link ModuleRef.NamedFunction C.LLVMGetNamedFunction
+func (self ModuleRef) NamedFunction(Name *c.Char) ValueRef {
 	return nil
 }
 
@@ -1341,8 +1345,8 @@ func (self *OpaqueModule) NamedFunction(Name *c.Char) ValueRef {
 //
 // @see llvm::Module::getFunction()
 //
-// llgo:link (*OpaqueModule).NamedFunctionWithLength C.LLVMGetNamedFunctionWithLength
-func (self *OpaqueModule) NamedFunctionWithLength(Name *c.Char, Length c.SizeT) ValueRef {
+// llgo:link ModuleRef.NamedFunctionWithLength C.LLVMGetNamedFunctionWithLength
+func (self ModuleRef) NamedFunctionWithLength(Name *c.Char, Length c.SizeT) ValueRef {
 	return nil
 }
 
@@ -1350,8 +1354,8 @@ func (self *OpaqueModule) NamedFunctionWithLength(Name *c.Char, Length c.SizeT) 
 //
 // @see llvm::Module::begin()
 //
-// llgo:link (*OpaqueModule).FirstFunction C.LLVMGetFirstFunction
-func (self *OpaqueModule) FirstFunction() ValueRef {
+// llgo:link ModuleRef.FirstFunction C.LLVMGetFirstFunction
+func (self ModuleRef) FirstFunction() ValueRef {
 	return nil
 }
 
@@ -1359,8 +1363,8 @@ func (self *OpaqueModule) FirstFunction() ValueRef {
 //
 // @see llvm::Module::end()
 //
-// llgo:link (*OpaqueModule).LastFunction C.LLVMGetLastFunction
-func (self *OpaqueModule) LastFunction() ValueRef {
+// llgo:link ModuleRef.LastFunction C.LLVMGetLastFunction
+func (self ModuleRef) LastFunction() ValueRef {
 	return nil
 }
 
@@ -1369,8 +1373,8 @@ func (self *OpaqueModule) LastFunction() ValueRef {
 // Returns NULL if the iterator was already at the end and there are no more
 // functions.
 //
-// llgo:link (*OpaqueValue).NextFunction C.LLVMGetNextFunction
-func (self *OpaqueValue) NextFunction() ValueRef {
+// llgo:link ValueRef.NextFunction C.LLVMGetNextFunction
+func (self ValueRef) NextFunction() ValueRef {
 	return self
 }
 
@@ -1379,23 +1383,23 @@ func (self *OpaqueValue) NextFunction() ValueRef {
 // Returns NULL if the iterator was already at the beginning and there are
 // no previous functions.
 //
-// llgo:link (*OpaqueValue).PreviousFunction C.LLVMGetPreviousFunction
-func (self *OpaqueValue) PreviousFunction() ValueRef {
+// llgo:link ValueRef.PreviousFunction C.LLVMGetPreviousFunction
+func (self ValueRef) PreviousFunction() ValueRef {
 	return self
 }
 
 // Deprecated: Use LLVMSetModuleInlineAsm2 instead.
 //
-// llgo:link (*OpaqueModule).SetModuleInlineAsm C.LLVMSetModuleInlineAsm
-func (self *OpaqueModule) SetModuleInlineAsm(Asm *c.Char) {
+// llgo:link ModuleRef.SetModuleInlineAsm C.LLVMSetModuleInlineAsm
+func (self ModuleRef) SetModuleInlineAsm(Asm *c.Char) {
 }
 
 // Obtain the enumerated type of a Type instance.
 //
 // @see llvm::Type:getTypeID()
 //
-// llgo:link (*OpaqueType).TypeKind C.LLVMGetTypeKind
-func (self *OpaqueType) TypeKind() TypeKind {
+// llgo:link TypeRef.TypeKind C.LLVMGetTypeKind
+func (self TypeRef) TypeKind() TypeKind {
 	return 0
 }
 
@@ -1405,8 +1409,8 @@ func (self *OpaqueType) TypeKind() TypeKind {
 //
 // @see llvm::Type::isSized()
 //
-// llgo:link (*OpaqueType).TypeIsSized C.LLVMTypeIsSized
-func (self *OpaqueType) TypeIsSized() Bool {
+// llgo:link TypeRef.TypeIsSized C.LLVMTypeIsSized
+func (self TypeRef) TypeIsSized() Bool {
 	return 0
 }
 
@@ -1414,8 +1418,8 @@ func (self *OpaqueType) TypeIsSized() Bool {
 //
 // @see llvm::Type::getContext()
 //
-// llgo:link (*OpaqueType).TypeContext C.LLVMGetTypeContext
-func (self *OpaqueType) TypeContext() ContextRef {
+// llgo:link TypeRef.TypeContext C.LLVMGetTypeContext
+func (self TypeRef) TypeContext() ContextRef {
 	return nil
 }
 
@@ -1423,8 +1427,8 @@ func (self *OpaqueType) TypeContext() ContextRef {
 //
 // @see llvm::Type::dump()
 //
-// llgo:link (*OpaqueType).DumpType C.LLVMDumpType
-func (self *OpaqueType) DumpType() {
+// llgo:link TypeRef.DumpType C.LLVMDumpType
+func (self TypeRef) DumpType() {
 }
 
 // Return a string representation of the type. Use
@@ -1432,45 +1436,45 @@ func (self *OpaqueType) DumpType() {
 //
 // @see llvm::Type::print()
 //
-// llgo:link (*OpaqueType).PrintTypeToString C.LLVMPrintTypeToString
-func (self *OpaqueType) PrintTypeToString() *c.Char {
+// llgo:link TypeRef.PrintTypeToString C.LLVMPrintTypeToString
+func (self TypeRef) PrintTypeToString() *c.Char {
 	return nil
 }
 
 // Obtain an integer type from a context with specified bit width.
 //
-// llgo:link (*OpaqueContext).Int1TypeInContext C.LLVMInt1TypeInContext
-func (self *OpaqueContext) Int1TypeInContext() TypeRef {
+// llgo:link ContextRef.Int1TypeInContext C.LLVMInt1TypeInContext
+func (self ContextRef) Int1TypeInContext() TypeRef {
 	return nil
 }
 
-// llgo:link (*OpaqueContext).Int8TypeInContext C.LLVMInt8TypeInContext
-func (self *OpaqueContext) Int8TypeInContext() TypeRef {
+// llgo:link ContextRef.Int8TypeInContext C.LLVMInt8TypeInContext
+func (self ContextRef) Int8TypeInContext() TypeRef {
 	return nil
 }
 
-// llgo:link (*OpaqueContext).Int16TypeInContext C.LLVMInt16TypeInContext
-func (self *OpaqueContext) Int16TypeInContext() TypeRef {
+// llgo:link ContextRef.Int16TypeInContext C.LLVMInt16TypeInContext
+func (self ContextRef) Int16TypeInContext() TypeRef {
 	return nil
 }
 
-// llgo:link (*OpaqueContext).Int32TypeInContext C.LLVMInt32TypeInContext
-func (self *OpaqueContext) Int32TypeInContext() TypeRef {
+// llgo:link ContextRef.Int32TypeInContext C.LLVMInt32TypeInContext
+func (self ContextRef) Int32TypeInContext() TypeRef {
 	return nil
 }
 
-// llgo:link (*OpaqueContext).Int64TypeInContext C.LLVMInt64TypeInContext
-func (self *OpaqueContext) Int64TypeInContext() TypeRef {
+// llgo:link ContextRef.Int64TypeInContext C.LLVMInt64TypeInContext
+func (self ContextRef) Int64TypeInContext() TypeRef {
 	return nil
 }
 
-// llgo:link (*OpaqueContext).Int128TypeInContext C.LLVMInt128TypeInContext
-func (self *OpaqueContext) Int128TypeInContext() TypeRef {
+// llgo:link ContextRef.Int128TypeInContext C.LLVMInt128TypeInContext
+func (self ContextRef) Int128TypeInContext() TypeRef {
 	return nil
 }
 
-// llgo:link (*OpaqueContext).IntTypeInContext C.LLVMIntTypeInContext
-func (self *OpaqueContext) IntTypeInContext(NumBits c.Uint) TypeRef {
+// llgo:link ContextRef.IntTypeInContext C.LLVMIntTypeInContext
+func (self ContextRef) IntTypeInContext(NumBits c.Uint) TypeRef {
 	return nil
 }
 
@@ -1498,58 +1502,58 @@ func Int128Type() TypeRef
 //go:linkname IntType C.LLVMIntType
 func IntType(NumBits c.Uint) TypeRef
 
-// llgo:link (*OpaqueType).IntTypeWidth C.LLVMGetIntTypeWidth
-func (self *OpaqueType) IntTypeWidth() c.Uint {
+// llgo:link TypeRef.IntTypeWidth C.LLVMGetIntTypeWidth
+func (self TypeRef) IntTypeWidth() c.Uint {
 	return 0
 }
 
 // Obtain a 16-bit floating point type from a context.
 //
-// llgo:link (*OpaqueContext).HalfTypeInContext C.LLVMHalfTypeInContext
-func (self *OpaqueContext) HalfTypeInContext() TypeRef {
+// llgo:link ContextRef.HalfTypeInContext C.LLVMHalfTypeInContext
+func (self ContextRef) HalfTypeInContext() TypeRef {
 	return nil
 }
 
 // Obtain a 16-bit brain floating point type from a context.
 //
-// llgo:link (*OpaqueContext).BFloatTypeInContext C.LLVMBFloatTypeInContext
-func (self *OpaqueContext) BFloatTypeInContext() TypeRef {
+// llgo:link ContextRef.BFloatTypeInContext C.LLVMBFloatTypeInContext
+func (self ContextRef) BFloatTypeInContext() TypeRef {
 	return nil
 }
 
 // Obtain a 32-bit floating point type from a context.
 //
-// llgo:link (*OpaqueContext).FloatTypeInContext C.LLVMFloatTypeInContext
-func (self *OpaqueContext) FloatTypeInContext() TypeRef {
+// llgo:link ContextRef.FloatTypeInContext C.LLVMFloatTypeInContext
+func (self ContextRef) FloatTypeInContext() TypeRef {
 	return nil
 }
 
 // Obtain a 64-bit floating point type from a context.
 //
-// llgo:link (*OpaqueContext).DoubleTypeInContext C.LLVMDoubleTypeInContext
-func (self *OpaqueContext) DoubleTypeInContext() TypeRef {
+// llgo:link ContextRef.DoubleTypeInContext C.LLVMDoubleTypeInContext
+func (self ContextRef) DoubleTypeInContext() TypeRef {
 	return nil
 }
 
 // Obtain a 80-bit floating point type (X87) from a context.
 //
-// llgo:link (*OpaqueContext).X86FP80TypeInContext C.LLVMX86FP80TypeInContext
-func (self *OpaqueContext) X86FP80TypeInContext() TypeRef {
+// llgo:link ContextRef.X86FP80TypeInContext C.LLVMX86FP80TypeInContext
+func (self ContextRef) X86FP80TypeInContext() TypeRef {
 	return nil
 }
 
 // Obtain a 128-bit floating point type (112-bit mantissa) from a
 // context.
 //
-// llgo:link (*OpaqueContext).FP128TypeInContext C.LLVMFP128TypeInContext
-func (self *OpaqueContext) FP128TypeInContext() TypeRef {
+// llgo:link ContextRef.FP128TypeInContext C.LLVMFP128TypeInContext
+func (self ContextRef) FP128TypeInContext() TypeRef {
 	return nil
 }
 
 // Obtain a 128-bit floating point type (two 64-bits) from a context.
 //
-// llgo:link (*OpaqueContext).PPCFP128TypeInContext C.LLVMPPCFP128TypeInContext
-func (self *OpaqueContext) PPCFP128TypeInContext() TypeRef {
+// llgo:link ContextRef.PPCFP128TypeInContext C.LLVMPPCFP128TypeInContext
+func (self ContextRef) PPCFP128TypeInContext() TypeRef {
 	return nil
 }
 
@@ -1583,29 +1587,29 @@ func PPCFP128Type() TypeRef
 // The function is defined as a tuple of a return Type, a list of
 // parameter types, and whether the function is variadic.
 //
-// llgo:link (*OpaqueType).FunctionType C.LLVMFunctionType
-func (self *OpaqueType) FunctionType(ParamTypes *TypeRef, ParamCount c.Uint, IsVarArg Bool) TypeRef {
+// llgo:link TypeRef.FunctionType C.LLVMFunctionType
+func (self TypeRef) FunctionType(ParamTypes *TypeRef, ParamCount c.Uint, IsVarArg Bool) TypeRef {
 	return self
 }
 
 // Returns whether a function type is variadic.
 //
-// llgo:link (*OpaqueType).IsFunctionVarArg C.LLVMIsFunctionVarArg
-func (self *OpaqueType) IsFunctionVarArg() Bool {
+// llgo:link TypeRef.IsFunctionVarArg C.LLVMIsFunctionVarArg
+func (self TypeRef) IsFunctionVarArg() Bool {
 	return 0
 }
 
 // Obtain the Type this function Type returns.
 //
-// llgo:link (*OpaqueType).ReturnType C.LLVMGetReturnType
-func (self *OpaqueType) ReturnType() TypeRef {
+// llgo:link TypeRef.ReturnType C.LLVMGetReturnType
+func (self TypeRef) ReturnType() TypeRef {
 	return self
 }
 
 // Obtain the number of parameters this function accepts.
 //
-// llgo:link (*OpaqueType).CountParamTypes C.LLVMCountParamTypes
-func (self *OpaqueType) CountParamTypes() c.Uint {
+// llgo:link TypeRef.CountParamTypes C.LLVMCountParamTypes
+func (self TypeRef) CountParamTypes() c.Uint {
 	return 0
 }
 
@@ -1619,8 +1623,8 @@ func (self *OpaqueType) CountParamTypes() c.Uint {
 // @param FunctionTy The function type to operate on.
 // @param Dest Memory address of an array to be filled with result.
 //
-// llgo:link (*OpaqueType).ParamTypes C.LLVMGetParamTypes
-func (self *OpaqueType) ParamTypes(Dest *TypeRef) {
+// llgo:link TypeRef.ParamTypes C.LLVMGetParamTypes
+func (self TypeRef) ParamTypes(Dest *TypeRef) {
 }
 
 // Create a new structure type in a context.
@@ -1630,8 +1634,8 @@ func (self *OpaqueType) ParamTypes(Dest *TypeRef) {
 //
 // @see llvm::StructType::create()
 //
-// llgo:link (*OpaqueContext).StructTypeInContext C.LLVMStructTypeInContext
-func (self *OpaqueContext) StructTypeInContext(ElementTypes *TypeRef, ElementCount c.Uint, Packed Bool) TypeRef {
+// llgo:link ContextRef.StructTypeInContext C.LLVMStructTypeInContext
+func (self ContextRef) StructTypeInContext(ElementTypes *TypeRef, ElementCount c.Uint, Packed Bool) TypeRef {
 	return nil
 }
 
@@ -1639,17 +1643,15 @@ func (self *OpaqueContext) StructTypeInContext(ElementTypes *TypeRef, ElementCou
 //
 // @see llvm::StructType::create()
 //
-// llgo:link (*OpaqueType).StructType C.LLVMStructType
-func (self *OpaqueType) StructType(ElementCount c.Uint, Packed Bool) TypeRef {
-	return self
-}
+//go:linkname StructType C.LLVMStructType
+func StructType(ElementTypes *TypeRef, ElementCount c.Uint, Packed Bool) TypeRef
 
 // Create an empty structure in a context having a specified name.
 //
 // @see llvm::StructType::create()
 //
-// llgo:link (*OpaqueContext).StructCreateNamed C.LLVMStructCreateNamed
-func (self *OpaqueContext) StructCreateNamed(Name *c.Char) TypeRef {
+// llgo:link ContextRef.StructCreateNamed C.LLVMStructCreateNamed
+func (self ContextRef) StructCreateNamed(Name *c.Char) TypeRef {
 	return nil
 }
 
@@ -1657,8 +1659,8 @@ func (self *OpaqueContext) StructCreateNamed(Name *c.Char) TypeRef {
 //
 // @see llvm::StructType::getName()
 //
-// llgo:link (*OpaqueType).StructName C.LLVMGetStructName
-func (self *OpaqueType) StructName() *c.Char {
+// llgo:link TypeRef.StructName C.LLVMGetStructName
+func (self TypeRef) StructName() *c.Char {
 	return nil
 }
 
@@ -1666,16 +1668,16 @@ func (self *OpaqueType) StructName() *c.Char {
 //
 // @see llvm::StructType::setBody()
 //
-// llgo:link (*OpaqueType).StructSetBody C.LLVMStructSetBody
-func (self *OpaqueType) StructSetBody(ElementTypes *TypeRef, ElementCount c.Uint, Packed Bool) {
+// llgo:link TypeRef.StructSetBody C.LLVMStructSetBody
+func (self TypeRef) StructSetBody(ElementTypes *TypeRef, ElementCount c.Uint, Packed Bool) {
 }
 
 // Get the number of elements defined inside the structure.
 //
 // @see llvm::StructType::getNumElements()
 //
-// llgo:link (*OpaqueType).CountStructElementTypes C.LLVMCountStructElementTypes
-func (self *OpaqueType) CountStructElementTypes() c.Uint {
+// llgo:link TypeRef.CountStructElementTypes C.LLVMCountStructElementTypes
+func (self TypeRef) CountStructElementTypes() c.Uint {
 	return 0
 }
 
@@ -1688,16 +1690,16 @@ func (self *OpaqueType) CountStructElementTypes() c.Uint {
 // of the structure type itself, which is the lifetime of the context it
 // is contained in.
 //
-// llgo:link (*OpaqueType).StructElementTypes C.LLVMGetStructElementTypes
-func (self *OpaqueType) StructElementTypes(Dest *TypeRef) {
+// llgo:link TypeRef.StructElementTypes C.LLVMGetStructElementTypes
+func (self TypeRef) StructElementTypes(Dest *TypeRef) {
 }
 
 // Get the type of the element at a given index in the structure.
 //
 // @see llvm::StructType::getTypeAtIndex()
 //
-// llgo:link (*OpaqueType).StructGetTypeAtIndex C.LLVMStructGetTypeAtIndex
-func (self *OpaqueType) StructGetTypeAtIndex(i c.Uint) TypeRef {
+// llgo:link TypeRef.StructGetTypeAtIndex C.LLVMStructGetTypeAtIndex
+func (self TypeRef) StructGetTypeAtIndex(i c.Uint) TypeRef {
 	return self
 }
 
@@ -1705,8 +1707,8 @@ func (self *OpaqueType) StructGetTypeAtIndex(i c.Uint) TypeRef {
 //
 // @see llvm::StructType::isPacked()
 //
-// llgo:link (*OpaqueType).IsPackedStruct C.LLVMIsPackedStruct
-func (self *OpaqueType) IsPackedStruct() Bool {
+// llgo:link TypeRef.IsPackedStruct C.LLVMIsPackedStruct
+func (self TypeRef) IsPackedStruct() Bool {
 	return 0
 }
 
@@ -1714,8 +1716,8 @@ func (self *OpaqueType) IsPackedStruct() Bool {
 //
 // @see llvm::StructType::isOpaque()
 //
-// llgo:link (*OpaqueType).IsOpaqueStruct C.LLVMIsOpaqueStruct
-func (self *OpaqueType) IsOpaqueStruct() Bool {
+// llgo:link TypeRef.IsOpaqueStruct C.LLVMIsOpaqueStruct
+func (self TypeRef) IsOpaqueStruct() Bool {
 	return 0
 }
 
@@ -1723,8 +1725,8 @@ func (self *OpaqueType) IsOpaqueStruct() Bool {
 //
 // @see llvm::StructType::isLiteral()
 //
-// llgo:link (*OpaqueType).IsLiteralStruct C.LLVMIsLiteralStruct
-func (self *OpaqueType) IsLiteralStruct() Bool {
+// llgo:link TypeRef.IsLiteralStruct C.LLVMIsLiteralStruct
+func (self TypeRef) IsLiteralStruct() Bool {
 	return 0
 }
 
@@ -1732,8 +1734,8 @@ func (self *OpaqueType) IsLiteralStruct() Bool {
 //
 // @see llvm::SequentialType::getElementType()
 //
-// llgo:link (*OpaqueType).ElementType C.LLVMGetElementType
-func (self *OpaqueType) ElementType() TypeRef {
+// llgo:link TypeRef.ElementType C.LLVMGetElementType
+func (self TypeRef) ElementType() TypeRef {
 	return self
 }
 
@@ -1741,16 +1743,16 @@ func (self *OpaqueType) ElementType() TypeRef {
 //
 // @see llvm::Type::subtypes()
 //
-// llgo:link (*OpaqueType).Subtypes C.LLVMGetSubtypes
-func (self *OpaqueType) Subtypes(Arr *TypeRef) {
+// llgo:link TypeRef.Subtypes C.LLVMGetSubtypes
+func (self TypeRef) Subtypes(Arr *TypeRef) {
 }
 
 //  Return the number of types in the derived type.
 //
 // @see llvm::Type::getNumContainedTypes()
 //
-// llgo:link (*OpaqueType).NumContainedTypes C.LLVMGetNumContainedTypes
-func (self *OpaqueType) NumContainedTypes() c.Uint {
+// llgo:link TypeRef.NumContainedTypes C.LLVMGetNumContainedTypes
+func (self TypeRef) NumContainedTypes() c.Uint {
 	return 0
 }
 
@@ -1763,8 +1765,8 @@ func (self *OpaqueType) NumContainedTypes() c.Uint {
 // LLVMArrayType2
 // @see llvm::ArrayType::get()
 //
-// llgo:link (*OpaqueType).ArrayType C.LLVMArrayType
-func (self *OpaqueType) ArrayType(ElementCount c.Uint) TypeRef {
+// llgo:link TypeRef.ArrayType C.LLVMArrayType
+func (self TypeRef) ArrayType(ElementCount c.Uint) TypeRef {
 	return self
 }
 
@@ -1775,8 +1777,8 @@ func (self *OpaqueType) ArrayType(ElementCount c.Uint) TypeRef {
 //
 // @see llvm::ArrayType::get()
 //
-// llgo:link (*OpaqueType).ArrayType2 C.LLVMArrayType2
-func (self *OpaqueType) ArrayType2(ElementCount c.Uint64T) TypeRef {
+// llgo:link TypeRef.ArrayType2 C.LLVMArrayType2
+func (self TypeRef) ArrayType2(ElementCount c.Uint64T) TypeRef {
 	return self
 }
 
@@ -1788,8 +1790,8 @@ func (self *OpaqueType) ArrayType2(ElementCount c.Uint64T) TypeRef {
 // LLVMGetArrayLength2
 // @see llvm::ArrayType::getNumElements()
 //
-// llgo:link (*OpaqueType).ArrayLength C.LLVMGetArrayLength
-func (self *OpaqueType) ArrayLength() c.Uint {
+// llgo:link TypeRef.ArrayLength C.LLVMGetArrayLength
+func (self TypeRef) ArrayLength() c.Uint {
 	return 0
 }
 
@@ -1799,8 +1801,8 @@ func (self *OpaqueType) ArrayLength() c.Uint {
 //
 // @see llvm::ArrayType::getNumElements()
 //
-// llgo:link (*OpaqueType).ArrayLength2 C.LLVMGetArrayLength2
-func (self *OpaqueType) ArrayLength2() c.Uint64T {
+// llgo:link TypeRef.ArrayLength2 C.LLVMGetArrayLength2
+func (self TypeRef) ArrayLength2() c.Uint64T {
 	return 0
 }
 
@@ -1811,8 +1813,8 @@ func (self *OpaqueType) ArrayLength2() c.Uint64T {
 //
 // @see llvm::PointerType::get()
 //
-// llgo:link (*OpaqueType).PointerType C.LLVMPointerType
-func (self *OpaqueType) PointerType(AddressSpace c.Uint) TypeRef {
+// llgo:link TypeRef.PointerType C.LLVMPointerType
+func (self TypeRef) PointerType(AddressSpace c.Uint) TypeRef {
 	return self
 }
 
@@ -1822,8 +1824,8 @@ func (self *OpaqueType) PointerType(AddressSpace c.Uint) TypeRef {
 //
 // @see llvm::Type::isOpaquePointerTy()
 //
-// llgo:link (*OpaqueType).PointerTypeIsOpaque C.LLVMPointerTypeIsOpaque
-func (self *OpaqueType) PointerTypeIsOpaque() Bool {
+// llgo:link TypeRef.PointerTypeIsOpaque C.LLVMPointerTypeIsOpaque
+func (self TypeRef) PointerTypeIsOpaque() Bool {
 	return 0
 }
 
@@ -1831,8 +1833,8 @@ func (self *OpaqueType) PointerTypeIsOpaque() Bool {
 //
 // @see llvm::PointerType::get()
 //
-// llgo:link (*OpaqueContext).PointerTypeInContext C.LLVMPointerTypeInContext
-func (self *OpaqueContext) PointerTypeInContext(AddressSpace c.Uint) TypeRef {
+// llgo:link ContextRef.PointerTypeInContext C.LLVMPointerTypeInContext
+func (self ContextRef) PointerTypeInContext(AddressSpace c.Uint) TypeRef {
 	return nil
 }
 
@@ -1842,8 +1844,8 @@ func (self *OpaqueContext) PointerTypeInContext(AddressSpace c.Uint) TypeRef {
 //
 // @see llvm::PointerType::getAddressSpace()
 //
-// llgo:link (*OpaqueType).PointerAddressSpace C.LLVMGetPointerAddressSpace
-func (self *OpaqueType) PointerAddressSpace() c.Uint {
+// llgo:link TypeRef.PointerAddressSpace C.LLVMGetPointerAddressSpace
+func (self TypeRef) PointerAddressSpace() c.Uint {
 	return 0
 }
 
@@ -1855,8 +1857,8 @@ func (self *OpaqueType) PointerAddressSpace() c.Uint {
 //
 // @see llvm::VectorType::get()
 //
-// llgo:link (*OpaqueType).VectorType C.LLVMVectorType
-func (self *OpaqueType) VectorType(ElementCount c.Uint) TypeRef {
+// llgo:link TypeRef.VectorType C.LLVMVectorType
+func (self TypeRef) VectorType(ElementCount c.Uint) TypeRef {
 	return self
 }
 
@@ -1868,8 +1870,8 @@ func (self *OpaqueType) VectorType(ElementCount c.Uint) TypeRef {
 //
 // @see llvm::ScalableVectorType::get()
 //
-// llgo:link (*OpaqueType).ScalableVectorType C.LLVMScalableVectorType
-func (self *OpaqueType) ScalableVectorType(ElementCount c.Uint) TypeRef {
+// llgo:link TypeRef.ScalableVectorType C.LLVMScalableVectorType
+func (self TypeRef) ScalableVectorType(ElementCount c.Uint) TypeRef {
 	return self
 }
 
@@ -1879,8 +1881,8 @@ func (self *OpaqueType) ScalableVectorType(ElementCount c.Uint) TypeRef {
 //
 // @see llvm::VectorType::getNumElements()
 //
-// llgo:link (*OpaqueType).VectorSize C.LLVMGetVectorSize
-func (self *OpaqueType) VectorSize() c.Uint {
+// llgo:link TypeRef.VectorSize C.LLVMGetVectorSize
+func (self TypeRef) VectorSize() c.Uint {
 	return 0
 }
 
@@ -1888,8 +1890,8 @@ func (self *OpaqueType) VectorSize() c.Uint {
 //
 // @see llvm::ConstantPtrAuth::getPointer
 //
-// llgo:link (*OpaqueValue).ConstantPtrAuthPointer C.LLVMGetConstantPtrAuthPointer
-func (self *OpaqueValue) ConstantPtrAuthPointer() ValueRef {
+// llgo:link ValueRef.ConstantPtrAuthPointer C.LLVMGetConstantPtrAuthPointer
+func (self ValueRef) ConstantPtrAuthPointer() ValueRef {
 	return self
 }
 
@@ -1897,8 +1899,8 @@ func (self *OpaqueValue) ConstantPtrAuthPointer() ValueRef {
 //
 // @see llvm::ConstantPtrAuth::getKey
 //
-// llgo:link (*OpaqueValue).ConstantPtrAuthKey C.LLVMGetConstantPtrAuthKey
-func (self *OpaqueValue) ConstantPtrAuthKey() ValueRef {
+// llgo:link ValueRef.ConstantPtrAuthKey C.LLVMGetConstantPtrAuthKey
+func (self ValueRef) ConstantPtrAuthKey() ValueRef {
 	return self
 }
 
@@ -1906,8 +1908,8 @@ func (self *OpaqueValue) ConstantPtrAuthKey() ValueRef {
 //
 // @see llvm::ConstantPtrAuth::getDiscriminator
 //
-// llgo:link (*OpaqueValue).ConstantPtrAuthDiscriminator C.LLVMGetConstantPtrAuthDiscriminator
-func (self *OpaqueValue) ConstantPtrAuthDiscriminator() ValueRef {
+// llgo:link ValueRef.ConstantPtrAuthDiscriminator C.LLVMGetConstantPtrAuthDiscriminator
+func (self ValueRef) ConstantPtrAuthDiscriminator() ValueRef {
 	return self
 }
 
@@ -1916,43 +1918,43 @@ func (self *OpaqueValue) ConstantPtrAuthDiscriminator() ValueRef {
 //
 // @see llvm::ConstantPtrAuth::getAddrDiscriminator
 //
-// llgo:link (*OpaqueValue).ConstantPtrAuthAddrDiscriminator C.LLVMGetConstantPtrAuthAddrDiscriminator
-func (self *OpaqueValue) ConstantPtrAuthAddrDiscriminator() ValueRef {
+// llgo:link ValueRef.ConstantPtrAuthAddrDiscriminator C.LLVMGetConstantPtrAuthAddrDiscriminator
+func (self ValueRef) ConstantPtrAuthAddrDiscriminator() ValueRef {
 	return self
 }
 
 // Create a void type in a context.
 //
-// llgo:link (*OpaqueContext).VoidTypeInContext C.LLVMVoidTypeInContext
-func (self *OpaqueContext) VoidTypeInContext() TypeRef {
+// llgo:link ContextRef.VoidTypeInContext C.LLVMVoidTypeInContext
+func (self ContextRef) VoidTypeInContext() TypeRef {
 	return nil
 }
 
 // Create a label type in a context.
 //
-// llgo:link (*OpaqueContext).LabelTypeInContext C.LLVMLabelTypeInContext
-func (self *OpaqueContext) LabelTypeInContext() TypeRef {
+// llgo:link ContextRef.LabelTypeInContext C.LLVMLabelTypeInContext
+func (self ContextRef) LabelTypeInContext() TypeRef {
 	return nil
 }
 
 // Create a X86 AMX type in a context.
 //
-// llgo:link (*OpaqueContext).X86AMXTypeInContext C.LLVMX86AMXTypeInContext
-func (self *OpaqueContext) X86AMXTypeInContext() TypeRef {
+// llgo:link ContextRef.X86AMXTypeInContext C.LLVMX86AMXTypeInContext
+func (self ContextRef) X86AMXTypeInContext() TypeRef {
 	return nil
 }
 
 // Create a token type in a context.
 //
-// llgo:link (*OpaqueContext).TokenTypeInContext C.LLVMTokenTypeInContext
-func (self *OpaqueContext) TokenTypeInContext() TypeRef {
+// llgo:link ContextRef.TokenTypeInContext C.LLVMTokenTypeInContext
+func (self ContextRef) TokenTypeInContext() TypeRef {
 	return nil
 }
 
 // Create a metadata type in a context.
 //
-// llgo:link (*OpaqueContext).MetadataTypeInContext C.LLVMMetadataTypeInContext
-func (self *OpaqueContext) MetadataTypeInContext() TypeRef {
+// llgo:link ContextRef.MetadataTypeInContext C.LLVMMetadataTypeInContext
+func (self ContextRef) MetadataTypeInContext() TypeRef {
 	return nil
 }
 
@@ -1970,8 +1972,8 @@ func X86AMXType() TypeRef
 
 // Create a target extension type in LLVM context.
 //
-// llgo:link (*OpaqueContext).TargetExtTypeInContext C.LLVMTargetExtTypeInContext
-func (self *OpaqueContext) TargetExtTypeInContext(Name *c.Char, TypeParams *TypeRef, TypeParamCount c.Uint, IntParams *c.Uint, IntParamCount c.Uint) TypeRef {
+// llgo:link ContextRef.TargetExtTypeInContext C.LLVMTargetExtTypeInContext
+func (self ContextRef) TargetExtTypeInContext(Name *c.Char, TypeParams *TypeRef, TypeParamCount c.Uint, IntParams *c.Uint, IntParamCount c.Uint) TypeRef {
 	return nil
 }
 
@@ -1979,8 +1981,8 @@ func (self *OpaqueContext) TargetExtTypeInContext(Name *c.Char, TypeParams *Type
 //
 // @see llvm::TargetExtType::getName()
 //
-// llgo:link (*OpaqueType).TargetExtTypeName C.LLVMGetTargetExtTypeName
-func (self *OpaqueType) TargetExtTypeName() *c.Char {
+// llgo:link TypeRef.TargetExtTypeName C.LLVMGetTargetExtTypeName
+func (self TypeRef) TargetExtTypeName() *c.Char {
 	return nil
 }
 
@@ -1988,8 +1990,8 @@ func (self *OpaqueType) TargetExtTypeName() *c.Char {
 //
 // @see llvm::TargetExtType::getNumTypeParameters()
 //
-// llgo:link (*OpaqueType).TargetExtTypeNumTypeParams C.LLVMGetTargetExtTypeNumTypeParams
-func (self *OpaqueType) TargetExtTypeNumTypeParams() c.Uint {
+// llgo:link TypeRef.TargetExtTypeNumTypeParams C.LLVMGetTargetExtTypeNumTypeParams
+func (self TypeRef) TargetExtTypeNumTypeParams() c.Uint {
 	return 0
 }
 
@@ -1997,8 +1999,8 @@ func (self *OpaqueType) TargetExtTypeNumTypeParams() c.Uint {
 //
 // @see llvm::TargetExtType::getTypeParameter()
 //
-// llgo:link (*OpaqueType).TargetExtTypeTypeParam C.LLVMGetTargetExtTypeTypeParam
-func (self *OpaqueType) TargetExtTypeTypeParam(Idx c.Uint) TypeRef {
+// llgo:link TypeRef.TargetExtTypeTypeParam C.LLVMGetTargetExtTypeTypeParam
+func (self TypeRef) TargetExtTypeTypeParam(Idx c.Uint) TypeRef {
 	return self
 }
 
@@ -2006,8 +2008,8 @@ func (self *OpaqueType) TargetExtTypeTypeParam(Idx c.Uint) TypeRef {
 //
 // @see llvm::TargetExtType::getNumIntParameters()
 //
-// llgo:link (*OpaqueType).TargetExtTypeNumIntParams C.LLVMGetTargetExtTypeNumIntParams
-func (self *OpaqueType) TargetExtTypeNumIntParams() c.Uint {
+// llgo:link TypeRef.TargetExtTypeNumIntParams C.LLVMGetTargetExtTypeNumIntParams
+func (self TypeRef) TargetExtTypeNumIntParams() c.Uint {
 	return 0
 }
 
@@ -2015,8 +2017,8 @@ func (self *OpaqueType) TargetExtTypeNumIntParams() c.Uint {
 //
 // @see llvm::TargetExtType::getIntParameter()
 //
-// llgo:link (*OpaqueType).TargetExtTypeIntParam C.LLVMGetTargetExtTypeIntParam
-func (self *OpaqueType) TargetExtTypeIntParam(Idx c.Uint) c.Uint {
+// llgo:link TypeRef.TargetExtTypeIntParam C.LLVMGetTargetExtTypeIntParam
+func (self TypeRef) TargetExtTypeIntParam(Idx c.Uint) c.Uint {
 	return 0
 }
 
@@ -2024,8 +2026,8 @@ func (self *OpaqueType) TargetExtTypeIntParam(Idx c.Uint) c.Uint {
 //
 // @see llvm::Value::getType()
 //
-// llgo:link (*OpaqueValue).TypeOf C.LLVMTypeOf
-func (self *OpaqueValue) TypeOf() TypeRef {
+// llgo:link ValueRef.TypeOf C.LLVMTypeOf
+func (self ValueRef) TypeOf() TypeRef {
 	return nil
 }
 
@@ -2033,8 +2035,8 @@ func (self *OpaqueValue) TypeOf() TypeRef {
 //
 // @see llvm::Value::getValueID()
 //
-// llgo:link (*OpaqueValue).ValueKind C.LLVMGetValueKind
-func (self *OpaqueValue) ValueKind() ValueKind {
+// llgo:link ValueRef.ValueKind C.LLVMGetValueKind
+func (self ValueRef) ValueKind() ValueKind {
 	return 0
 }
 
@@ -2042,8 +2044,8 @@ func (self *OpaqueValue) ValueKind() ValueKind {
 //
 // @see llvm::Value::getName()
 //
-// llgo:link (*OpaqueValue).ValueName2 C.LLVMGetValueName2
-func (self *OpaqueValue) ValueName2(Length *c.SizeT) *c.Char {
+// llgo:link ValueRef.ValueName2 C.LLVMGetValueName2
+func (self ValueRef) ValueName2(Length *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -2051,16 +2053,16 @@ func (self *OpaqueValue) ValueName2(Length *c.SizeT) *c.Char {
 //
 // @see llvm::Value::setName()
 //
-// llgo:link (*OpaqueValue).SetValueName2 C.LLVMSetValueName2
-func (self *OpaqueValue) SetValueName2(Name *c.Char, NameLen c.SizeT) {
+// llgo:link ValueRef.SetValueName2 C.LLVMSetValueName2
+func (self ValueRef) SetValueName2(Name *c.Char, NameLen c.SizeT) {
 }
 
 // Dump a representation of a value to stderr.
 //
 // @see llvm::Value::dump()
 //
-// llgo:link (*OpaqueValue).DumpValue C.LLVMDumpValue
-func (self *OpaqueValue) DumpValue() {
+// llgo:link ValueRef.DumpValue C.LLVMDumpValue
+func (self ValueRef) DumpValue() {
 }
 
 // Return a string representation of the value. Use
@@ -2068,8 +2070,8 @@ func (self *OpaqueValue) DumpValue() {
 //
 // @see llvm::Value::print()
 //
-// llgo:link (*OpaqueValue).PrintValueToString C.LLVMPrintValueToString
-func (self *OpaqueValue) PrintValueToString() *c.Char {
+// llgo:link ValueRef.PrintValueToString C.LLVMPrintValueToString
+func (self ValueRef) PrintValueToString() *c.Char {
 	return nil
 }
 
@@ -2077,8 +2079,8 @@ func (self *OpaqueValue) PrintValueToString() *c.Char {
 //
 // @see llvm::Value::getContext()
 //
-// llgo:link (*OpaqueValue).ValueContext C.LLVMGetValueContext
-func (self *OpaqueValue) ValueContext() ContextRef {
+// llgo:link ValueRef.ValueContext C.LLVMGetValueContext
+func (self ValueRef) ValueContext() ContextRef {
 	return nil
 }
 
@@ -2087,8 +2089,8 @@ func (self *OpaqueValue) ValueContext() ContextRef {
 //
 // @see llvm::DbgRecord::print()
 //
-// llgo:link (*OpaqueDbgRecord).PrintDbgRecordToString C.LLVMPrintDbgRecordToString
-func (self *OpaqueDbgRecord) PrintDbgRecordToString() *c.Char {
+// llgo:link DbgRecordRef.PrintDbgRecordToString C.LLVMPrintDbgRecordToString
+func (self DbgRecordRef) PrintDbgRecordToString() *c.Char {
 	return nil
 }
 
@@ -2101,496 +2103,496 @@ func ReplaceAllUsesWith(OldVal ValueRef, NewVal ValueRef)
 
 // Determine whether the specified value instance is constant.
 //
-// llgo:link (*OpaqueValue).IsConstant C.LLVMIsConstant
-func (self *OpaqueValue) IsConstant() Bool {
+// llgo:link ValueRef.IsConstant C.LLVMIsConstant
+func (self ValueRef) IsConstant() Bool {
 	return 0
 }
 
 // Determine whether a value instance is undefined.
 //
-// llgo:link (*OpaqueValue).IsUndef C.LLVMIsUndef
-func (self *OpaqueValue) IsUndef() Bool {
+// llgo:link ValueRef.IsUndef C.LLVMIsUndef
+func (self ValueRef) IsUndef() Bool {
 	return 0
 }
 
 // Determine whether a value instance is poisonous.
 //
-// llgo:link (*OpaqueValue).IsPoison C.LLVMIsPoison
-func (self *OpaqueValue) IsPoison() Bool {
+// llgo:link ValueRef.IsPoison C.LLVMIsPoison
+func (self ValueRef) IsPoison() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).IsAArgument C.LLVMIsAArgument
-func (self *OpaqueValue) IsAArgument() ValueRef {
+// llgo:link ValueRef.IsAArgument C.LLVMIsAArgument
+func (self ValueRef) IsAArgument() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsABasicBlock C.LLVMIsABasicBlock
-func (self *OpaqueValue) IsABasicBlock() ValueRef {
+// llgo:link ValueRef.IsABasicBlock C.LLVMIsABasicBlock
+func (self ValueRef) IsABasicBlock() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAInlineAsm C.LLVMIsAInlineAsm
-func (self *OpaqueValue) IsAInlineAsm() ValueRef {
+// llgo:link ValueRef.IsAInlineAsm C.LLVMIsAInlineAsm
+func (self ValueRef) IsAInlineAsm() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAUser C.LLVMIsAUser
-func (self *OpaqueValue) IsAUser() ValueRef {
+// llgo:link ValueRef.IsAUser C.LLVMIsAUser
+func (self ValueRef) IsAUser() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstant C.LLVMIsAConstant
-func (self *OpaqueValue) IsAConstant() ValueRef {
+// llgo:link ValueRef.IsAConstant C.LLVMIsAConstant
+func (self ValueRef) IsAConstant() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsABlockAddress C.LLVMIsABlockAddress
-func (self *OpaqueValue) IsABlockAddress() ValueRef {
+// llgo:link ValueRef.IsABlockAddress C.LLVMIsABlockAddress
+func (self ValueRef) IsABlockAddress() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantAggregateZero C.LLVMIsAConstantAggregateZero
-func (self *OpaqueValue) IsAConstantAggregateZero() ValueRef {
+// llgo:link ValueRef.IsAConstantAggregateZero C.LLVMIsAConstantAggregateZero
+func (self ValueRef) IsAConstantAggregateZero() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantArray C.LLVMIsAConstantArray
-func (self *OpaqueValue) IsAConstantArray() ValueRef {
+// llgo:link ValueRef.IsAConstantArray C.LLVMIsAConstantArray
+func (self ValueRef) IsAConstantArray() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantDataSequential C.LLVMIsAConstantDataSequential
-func (self *OpaqueValue) IsAConstantDataSequential() ValueRef {
+// llgo:link ValueRef.IsAConstantDataSequential C.LLVMIsAConstantDataSequential
+func (self ValueRef) IsAConstantDataSequential() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantDataArray C.LLVMIsAConstantDataArray
-func (self *OpaqueValue) IsAConstantDataArray() ValueRef {
+// llgo:link ValueRef.IsAConstantDataArray C.LLVMIsAConstantDataArray
+func (self ValueRef) IsAConstantDataArray() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantDataVector C.LLVMIsAConstantDataVector
-func (self *OpaqueValue) IsAConstantDataVector() ValueRef {
+// llgo:link ValueRef.IsAConstantDataVector C.LLVMIsAConstantDataVector
+func (self ValueRef) IsAConstantDataVector() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantExpr C.LLVMIsAConstantExpr
-func (self *OpaqueValue) IsAConstantExpr() ValueRef {
+// llgo:link ValueRef.IsAConstantExpr C.LLVMIsAConstantExpr
+func (self ValueRef) IsAConstantExpr() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantFP C.LLVMIsAConstantFP
-func (self *OpaqueValue) IsAConstantFP() ValueRef {
+// llgo:link ValueRef.IsAConstantFP C.LLVMIsAConstantFP
+func (self ValueRef) IsAConstantFP() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantInt C.LLVMIsAConstantInt
-func (self *OpaqueValue) IsAConstantInt() ValueRef {
+// llgo:link ValueRef.IsAConstantInt C.LLVMIsAConstantInt
+func (self ValueRef) IsAConstantInt() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantPointerNull C.LLVMIsAConstantPointerNull
-func (self *OpaqueValue) IsAConstantPointerNull() ValueRef {
+// llgo:link ValueRef.IsAConstantPointerNull C.LLVMIsAConstantPointerNull
+func (self ValueRef) IsAConstantPointerNull() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantStruct C.LLVMIsAConstantStruct
-func (self *OpaqueValue) IsAConstantStruct() ValueRef {
+// llgo:link ValueRef.IsAConstantStruct C.LLVMIsAConstantStruct
+func (self ValueRef) IsAConstantStruct() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantTokenNone C.LLVMIsAConstantTokenNone
-func (self *OpaqueValue) IsAConstantTokenNone() ValueRef {
+// llgo:link ValueRef.IsAConstantTokenNone C.LLVMIsAConstantTokenNone
+func (self ValueRef) IsAConstantTokenNone() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantVector C.LLVMIsAConstantVector
-func (self *OpaqueValue) IsAConstantVector() ValueRef {
+// llgo:link ValueRef.IsAConstantVector C.LLVMIsAConstantVector
+func (self ValueRef) IsAConstantVector() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAConstantPtrAuth C.LLVMIsAConstantPtrAuth
-func (self *OpaqueValue) IsAConstantPtrAuth() ValueRef {
+// llgo:link ValueRef.IsAConstantPtrAuth C.LLVMIsAConstantPtrAuth
+func (self ValueRef) IsAConstantPtrAuth() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAGlobalValue C.LLVMIsAGlobalValue
-func (self *OpaqueValue) IsAGlobalValue() ValueRef {
+// llgo:link ValueRef.IsAGlobalValue C.LLVMIsAGlobalValue
+func (self ValueRef) IsAGlobalValue() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAGlobalAlias C.LLVMIsAGlobalAlias
-func (self *OpaqueValue) IsAGlobalAlias() ValueRef {
+// llgo:link ValueRef.IsAGlobalAlias C.LLVMIsAGlobalAlias
+func (self ValueRef) IsAGlobalAlias() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAGlobalObject C.LLVMIsAGlobalObject
-func (self *OpaqueValue) IsAGlobalObject() ValueRef {
+// llgo:link ValueRef.IsAGlobalObject C.LLVMIsAGlobalObject
+func (self ValueRef) IsAGlobalObject() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAFunction C.LLVMIsAFunction
-func (self *OpaqueValue) IsAFunction() ValueRef {
+// llgo:link ValueRef.IsAFunction C.LLVMIsAFunction
+func (self ValueRef) IsAFunction() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAGlobalVariable C.LLVMIsAGlobalVariable
-func (self *OpaqueValue) IsAGlobalVariable() ValueRef {
+// llgo:link ValueRef.IsAGlobalVariable C.LLVMIsAGlobalVariable
+func (self ValueRef) IsAGlobalVariable() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAGlobalIFunc C.LLVMIsAGlobalIFunc
-func (self *OpaqueValue) IsAGlobalIFunc() ValueRef {
+// llgo:link ValueRef.IsAGlobalIFunc C.LLVMIsAGlobalIFunc
+func (self ValueRef) IsAGlobalIFunc() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAUndefValue C.LLVMIsAUndefValue
-func (self *OpaqueValue) IsAUndefValue() ValueRef {
+// llgo:link ValueRef.IsAUndefValue C.LLVMIsAUndefValue
+func (self ValueRef) IsAUndefValue() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAPoisonValue C.LLVMIsAPoisonValue
-func (self *OpaqueValue) IsAPoisonValue() ValueRef {
+// llgo:link ValueRef.IsAPoisonValue C.LLVMIsAPoisonValue
+func (self ValueRef) IsAPoisonValue() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAInstruction C.LLVMIsAInstruction
-func (self *OpaqueValue) IsAInstruction() ValueRef {
+// llgo:link ValueRef.IsAInstruction C.LLVMIsAInstruction
+func (self ValueRef) IsAInstruction() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAUnaryOperator C.LLVMIsAUnaryOperator
-func (self *OpaqueValue) IsAUnaryOperator() ValueRef {
+// llgo:link ValueRef.IsAUnaryOperator C.LLVMIsAUnaryOperator
+func (self ValueRef) IsAUnaryOperator() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsABinaryOperator C.LLVMIsABinaryOperator
-func (self *OpaqueValue) IsABinaryOperator() ValueRef {
+// llgo:link ValueRef.IsABinaryOperator C.LLVMIsABinaryOperator
+func (self ValueRef) IsABinaryOperator() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsACallInst C.LLVMIsACallInst
-func (self *OpaqueValue) IsACallInst() ValueRef {
+// llgo:link ValueRef.IsACallInst C.LLVMIsACallInst
+func (self ValueRef) IsACallInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAIntrinsicInst C.LLVMIsAIntrinsicInst
-func (self *OpaqueValue) IsAIntrinsicInst() ValueRef {
+// llgo:link ValueRef.IsAIntrinsicInst C.LLVMIsAIntrinsicInst
+func (self ValueRef) IsAIntrinsicInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsADbgInfoIntrinsic C.LLVMIsADbgInfoIntrinsic
-func (self *OpaqueValue) IsADbgInfoIntrinsic() ValueRef {
+// llgo:link ValueRef.IsADbgInfoIntrinsic C.LLVMIsADbgInfoIntrinsic
+func (self ValueRef) IsADbgInfoIntrinsic() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsADbgVariableIntrinsic C.LLVMIsADbgVariableIntrinsic
-func (self *OpaqueValue) IsADbgVariableIntrinsic() ValueRef {
+// llgo:link ValueRef.IsADbgVariableIntrinsic C.LLVMIsADbgVariableIntrinsic
+func (self ValueRef) IsADbgVariableIntrinsic() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsADbgDeclareInst C.LLVMIsADbgDeclareInst
-func (self *OpaqueValue) IsADbgDeclareInst() ValueRef {
+// llgo:link ValueRef.IsADbgDeclareInst C.LLVMIsADbgDeclareInst
+func (self ValueRef) IsADbgDeclareInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsADbgLabelInst C.LLVMIsADbgLabelInst
-func (self *OpaqueValue) IsADbgLabelInst() ValueRef {
+// llgo:link ValueRef.IsADbgLabelInst C.LLVMIsADbgLabelInst
+func (self ValueRef) IsADbgLabelInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAMemIntrinsic C.LLVMIsAMemIntrinsic
-func (self *OpaqueValue) IsAMemIntrinsic() ValueRef {
+// llgo:link ValueRef.IsAMemIntrinsic C.LLVMIsAMemIntrinsic
+func (self ValueRef) IsAMemIntrinsic() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAMemCpyInst C.LLVMIsAMemCpyInst
-func (self *OpaqueValue) IsAMemCpyInst() ValueRef {
+// llgo:link ValueRef.IsAMemCpyInst C.LLVMIsAMemCpyInst
+func (self ValueRef) IsAMemCpyInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAMemMoveInst C.LLVMIsAMemMoveInst
-func (self *OpaqueValue) IsAMemMoveInst() ValueRef {
+// llgo:link ValueRef.IsAMemMoveInst C.LLVMIsAMemMoveInst
+func (self ValueRef) IsAMemMoveInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAMemSetInst C.LLVMIsAMemSetInst
-func (self *OpaqueValue) IsAMemSetInst() ValueRef {
+// llgo:link ValueRef.IsAMemSetInst C.LLVMIsAMemSetInst
+func (self ValueRef) IsAMemSetInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsACmpInst C.LLVMIsACmpInst
-func (self *OpaqueValue) IsACmpInst() ValueRef {
+// llgo:link ValueRef.IsACmpInst C.LLVMIsACmpInst
+func (self ValueRef) IsACmpInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAFCmpInst C.LLVMIsAFCmpInst
-func (self *OpaqueValue) IsAFCmpInst() ValueRef {
+// llgo:link ValueRef.IsAFCmpInst C.LLVMIsAFCmpInst
+func (self ValueRef) IsAFCmpInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAICmpInst C.LLVMIsAICmpInst
-func (self *OpaqueValue) IsAICmpInst() ValueRef {
+// llgo:link ValueRef.IsAICmpInst C.LLVMIsAICmpInst
+func (self ValueRef) IsAICmpInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAExtractElementInst C.LLVMIsAExtractElementInst
-func (self *OpaqueValue) IsAExtractElementInst() ValueRef {
+// llgo:link ValueRef.IsAExtractElementInst C.LLVMIsAExtractElementInst
+func (self ValueRef) IsAExtractElementInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAGetElementPtrInst C.LLVMIsAGetElementPtrInst
-func (self *OpaqueValue) IsAGetElementPtrInst() ValueRef {
+// llgo:link ValueRef.IsAGetElementPtrInst C.LLVMIsAGetElementPtrInst
+func (self ValueRef) IsAGetElementPtrInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAInsertElementInst C.LLVMIsAInsertElementInst
-func (self *OpaqueValue) IsAInsertElementInst() ValueRef {
+// llgo:link ValueRef.IsAInsertElementInst C.LLVMIsAInsertElementInst
+func (self ValueRef) IsAInsertElementInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAInsertValueInst C.LLVMIsAInsertValueInst
-func (self *OpaqueValue) IsAInsertValueInst() ValueRef {
+// llgo:link ValueRef.IsAInsertValueInst C.LLVMIsAInsertValueInst
+func (self ValueRef) IsAInsertValueInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsALandingPadInst C.LLVMIsALandingPadInst
-func (self *OpaqueValue) IsALandingPadInst() ValueRef {
+// llgo:link ValueRef.IsALandingPadInst C.LLVMIsALandingPadInst
+func (self ValueRef) IsALandingPadInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAPHINode C.LLVMIsAPHINode
-func (self *OpaqueValue) IsAPHINode() ValueRef {
+// llgo:link ValueRef.IsAPHINode C.LLVMIsAPHINode
+func (self ValueRef) IsAPHINode() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsASelectInst C.LLVMIsASelectInst
-func (self *OpaqueValue) IsASelectInst() ValueRef {
+// llgo:link ValueRef.IsASelectInst C.LLVMIsASelectInst
+func (self ValueRef) IsASelectInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAShuffleVectorInst C.LLVMIsAShuffleVectorInst
-func (self *OpaqueValue) IsAShuffleVectorInst() ValueRef {
+// llgo:link ValueRef.IsAShuffleVectorInst C.LLVMIsAShuffleVectorInst
+func (self ValueRef) IsAShuffleVectorInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAStoreInst C.LLVMIsAStoreInst
-func (self *OpaqueValue) IsAStoreInst() ValueRef {
+// llgo:link ValueRef.IsAStoreInst C.LLVMIsAStoreInst
+func (self ValueRef) IsAStoreInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsABranchInst C.LLVMIsABranchInst
-func (self *OpaqueValue) IsABranchInst() ValueRef {
+// llgo:link ValueRef.IsABranchInst C.LLVMIsABranchInst
+func (self ValueRef) IsABranchInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAIndirectBrInst C.LLVMIsAIndirectBrInst
-func (self *OpaqueValue) IsAIndirectBrInst() ValueRef {
+// llgo:link ValueRef.IsAIndirectBrInst C.LLVMIsAIndirectBrInst
+func (self ValueRef) IsAIndirectBrInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAInvokeInst C.LLVMIsAInvokeInst
-func (self *OpaqueValue) IsAInvokeInst() ValueRef {
+// llgo:link ValueRef.IsAInvokeInst C.LLVMIsAInvokeInst
+func (self ValueRef) IsAInvokeInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAReturnInst C.LLVMIsAReturnInst
-func (self *OpaqueValue) IsAReturnInst() ValueRef {
+// llgo:link ValueRef.IsAReturnInst C.LLVMIsAReturnInst
+func (self ValueRef) IsAReturnInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsASwitchInst C.LLVMIsASwitchInst
-func (self *OpaqueValue) IsASwitchInst() ValueRef {
+// llgo:link ValueRef.IsASwitchInst C.LLVMIsASwitchInst
+func (self ValueRef) IsASwitchInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAUnreachableInst C.LLVMIsAUnreachableInst
-func (self *OpaqueValue) IsAUnreachableInst() ValueRef {
+// llgo:link ValueRef.IsAUnreachableInst C.LLVMIsAUnreachableInst
+func (self ValueRef) IsAUnreachableInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAResumeInst C.LLVMIsAResumeInst
-func (self *OpaqueValue) IsAResumeInst() ValueRef {
+// llgo:link ValueRef.IsAResumeInst C.LLVMIsAResumeInst
+func (self ValueRef) IsAResumeInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsACleanupReturnInst C.LLVMIsACleanupReturnInst
-func (self *OpaqueValue) IsACleanupReturnInst() ValueRef {
+// llgo:link ValueRef.IsACleanupReturnInst C.LLVMIsACleanupReturnInst
+func (self ValueRef) IsACleanupReturnInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsACatchReturnInst C.LLVMIsACatchReturnInst
-func (self *OpaqueValue) IsACatchReturnInst() ValueRef {
+// llgo:link ValueRef.IsACatchReturnInst C.LLVMIsACatchReturnInst
+func (self ValueRef) IsACatchReturnInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsACatchSwitchInst C.LLVMIsACatchSwitchInst
-func (self *OpaqueValue) IsACatchSwitchInst() ValueRef {
+// llgo:link ValueRef.IsACatchSwitchInst C.LLVMIsACatchSwitchInst
+func (self ValueRef) IsACatchSwitchInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsACallBrInst C.LLVMIsACallBrInst
-func (self *OpaqueValue) IsACallBrInst() ValueRef {
+// llgo:link ValueRef.IsACallBrInst C.LLVMIsACallBrInst
+func (self ValueRef) IsACallBrInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAFuncletPadInst C.LLVMIsAFuncletPadInst
-func (self *OpaqueValue) IsAFuncletPadInst() ValueRef {
+// llgo:link ValueRef.IsAFuncletPadInst C.LLVMIsAFuncletPadInst
+func (self ValueRef) IsAFuncletPadInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsACatchPadInst C.LLVMIsACatchPadInst
-func (self *OpaqueValue) IsACatchPadInst() ValueRef {
+// llgo:link ValueRef.IsACatchPadInst C.LLVMIsACatchPadInst
+func (self ValueRef) IsACatchPadInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsACleanupPadInst C.LLVMIsACleanupPadInst
-func (self *OpaqueValue) IsACleanupPadInst() ValueRef {
+// llgo:link ValueRef.IsACleanupPadInst C.LLVMIsACleanupPadInst
+func (self ValueRef) IsACleanupPadInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAUnaryInstruction C.LLVMIsAUnaryInstruction
-func (self *OpaqueValue) IsAUnaryInstruction() ValueRef {
+// llgo:link ValueRef.IsAUnaryInstruction C.LLVMIsAUnaryInstruction
+func (self ValueRef) IsAUnaryInstruction() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAAllocaInst C.LLVMIsAAllocaInst
-func (self *OpaqueValue) IsAAllocaInst() ValueRef {
+// llgo:link ValueRef.IsAAllocaInst C.LLVMIsAAllocaInst
+func (self ValueRef) IsAAllocaInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsACastInst C.LLVMIsACastInst
-func (self *OpaqueValue) IsACastInst() ValueRef {
+// llgo:link ValueRef.IsACastInst C.LLVMIsACastInst
+func (self ValueRef) IsACastInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAAddrSpaceCastInst C.LLVMIsAAddrSpaceCastInst
-func (self *OpaqueValue) IsAAddrSpaceCastInst() ValueRef {
+// llgo:link ValueRef.IsAAddrSpaceCastInst C.LLVMIsAAddrSpaceCastInst
+func (self ValueRef) IsAAddrSpaceCastInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsABitCastInst C.LLVMIsABitCastInst
-func (self *OpaqueValue) IsABitCastInst() ValueRef {
+// llgo:link ValueRef.IsABitCastInst C.LLVMIsABitCastInst
+func (self ValueRef) IsABitCastInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAFPExtInst C.LLVMIsAFPExtInst
-func (self *OpaqueValue) IsAFPExtInst() ValueRef {
+// llgo:link ValueRef.IsAFPExtInst C.LLVMIsAFPExtInst
+func (self ValueRef) IsAFPExtInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAFPToSIInst C.LLVMIsAFPToSIInst
-func (self *OpaqueValue) IsAFPToSIInst() ValueRef {
+// llgo:link ValueRef.IsAFPToSIInst C.LLVMIsAFPToSIInst
+func (self ValueRef) IsAFPToSIInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAFPToUIInst C.LLVMIsAFPToUIInst
-func (self *OpaqueValue) IsAFPToUIInst() ValueRef {
+// llgo:link ValueRef.IsAFPToUIInst C.LLVMIsAFPToUIInst
+func (self ValueRef) IsAFPToUIInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAFPTruncInst C.LLVMIsAFPTruncInst
-func (self *OpaqueValue) IsAFPTruncInst() ValueRef {
+// llgo:link ValueRef.IsAFPTruncInst C.LLVMIsAFPTruncInst
+func (self ValueRef) IsAFPTruncInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAIntToPtrInst C.LLVMIsAIntToPtrInst
-func (self *OpaqueValue) IsAIntToPtrInst() ValueRef {
+// llgo:link ValueRef.IsAIntToPtrInst C.LLVMIsAIntToPtrInst
+func (self ValueRef) IsAIntToPtrInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAPtrToIntInst C.LLVMIsAPtrToIntInst
-func (self *OpaqueValue) IsAPtrToIntInst() ValueRef {
+// llgo:link ValueRef.IsAPtrToIntInst C.LLVMIsAPtrToIntInst
+func (self ValueRef) IsAPtrToIntInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsASExtInst C.LLVMIsASExtInst
-func (self *OpaqueValue) IsASExtInst() ValueRef {
+// llgo:link ValueRef.IsASExtInst C.LLVMIsASExtInst
+func (self ValueRef) IsASExtInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsASIToFPInst C.LLVMIsASIToFPInst
-func (self *OpaqueValue) IsASIToFPInst() ValueRef {
+// llgo:link ValueRef.IsASIToFPInst C.LLVMIsASIToFPInst
+func (self ValueRef) IsASIToFPInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsATruncInst C.LLVMIsATruncInst
-func (self *OpaqueValue) IsATruncInst() ValueRef {
+// llgo:link ValueRef.IsATruncInst C.LLVMIsATruncInst
+func (self ValueRef) IsATruncInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAUIToFPInst C.LLVMIsAUIToFPInst
-func (self *OpaqueValue) IsAUIToFPInst() ValueRef {
+// llgo:link ValueRef.IsAUIToFPInst C.LLVMIsAUIToFPInst
+func (self ValueRef) IsAUIToFPInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAZExtInst C.LLVMIsAZExtInst
-func (self *OpaqueValue) IsAZExtInst() ValueRef {
+// llgo:link ValueRef.IsAZExtInst C.LLVMIsAZExtInst
+func (self ValueRef) IsAZExtInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAExtractValueInst C.LLVMIsAExtractValueInst
-func (self *OpaqueValue) IsAExtractValueInst() ValueRef {
+// llgo:link ValueRef.IsAExtractValueInst C.LLVMIsAExtractValueInst
+func (self ValueRef) IsAExtractValueInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsALoadInst C.LLVMIsALoadInst
-func (self *OpaqueValue) IsALoadInst() ValueRef {
+// llgo:link ValueRef.IsALoadInst C.LLVMIsALoadInst
+func (self ValueRef) IsALoadInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAVAArgInst C.LLVMIsAVAArgInst
-func (self *OpaqueValue) IsAVAArgInst() ValueRef {
+// llgo:link ValueRef.IsAVAArgInst C.LLVMIsAVAArgInst
+func (self ValueRef) IsAVAArgInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAFreezeInst C.LLVMIsAFreezeInst
-func (self *OpaqueValue) IsAFreezeInst() ValueRef {
+// llgo:link ValueRef.IsAFreezeInst C.LLVMIsAFreezeInst
+func (self ValueRef) IsAFreezeInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAAtomicCmpXchgInst C.LLVMIsAAtomicCmpXchgInst
-func (self *OpaqueValue) IsAAtomicCmpXchgInst() ValueRef {
+// llgo:link ValueRef.IsAAtomicCmpXchgInst C.LLVMIsAAtomicCmpXchgInst
+func (self ValueRef) IsAAtomicCmpXchgInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAAtomicRMWInst C.LLVMIsAAtomicRMWInst
-func (self *OpaqueValue) IsAAtomicRMWInst() ValueRef {
+// llgo:link ValueRef.IsAAtomicRMWInst C.LLVMIsAAtomicRMWInst
+func (self ValueRef) IsAAtomicRMWInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAFenceInst C.LLVMIsAFenceInst
-func (self *OpaqueValue) IsAFenceInst() ValueRef {
+// llgo:link ValueRef.IsAFenceInst C.LLVMIsAFenceInst
+func (self ValueRef) IsAFenceInst() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAMDNode C.LLVMIsAMDNode
-func (self *OpaqueValue) IsAMDNode() ValueRef {
+// llgo:link ValueRef.IsAMDNode C.LLVMIsAMDNode
+func (self ValueRef) IsAMDNode() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAValueAsMetadata C.LLVMIsAValueAsMetadata
-func (self *OpaqueValue) IsAValueAsMetadata() ValueRef {
+// llgo:link ValueRef.IsAValueAsMetadata C.LLVMIsAValueAsMetadata
+func (self ValueRef) IsAValueAsMetadata() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).IsAMDString C.LLVMIsAMDString
-func (self *OpaqueValue) IsAMDString() ValueRef {
+// llgo:link ValueRef.IsAMDString C.LLVMIsAMDString
+func (self ValueRef) IsAMDString() ValueRef {
 	return self
 }
 
 // Deprecated: Use LLVMGetValueName2 instead.
 //
-// llgo:link (*OpaqueValue).ValueName C.LLVMGetValueName
-func (self *OpaqueValue) ValueName() *c.Char {
+// llgo:link ValueRef.ValueName C.LLVMGetValueName
+func (self ValueRef) ValueName() *c.Char {
 	return nil
 }
 
 // Deprecated: Use LLVMSetValueName2 instead.
 //
-// llgo:link (*OpaqueValue).SetValueName C.LLVMSetValueName
-func (self *OpaqueValue) SetValueName(Name *c.Char) {
+// llgo:link ValueRef.SetValueName C.LLVMSetValueName
+func (self ValueRef) SetValueName(Name *c.Char) {
 }
 
 // Obtain the first use of a value.
@@ -2602,8 +2604,8 @@ func (self *OpaqueValue) SetValueName(Name *c.Char) {
 //
 // @see llvm::Value::use_begin()
 //
-// llgo:link (*OpaqueValue).FirstUse C.LLVMGetFirstUse
-func (self *OpaqueValue) FirstUse() UseRef {
+// llgo:link ValueRef.FirstUse C.LLVMGetFirstUse
+func (self ValueRef) FirstUse() UseRef {
 	return nil
 }
 
@@ -2612,8 +2614,8 @@ func (self *OpaqueValue) FirstUse() UseRef {
 // This effectively advances the iterator. It returns NULL if you are on
 // the final use and no more are available.
 //
-// llgo:link (*OpaqueUse).NextUse C.LLVMGetNextUse
-func (self *OpaqueUse) NextUse() UseRef {
+// llgo:link UseRef.NextUse C.LLVMGetNextUse
+func (self UseRef) NextUse() UseRef {
 	return self
 }
 
@@ -2623,8 +2625,8 @@ func (self *OpaqueUse) NextUse() UseRef {
 //
 // @see llvm::Use::getUser()
 //
-// llgo:link (*OpaqueUse).User C.LLVMGetUser
-func (self *OpaqueUse) User() ValueRef {
+// llgo:link UseRef.User C.LLVMGetUser
+func (self UseRef) User() ValueRef {
 	return nil
 }
 
@@ -2632,8 +2634,8 @@ func (self *OpaqueUse) User() ValueRef {
 //
 // @see llvm::Use::get().
 //
-// llgo:link (*OpaqueUse).UsedValue C.LLVMGetUsedValue
-func (self *OpaqueUse) UsedValue() ValueRef {
+// llgo:link UseRef.UsedValue C.LLVMGetUsedValue
+func (self UseRef) UsedValue() ValueRef {
 	return nil
 }
 
@@ -2641,8 +2643,8 @@ func (self *OpaqueUse) UsedValue() ValueRef {
 //
 // @see llvm::User::getOperand()
 //
-// llgo:link (*OpaqueValue).Operand C.LLVMGetOperand
-func (self *OpaqueValue) Operand(Index c.Uint) ValueRef {
+// llgo:link ValueRef.Operand C.LLVMGetOperand
+func (self ValueRef) Operand(Index c.Uint) ValueRef {
 	return self
 }
 
@@ -2650,8 +2652,8 @@ func (self *OpaqueValue) Operand(Index c.Uint) ValueRef {
 //
 // @see llvm::User::getOperandUse()
 //
-// llgo:link (*OpaqueValue).OperandUse C.LLVMGetOperandUse
-func (self *OpaqueValue) OperandUse(Index c.Uint) UseRef {
+// llgo:link ValueRef.OperandUse C.LLVMGetOperandUse
+func (self ValueRef) OperandUse(Index c.Uint) UseRef {
 	return nil
 }
 
@@ -2659,16 +2661,16 @@ func (self *OpaqueValue) OperandUse(Index c.Uint) UseRef {
 //
 // @see llvm::User::setOperand()
 //
-// llgo:link (*OpaqueValue).SetOperand C.LLVMSetOperand
-func (self *OpaqueValue) SetOperand(Index c.Uint, Val ValueRef) {
+// llgo:link ValueRef.SetOperand C.LLVMSetOperand
+func (self ValueRef) SetOperand(Index c.Uint, Val ValueRef) {
 }
 
 // Obtain the number of operands in a llvm::User value.
 //
 // @see llvm::User::getNumOperands()
 //
-// llgo:link (*OpaqueValue).NumOperands C.LLVMGetNumOperands
-func (self *OpaqueValue) NumOperands() c.Int {
+// llgo:link ValueRef.NumOperands C.LLVMGetNumOperands
+func (self ValueRef) NumOperands() c.Int {
 	return 0
 }
 
@@ -2676,8 +2678,8 @@ func (self *OpaqueValue) NumOperands() c.Int {
 //
 // @see llvm::Constant::getNullValue()
 //
-// llgo:link (*OpaqueType).ConstNull C.LLVMConstNull
-func (self *OpaqueType) ConstNull() ValueRef {
+// llgo:link TypeRef.ConstNull C.LLVMConstNull
+func (self TypeRef) ConstNull() ValueRef {
 	return nil
 }
 
@@ -2688,8 +2690,8 @@ func (self *OpaqueType) ConstNull() ValueRef {
 //
 // @see llvm::Constant::getAllOnesValue()
 //
-// llgo:link (*OpaqueType).ConstAllOnes C.LLVMConstAllOnes
-func (self *OpaqueType) ConstAllOnes() ValueRef {
+// llgo:link TypeRef.ConstAllOnes C.LLVMConstAllOnes
+func (self TypeRef) ConstAllOnes() ValueRef {
 	return nil
 }
 
@@ -2697,8 +2699,8 @@ func (self *OpaqueType) ConstAllOnes() ValueRef {
 //
 // @see llvm::UndefValue::get()
 //
-// llgo:link (*OpaqueType).Undef C.LLVMGetUndef
-func (self *OpaqueType) Undef() ValueRef {
+// llgo:link TypeRef.Undef C.LLVMGetUndef
+func (self TypeRef) Undef() ValueRef {
 	return nil
 }
 
@@ -2706,8 +2708,8 @@ func (self *OpaqueType) Undef() ValueRef {
 //
 // @see llvm::PoisonValue::get()
 //
-// llgo:link (*OpaqueType).Poison C.LLVMGetPoison
-func (self *OpaqueType) Poison() ValueRef {
+// llgo:link TypeRef.Poison C.LLVMGetPoison
+func (self TypeRef) Poison() ValueRef {
 	return nil
 }
 
@@ -2715,16 +2717,16 @@ func (self *OpaqueType) Poison() ValueRef {
 //
 // @see llvm::Constant::isNullValue()
 //
-// llgo:link (*OpaqueValue).IsNull C.LLVMIsNull
-func (self *OpaqueValue) IsNull() Bool {
+// llgo:link ValueRef.IsNull C.LLVMIsNull
+func (self ValueRef) IsNull() Bool {
 	return 0
 }
 
 // Obtain a constant that is a constant pointer pointing to NULL for a
 // specified type.
 //
-// llgo:link (*OpaqueType).ConstPointerNull C.LLVMConstPointerNull
-func (self *OpaqueType) ConstPointerNull() ValueRef {
+// llgo:link TypeRef.ConstPointerNull C.LLVMConstPointerNull
+func (self TypeRef) ConstPointerNull() ValueRef {
 	return nil
 }
 
@@ -2738,8 +2740,8 @@ func (self *OpaqueType) ConstPointerNull() ValueRef {
 // @param N The value the returned instance should refer to.
 // @param SignExtend Whether to sign extend the produced value.
 //
-// llgo:link (*OpaqueType).ConstInt C.LLVMConstInt
-func (self *OpaqueType) ConstInt(N c.UlongLong, SignExtend Bool) ValueRef {
+// llgo:link TypeRef.ConstInt C.LLVMConstInt
+func (self TypeRef) ConstInt(N c.UlongLong, SignExtend Bool) ValueRef {
 	return nil
 }
 
@@ -2747,8 +2749,8 @@ func (self *OpaqueType) ConstInt(N c.UlongLong, SignExtend Bool) ValueRef {
 //
 // @see llvm::ConstantInt::get()
 //
-// llgo:link (*OpaqueType).ConstIntOfArbitraryPrecision C.LLVMConstIntOfArbitraryPrecision
-func (self *OpaqueType) ConstIntOfArbitraryPrecision(NumWords c.Uint, Words *c.Uint64T) ValueRef {
+// llgo:link TypeRef.ConstIntOfArbitraryPrecision C.LLVMConstIntOfArbitraryPrecision
+func (self TypeRef) ConstIntOfArbitraryPrecision(NumWords c.Uint, Words *c.Uint64T) ValueRef {
 	return nil
 }
 
@@ -2760,8 +2762,8 @@ func (self *OpaqueType) ConstIntOfArbitraryPrecision(NumWords c.Uint, Words *c.U
 //
 // @see llvm::ConstantInt::get()
 //
-// llgo:link (*OpaqueType).ConstIntOfString C.LLVMConstIntOfString
-func (self *OpaqueType) ConstIntOfString(Text *c.Char, Radix c.Uint8T) ValueRef {
+// llgo:link TypeRef.ConstIntOfString C.LLVMConstIntOfString
+func (self TypeRef) ConstIntOfString(Text *c.Char, Radix c.Uint8T) ValueRef {
 	return nil
 }
 
@@ -2770,15 +2772,15 @@ func (self *OpaqueType) ConstIntOfString(Text *c.Char, Radix c.Uint8T) ValueRef 
 //
 // @see llvm::ConstantInt::get()
 //
-// llgo:link (*OpaqueType).ConstIntOfStringAndSize C.LLVMConstIntOfStringAndSize
-func (self *OpaqueType) ConstIntOfStringAndSize(Text *c.Char, SLen c.Uint, Radix c.Uint8T) ValueRef {
+// llgo:link TypeRef.ConstIntOfStringAndSize C.LLVMConstIntOfStringAndSize
+func (self TypeRef) ConstIntOfStringAndSize(Text *c.Char, SLen c.Uint, Radix c.Uint8T) ValueRef {
 	return nil
 }
 
 // Obtain a constant value referring to a double floating point value.
 //
-// llgo:link (*OpaqueType).ConstReal C.LLVMConstReal
-func (self *OpaqueType) ConstReal(N c.Double) ValueRef {
+// llgo:link TypeRef.ConstReal C.LLVMConstReal
+func (self TypeRef) ConstReal(N c.Double) ValueRef {
 	return nil
 }
 
@@ -2787,15 +2789,15 @@ func (self *OpaqueType) ConstReal(N c.Double) ValueRef {
 // A similar API, LLVMConstRealOfStringAndSize is also available. It
 // should be used if the input string's length is known.
 //
-// llgo:link (*OpaqueType).ConstRealOfString C.LLVMConstRealOfString
-func (self *OpaqueType) ConstRealOfString(Text *c.Char) ValueRef {
+// llgo:link TypeRef.ConstRealOfString C.LLVMConstRealOfString
+func (self TypeRef) ConstRealOfString(Text *c.Char) ValueRef {
 	return nil
 }
 
 // Obtain a constant for a floating point value parsed from a string.
 //
-// llgo:link (*OpaqueType).ConstRealOfStringAndSize C.LLVMConstRealOfStringAndSize
-func (self *OpaqueType) ConstRealOfStringAndSize(Text *c.Char, SLen c.Uint) ValueRef {
+// llgo:link TypeRef.ConstRealOfStringAndSize C.LLVMConstRealOfStringAndSize
+func (self TypeRef) ConstRealOfStringAndSize(Text *c.Char, SLen c.Uint) ValueRef {
 	return nil
 }
 
@@ -2803,8 +2805,8 @@ func (self *OpaqueType) ConstRealOfStringAndSize(Text *c.Char, SLen c.Uint) Valu
 // The length of the array N must be ceildiv(bits, 64), where bits is the
 // scalar size in bits of the floating-point type.
 //
-// llgo:link (*OpaqueType).ConstFPFromBits C.LLVMConstFPFromBits
-func (self *OpaqueType) ConstFPFromBits(N *c.Uint64T) ValueRef {
+// llgo:link TypeRef.ConstFPFromBits C.LLVMConstFPFromBits
+func (self TypeRef) ConstFPFromBits(N *c.Uint64T) ValueRef {
 	return nil
 }
 
@@ -2812,8 +2814,8 @@ func (self *OpaqueType) ConstFPFromBits(N *c.Uint64T) ValueRef {
 //
 // @see llvm::ConstantInt::getZExtValue()
 //
-// llgo:link (*OpaqueValue).ConstIntGetZExtValue C.LLVMConstIntGetZExtValue
-func (self *OpaqueValue) ConstIntGetZExtValue() c.UlongLong {
+// llgo:link ValueRef.ConstIntGetZExtValue C.LLVMConstIntGetZExtValue
+func (self ValueRef) ConstIntGetZExtValue() c.UlongLong {
 	return 0
 }
 
@@ -2821,8 +2823,8 @@ func (self *OpaqueValue) ConstIntGetZExtValue() c.UlongLong {
 //
 // @see llvm::ConstantInt::getSExtValue()
 //
-// llgo:link (*OpaqueValue).ConstIntGetSExtValue C.LLVMConstIntGetSExtValue
-func (self *OpaqueValue) ConstIntGetSExtValue() c.LongLong {
+// llgo:link ValueRef.ConstIntGetSExtValue C.LLVMConstIntGetSExtValue
+func (self ValueRef) ConstIntGetSExtValue() c.LongLong {
 	return 0
 }
 
@@ -2831,8 +2833,8 @@ func (self *OpaqueValue) ConstIntGetSExtValue() c.LongLong {
 //
 // @see llvm::ConstantFP::getDoubleValue
 //
-// llgo:link (*OpaqueValue).ConstRealGetDouble C.LLVMConstRealGetDouble
-func (self *OpaqueValue) ConstRealGetDouble(losesInfo *Bool) c.Double {
+// llgo:link ValueRef.ConstRealGetDouble C.LLVMConstRealGetDouble
+func (self ValueRef) ConstRealGetDouble(losesInfo *Bool) c.Double {
 	return 0
 }
 
@@ -2842,8 +2844,8 @@ func (self *OpaqueValue) ConstRealGetDouble(losesInfo *Bool) c.Double {
 // accurate LLVMConstStringInContext2
 // @see llvm::ConstantDataArray::getString()
 //
-// llgo:link (*OpaqueContext).ConstStringInContext C.LLVMConstStringInContext
-func (self *OpaqueContext) ConstStringInContext(Str *c.Char, Length c.Uint, DontNullTerminate Bool) ValueRef {
+// llgo:link ContextRef.ConstStringInContext C.LLVMConstStringInContext
+func (self ContextRef) ConstStringInContext(Str *c.Char, Length c.Uint, DontNullTerminate Bool) ValueRef {
 	return nil
 }
 
@@ -2851,8 +2853,8 @@ func (self *OpaqueContext) ConstStringInContext(Str *c.Char, Length c.Uint, Dont
 //
 // @see llvm::ConstantDataArray::getString()
 //
-// llgo:link (*OpaqueContext).ConstStringInContext2 C.LLVMConstStringInContext2
-func (self *OpaqueContext) ConstStringInContext2(Str *c.Char, Length c.SizeT, DontNullTerminate Bool) ValueRef {
+// llgo:link ContextRef.ConstStringInContext2 C.LLVMConstStringInContext2
+func (self ContextRef) ConstStringInContext2(Str *c.Char, Length c.SizeT, DontNullTerminate Bool) ValueRef {
 	return nil
 }
 
@@ -2871,8 +2873,8 @@ func ConstString(Str *c.Char, Length c.Uint, DontNullTerminate Bool) ValueRef
 //
 // @see ConstantDataSequential::getAsString()
 //
-// llgo:link (*OpaqueValue).IsConstantString C.LLVMIsConstantString
-func (self *OpaqueValue) IsConstantString() Bool {
+// llgo:link ValueRef.IsConstantString C.LLVMIsConstantString
+func (self ValueRef) IsConstantString() Bool {
 	return 0
 }
 
@@ -2880,8 +2882,8 @@ func (self *OpaqueValue) IsConstantString() Bool {
 //
 // @see ConstantDataSequential::getAsString()
 //
-// llgo:link (*OpaqueValue).AsString C.LLVMGetAsString
-func (self *OpaqueValue) AsString(Length *c.SizeT) *c.Char {
+// llgo:link ValueRef.AsString C.LLVMGetAsString
+func (self ValueRef) AsString(Length *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -2892,8 +2894,8 @@ func (self *OpaqueValue) AsString(Length *c.SizeT) *c.Char {
 //
 // @see ConstantDataSequential::getRawDataValues()
 //
-// llgo:link (*OpaqueValue).RawDataValues C.LLVMGetRawDataValues
-func (self *OpaqueValue) RawDataValues(SizeInBytes *c.SizeT) *c.Char {
+// llgo:link ValueRef.RawDataValues C.LLVMGetRawDataValues
+func (self ValueRef) RawDataValues(SizeInBytes *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -2901,8 +2903,8 @@ func (self *OpaqueValue) RawDataValues(SizeInBytes *c.SizeT) *c.Char {
 //
 // @see llvm::ConstantStruct::getAnon()
 //
-// llgo:link (*OpaqueContext).ConstStructInContext C.LLVMConstStructInContext
-func (self *OpaqueContext) ConstStructInContext(ConstantVals *ValueRef, Count c.Uint, Packed Bool) ValueRef {
+// llgo:link ContextRef.ConstStructInContext C.LLVMConstStructInContext
+func (self ContextRef) ConstStructInContext(ConstantVals *ValueRef, Count c.Uint, Packed Bool) ValueRef {
 	return nil
 }
 
@@ -2913,10 +2915,8 @@ func (self *OpaqueContext) ConstStructInContext(ConstantVals *ValueRef, Count c.
 //
 // @see LLVMConstStructInContext()
 //
-// llgo:link (*OpaqueValue).ConstStruct C.LLVMConstStruct
-func (self *OpaqueValue) ConstStruct(Count c.Uint, Packed Bool) ValueRef {
-	return self
-}
+//go:linkname ConstStruct C.LLVMConstStruct
+func ConstStruct(ConstantVals *ValueRef, Count c.Uint, Packed Bool) ValueRef
 
 // Create a ConstantArray from values.
 //
@@ -2924,8 +2924,8 @@ func (self *OpaqueValue) ConstStruct(Count c.Uint, Packed Bool) ValueRef {
 // LLVMConstArray2
 // @see llvm::ConstantArray::get()
 //
-// llgo:link (*OpaqueType).ConstArray C.LLVMConstArray
-func (self *OpaqueType) ConstArray(ConstantVals *ValueRef, Length c.Uint) ValueRef {
+// llgo:link TypeRef.ConstArray C.LLVMConstArray
+func (self TypeRef) ConstArray(ConstantVals *ValueRef, Length c.Uint) ValueRef {
 	return nil
 }
 
@@ -2933,8 +2933,8 @@ func (self *OpaqueType) ConstArray(ConstantVals *ValueRef, Length c.Uint) ValueR
 //
 // @see llvm::ConstantArray::get()
 //
-// llgo:link (*OpaqueType).ConstArray2 C.LLVMConstArray2
-func (self *OpaqueType) ConstArray2(ConstantVals *ValueRef, Length c.Uint64T) ValueRef {
+// llgo:link TypeRef.ConstArray2 C.LLVMConstArray2
+func (self TypeRef) ConstArray2(ConstantVals *ValueRef, Length c.Uint64T) ValueRef {
 	return nil
 }
 
@@ -2946,8 +2946,8 @@ func (self *OpaqueType) ConstArray2(ConstantVals *ValueRef, Length c.Uint64T) Va
 //
 // @see llvm::ConstantDataArray::getRaw()
 //
-// llgo:link (*OpaqueType).ConstDataArray C.LLVMConstDataArray
-func (self *OpaqueType) ConstDataArray(Data *c.Char, SizeInBytes c.SizeT) ValueRef {
+// llgo:link TypeRef.ConstDataArray C.LLVMConstDataArray
+func (self TypeRef) ConstDataArray(Data *c.Char, SizeInBytes c.SizeT) ValueRef {
 	return nil
 }
 
@@ -2955,8 +2955,8 @@ func (self *OpaqueType) ConstDataArray(Data *c.Char, SizeInBytes c.SizeT) ValueR
 //
 // @see llvm::ConstantStruct::get()
 //
-// llgo:link (*OpaqueType).ConstNamedStruct C.LLVMConstNamedStruct
-func (self *OpaqueType) ConstNamedStruct(ConstantVals *ValueRef, Count c.Uint) ValueRef {
+// llgo:link TypeRef.ConstNamedStruct C.LLVMConstNamedStruct
+func (self TypeRef) ConstNamedStruct(ConstantVals *ValueRef, Count c.Uint) ValueRef {
 	return nil
 }
 
@@ -2967,8 +2967,8 @@ func (self *OpaqueType) ConstNamedStruct(ConstantVals *ValueRef, Count c.Uint) V
 //
 // @see llvm::Constant::getAggregateElement()
 //
-// llgo:link (*OpaqueValue).AggregateElement C.LLVMGetAggregateElement
-func (self *OpaqueValue) AggregateElement(Idx c.Uint) ValueRef {
+// llgo:link ValueRef.AggregateElement C.LLVMGetAggregateElement
+func (self ValueRef) AggregateElement(Idx c.Uint) ValueRef {
 	return self
 }
 
@@ -2976,8 +2976,8 @@ func (self *OpaqueValue) AggregateElement(Idx c.Uint) ValueRef {
 //
 // @see ConstantDataSequential::getElementAsConstant()
 //
-// llgo:link (*OpaqueValue).ElementAsConstant C.LLVMGetElementAsConstant
-func (self *OpaqueValue) ElementAsConstant(idx c.Uint) ValueRef {
+// llgo:link ValueRef.ElementAsConstant C.LLVMGetElementAsConstant
+func (self ValueRef) ElementAsConstant(idx c.Uint) ValueRef {
 	return self
 }
 
@@ -2985,17 +2985,15 @@ func (self *OpaqueValue) ElementAsConstant(idx c.Uint) ValueRef {
 //
 // @see llvm::ConstantVector::get()
 //
-// llgo:link (*OpaqueValue).ConstVector C.LLVMConstVector
-func (self *OpaqueValue) ConstVector(Size c.Uint) ValueRef {
-	return self
-}
+//go:linkname ConstVector C.LLVMConstVector
+func ConstVector(ScalarConstantVals *ValueRef, Size c.Uint) ValueRef
 
 // Create a ConstantPtrAuth constant with the given values.
 //
 // @see llvm::ConstantPtrAuth::get()
 //
-// llgo:link (*OpaqueValue).ConstantPtrAuth C.LLVMConstantPtrAuth
-func (self *OpaqueValue) ConstantPtrAuth(Key ValueRef, Disc ValueRef, AddrDisc ValueRef) ValueRef {
+// llgo:link ValueRef.ConstantPtrAuth C.LLVMConstantPtrAuth
+func (self ValueRef) ConstantPtrAuth(Key ValueRef, Disc ValueRef, AddrDisc ValueRef) ValueRef {
 	return self
 }
 
@@ -3007,38 +3005,38 @@ func (self *OpaqueValue) ConstantPtrAuth(Key ValueRef, Disc ValueRef, AddrDisc V
 //
 // @{
 //
-// llgo:link (*OpaqueValue).ConstOpcode C.LLVMGetConstOpcode
-func (self *OpaqueValue) ConstOpcode() Opcode {
+// llgo:link ValueRef.ConstOpcode C.LLVMGetConstOpcode
+func (self ValueRef) ConstOpcode() Opcode {
 	return 0
 }
 
-// llgo:link (*OpaqueType).AlignOf C.LLVMAlignOf
-func (self *OpaqueType) AlignOf() ValueRef {
+// llgo:link TypeRef.AlignOf C.LLVMAlignOf
+func (self TypeRef) AlignOf() ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueType).SizeOf C.LLVMSizeOf
-func (self *OpaqueType) SizeOf() ValueRef {
+// llgo:link TypeRef.SizeOf C.LLVMSizeOf
+func (self TypeRef) SizeOf() ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).ConstNeg C.LLVMConstNeg
-func (self *OpaqueValue) ConstNeg() ValueRef {
+// llgo:link ValueRef.ConstNeg C.LLVMConstNeg
+func (self ValueRef) ConstNeg() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).ConstNSWNeg C.LLVMConstNSWNeg
-func (self *OpaqueValue) ConstNSWNeg() ValueRef {
+// llgo:link ValueRef.ConstNSWNeg C.LLVMConstNSWNeg
+func (self ValueRef) ConstNSWNeg() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).ConstNUWNeg C.LLVMConstNUWNeg
-func (self *OpaqueValue) ConstNUWNeg() ValueRef {
+// llgo:link ValueRef.ConstNUWNeg C.LLVMConstNUWNeg
+func (self ValueRef) ConstNUWNeg() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).ConstNot C.LLVMConstNot
-func (self *OpaqueValue) ConstNot() ValueRef {
+// llgo:link ValueRef.ConstNot C.LLVMConstNot
+func (self ValueRef) ConstNot() ValueRef {
 	return self
 }
 
@@ -3063,13 +3061,13 @@ func ConstNUWSub(LHSConstant ValueRef, RHSConstant ValueRef) ValueRef
 //go:linkname ConstXor C.LLVMConstXor
 func ConstXor(LHSConstant ValueRef, RHSConstant ValueRef) ValueRef
 
-// llgo:link (*OpaqueType).ConstGEP2 C.LLVMConstGEP2
-func (self *OpaqueType) ConstGEP2(ConstantVal ValueRef, ConstantIndices *ValueRef, NumIndices c.Uint) ValueRef {
+// llgo:link TypeRef.ConstGEP2 C.LLVMConstGEP2
+func (self TypeRef) ConstGEP2(ConstantVal ValueRef, ConstantIndices *ValueRef, NumIndices c.Uint) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueType).ConstInBoundsGEP2 C.LLVMConstInBoundsGEP2
-func (self *OpaqueType) ConstInBoundsGEP2(ConstantVal ValueRef, ConstantIndices *ValueRef, NumIndices c.Uint) ValueRef {
+// llgo:link TypeRef.ConstInBoundsGEP2 C.LLVMConstInBoundsGEP2
+func (self TypeRef) ConstInBoundsGEP2(ConstantVal ValueRef, ConstantIndices *ValueRef, NumIndices c.Uint) ValueRef {
 	return nil
 }
 
@@ -3078,82 +3076,82 @@ func (self *OpaqueType) ConstInBoundsGEP2(ConstantVal ValueRef, ConstantIndices 
 //
 // @see llvm::ConstantExpr::getGetElementPtr()
 //
-// llgo:link (*OpaqueType).ConstGEPWithNoWrapFlags C.LLVMConstGEPWithNoWrapFlags
-func (self *OpaqueType) ConstGEPWithNoWrapFlags(ConstantVal ValueRef, ConstantIndices *ValueRef, NumIndices c.Uint, NoWrapFlags GEPNoWrapFlags) ValueRef {
+// llgo:link TypeRef.ConstGEPWithNoWrapFlags C.LLVMConstGEPWithNoWrapFlags
+func (self TypeRef) ConstGEPWithNoWrapFlags(ConstantVal ValueRef, ConstantIndices *ValueRef, NumIndices c.Uint, NoWrapFlags GEPNoWrapFlags) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).ConstTrunc C.LLVMConstTrunc
-func (self *OpaqueValue) ConstTrunc(ToType TypeRef) ValueRef {
+// llgo:link ValueRef.ConstTrunc C.LLVMConstTrunc
+func (self ValueRef) ConstTrunc(ToType TypeRef) ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).ConstPtrToInt C.LLVMConstPtrToInt
-func (self *OpaqueValue) ConstPtrToInt(ToType TypeRef) ValueRef {
+// llgo:link ValueRef.ConstPtrToInt C.LLVMConstPtrToInt
+func (self ValueRef) ConstPtrToInt(ToType TypeRef) ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).ConstIntToPtr C.LLVMConstIntToPtr
-func (self *OpaqueValue) ConstIntToPtr(ToType TypeRef) ValueRef {
+// llgo:link ValueRef.ConstIntToPtr C.LLVMConstIntToPtr
+func (self ValueRef) ConstIntToPtr(ToType TypeRef) ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).ConstBitCast C.LLVMConstBitCast
-func (self *OpaqueValue) ConstBitCast(ToType TypeRef) ValueRef {
+// llgo:link ValueRef.ConstBitCast C.LLVMConstBitCast
+func (self ValueRef) ConstBitCast(ToType TypeRef) ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).ConstAddrSpaceCast C.LLVMConstAddrSpaceCast
-func (self *OpaqueValue) ConstAddrSpaceCast(ToType TypeRef) ValueRef {
+// llgo:link ValueRef.ConstAddrSpaceCast C.LLVMConstAddrSpaceCast
+func (self ValueRef) ConstAddrSpaceCast(ToType TypeRef) ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).ConstTruncOrBitCast C.LLVMConstTruncOrBitCast
-func (self *OpaqueValue) ConstTruncOrBitCast(ToType TypeRef) ValueRef {
+// llgo:link ValueRef.ConstTruncOrBitCast C.LLVMConstTruncOrBitCast
+func (self ValueRef) ConstTruncOrBitCast(ToType TypeRef) ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).ConstPointerCast C.LLVMConstPointerCast
-func (self *OpaqueValue) ConstPointerCast(ToType TypeRef) ValueRef {
+// llgo:link ValueRef.ConstPointerCast C.LLVMConstPointerCast
+func (self ValueRef) ConstPointerCast(ToType TypeRef) ValueRef {
 	return self
 }
 
 //go:linkname ConstExtractElement C.LLVMConstExtractElement
 func ConstExtractElement(VectorConstant ValueRef, IndexConstant ValueRef) ValueRef
 
-// llgo:link (*OpaqueValue).ConstInsertElement C.LLVMConstInsertElement
-func (self *OpaqueValue) ConstInsertElement(ElementValueConstant ValueRef, IndexConstant ValueRef) ValueRef {
+// llgo:link ValueRef.ConstInsertElement C.LLVMConstInsertElement
+func (self ValueRef) ConstInsertElement(ElementValueConstant ValueRef, IndexConstant ValueRef) ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).ConstShuffleVector C.LLVMConstShuffleVector
-func (self *OpaqueValue) ConstShuffleVector(VectorBConstant ValueRef, MaskConstant ValueRef) ValueRef {
+// llgo:link ValueRef.ConstShuffleVector C.LLVMConstShuffleVector
+func (self ValueRef) ConstShuffleVector(VectorBConstant ValueRef, MaskConstant ValueRef) ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).BlockAddress C.LLVMBlockAddress
-func (self *OpaqueValue) BlockAddress(BB BasicBlockRef) ValueRef {
+// llgo:link ValueRef.BlockAddress C.LLVMBlockAddress
+func (self ValueRef) BlockAddress(BB BasicBlockRef) ValueRef {
 	return self
 }
 
 // Gets the function associated with a given BlockAddress constant value.
 //
-// llgo:link (*OpaqueValue).BlockAddressFunction C.LLVMGetBlockAddressFunction
-func (self *OpaqueValue) BlockAddressFunction() ValueRef {
+// llgo:link ValueRef.BlockAddressFunction C.LLVMGetBlockAddressFunction
+func (self ValueRef) BlockAddressFunction() ValueRef {
 	return self
 }
 
 // Gets the basic block associated with a given BlockAddress constant value.
 //
-// llgo:link (*OpaqueValue).BlockAddressBasicBlock C.LLVMGetBlockAddressBasicBlock
-func (self *OpaqueValue) BlockAddressBasicBlock() BasicBlockRef {
+// llgo:link ValueRef.BlockAddressBasicBlock C.LLVMGetBlockAddressBasicBlock
+func (self ValueRef) BlockAddressBasicBlock() BasicBlockRef {
 	return nil
 }
 
 // Deprecated: Use LLVMGetInlineAsm instead.
 //
-// llgo:link (*OpaqueType).ConstInlineAsm C.LLVMConstInlineAsm
-func (self *OpaqueType) ConstInlineAsm(AsmString *c.Char, Constraints *c.Char, HasSideEffects Bool, IsAlignStack Bool) ValueRef {
+// llgo:link TypeRef.ConstInlineAsm C.LLVMConstInlineAsm
+func (self TypeRef) ConstInlineAsm(AsmString *c.Char, Constraints *c.Char, HasSideEffects Bool, IsAlignStack Bool) ValueRef {
 	return nil
 }
 
@@ -3166,59 +3164,59 @@ func (self *OpaqueType) ConstInlineAsm(AsmString *c.Char, Constraints *c.Char, H
 //
 // @{
 //
-// llgo:link (*OpaqueValue).GlobalParent C.LLVMGetGlobalParent
-func (self *OpaqueValue) GlobalParent() ModuleRef {
+// llgo:link ValueRef.GlobalParent C.LLVMGetGlobalParent
+func (self ValueRef) GlobalParent() ModuleRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).IsDeclaration C.LLVMIsDeclaration
-func (self *OpaqueValue) IsDeclaration() Bool {
+// llgo:link ValueRef.IsDeclaration C.LLVMIsDeclaration
+func (self ValueRef) IsDeclaration() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).Linkage C.LLVMGetLinkage
-func (self *OpaqueValue) Linkage() Linkage {
+// llgo:link ValueRef.Linkage C.LLVMGetLinkage
+func (self ValueRef) Linkage() Linkage {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetLinkage C.LLVMSetLinkage
-func (self *OpaqueValue) SetLinkage(Linkage Linkage) {
+// llgo:link ValueRef.SetLinkage C.LLVMSetLinkage
+func (self ValueRef) SetLinkage(Linkage Linkage) {
 }
 
-// llgo:link (*OpaqueValue).Section C.LLVMGetSection
-func (self *OpaqueValue) Section() *c.Char {
+// llgo:link ValueRef.Section C.LLVMGetSection
+func (self ValueRef) Section() *c.Char {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).SetSection C.LLVMSetSection
-func (self *OpaqueValue) SetSection(Section *c.Char) {
+// llgo:link ValueRef.SetSection C.LLVMSetSection
+func (self ValueRef) SetSection(Section *c.Char) {
 }
 
-// llgo:link (*OpaqueValue).Visibility C.LLVMGetVisibility
-func (self *OpaqueValue) Visibility() Visibility {
+// llgo:link ValueRef.Visibility C.LLVMGetVisibility
+func (self ValueRef) Visibility() Visibility {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetVisibility C.LLVMSetVisibility
-func (self *OpaqueValue) SetVisibility(Viz Visibility) {
+// llgo:link ValueRef.SetVisibility C.LLVMSetVisibility
+func (self ValueRef) SetVisibility(Viz Visibility) {
 }
 
-// llgo:link (*OpaqueValue).DLLStorageClass C.LLVMGetDLLStorageClass
-func (self *OpaqueValue) DLLStorageClass() DLLStorageClass {
+// llgo:link ValueRef.DLLStorageClass C.LLVMGetDLLStorageClass
+func (self ValueRef) DLLStorageClass() DLLStorageClass {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetDLLStorageClass C.LLVMSetDLLStorageClass
-func (self *OpaqueValue) SetDLLStorageClass(Class DLLStorageClass) {
+// llgo:link ValueRef.SetDLLStorageClass C.LLVMSetDLLStorageClass
+func (self ValueRef) SetDLLStorageClass(Class DLLStorageClass) {
 }
 
-// llgo:link (*OpaqueValue).UnnamedAddress C.LLVMGetUnnamedAddress
-func (self *OpaqueValue) UnnamedAddress() UnnamedAddr {
+// llgo:link ValueRef.UnnamedAddress C.LLVMGetUnnamedAddress
+func (self ValueRef) UnnamedAddress() UnnamedAddr {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetUnnamedAddress C.LLVMSetUnnamedAddress
-func (self *OpaqueValue) SetUnnamedAddress(UnnamedAddr UnnamedAddr) {
+// llgo:link ValueRef.SetUnnamedAddress C.LLVMSetUnnamedAddress
+func (self ValueRef) SetUnnamedAddress(UnnamedAddr UnnamedAddr) {
 }
 
 // Returns the "value type" of a global value.  This differs from the formal
@@ -3227,22 +3225,22 @@ func (self *OpaqueValue) SetUnnamedAddress(UnnamedAddr UnnamedAddr) {
 // @see llvm::GlobalValue::getValueType()
 // @see llvm::Function::getFunctionType()
 //
-// llgo:link (*OpaqueValue).GlobalGetValueType C.LLVMGlobalGetValueType
-func (self *OpaqueValue) GlobalGetValueType() TypeRef {
+// llgo:link ValueRef.GlobalGetValueType C.LLVMGlobalGetValueType
+func (self ValueRef) GlobalGetValueType() TypeRef {
 	return nil
 }
 
 // Deprecated: Use LLVMGetUnnamedAddress instead.
 //
-// llgo:link (*OpaqueValue).HasUnnamedAddr C.LLVMHasUnnamedAddr
-func (self *OpaqueValue) HasUnnamedAddr() Bool {
+// llgo:link ValueRef.HasUnnamedAddr C.LLVMHasUnnamedAddr
+func (self ValueRef) HasUnnamedAddr() Bool {
 	return 0
 }
 
 // Deprecated: Use LLVMSetUnnamedAddress instead.
 //
-// llgo:link (*OpaqueValue).SetUnnamedAddr C.LLVMSetUnnamedAddr
-func (self *OpaqueValue) SetUnnamedAddr(HasUnnamedAddr Bool) {
+// llgo:link ValueRef.SetUnnamedAddr C.LLVMSetUnnamedAddr
+func (self ValueRef) SetUnnamedAddr(HasUnnamedAddr Bool) {
 }
 
 // Obtain the preferred alignment of the value.
@@ -3253,8 +3251,8 @@ func (self *OpaqueValue) SetUnnamedAddr(HasUnnamedAddr Bool) {
 // @see llvm::AtomicCmpXchgInst::setAlignment()
 // @see llvm::GlobalValue::getAlignment()
 //
-// llgo:link (*OpaqueValue).Alignment C.LLVMGetAlignment
-func (self *OpaqueValue) Alignment() c.Uint {
+// llgo:link ValueRef.Alignment C.LLVMGetAlignment
+func (self ValueRef) Alignment() c.Uint {
 	return 0
 }
 
@@ -3266,8 +3264,8 @@ func (self *OpaqueValue) Alignment() c.Uint {
 // @see llvm::AtomicCmpXchgInst::setAlignment()
 // @see llvm::GlobalValue::setAlignment()
 //
-// llgo:link (*OpaqueValue).SetAlignment C.LLVMSetAlignment
-func (self *OpaqueValue) SetAlignment(Bytes c.Uint) {
+// llgo:link ValueRef.SetAlignment C.LLVMSetAlignment
+func (self ValueRef) SetAlignment(Bytes c.Uint) {
 }
 
 // Sets a metadata attachment, erasing the existing metadata attachment if
@@ -3275,40 +3273,40 @@ func (self *OpaqueValue) SetAlignment(Bytes c.Uint) {
 //
 // @see llvm::GlobalObject::setMetadata()
 //
-// llgo:link (*OpaqueValue).GlobalSetMetadata C.LLVMGlobalSetMetadata
-func (self *OpaqueValue) GlobalSetMetadata(Kind c.Uint, MD MetadataRef) {
+// llgo:link ValueRef.GlobalSetMetadata C.LLVMGlobalSetMetadata
+func (self ValueRef) GlobalSetMetadata(Kind c.Uint, MD MetadataRef) {
 }
 
 // Adds a metadata attachment.
 //
 // @see llvm::GlobalObject::addMetadata()
 //
-// llgo:link (*OpaqueValue).GlobalAddMetadata C.LLVMGlobalAddMetadata
-func (self *OpaqueValue) GlobalAddMetadata(Kind c.Uint, MD MetadataRef) {
+// llgo:link ValueRef.GlobalAddMetadata C.LLVMGlobalAddMetadata
+func (self ValueRef) GlobalAddMetadata(Kind c.Uint, MD MetadataRef) {
 }
 
 // Erases a metadata attachment of the given kind if it exists.
 //
 // @see llvm::GlobalObject::eraseMetadata()
 //
-// llgo:link (*OpaqueValue).GlobalEraseMetadata C.LLVMGlobalEraseMetadata
-func (self *OpaqueValue) GlobalEraseMetadata(Kind c.Uint) {
+// llgo:link ValueRef.GlobalEraseMetadata C.LLVMGlobalEraseMetadata
+func (self ValueRef) GlobalEraseMetadata(Kind c.Uint) {
 }
 
 // Removes all metadata attachments from this value.
 //
 // @see llvm::GlobalObject::clearMetadata()
 //
-// llgo:link (*OpaqueValue).GlobalClearMetadata C.LLVMGlobalClearMetadata
-func (self *OpaqueValue) GlobalClearMetadata() {
+// llgo:link ValueRef.GlobalClearMetadata C.LLVMGlobalClearMetadata
+func (self ValueRef) GlobalClearMetadata() {
 }
 
 // Add debuginfo metadata to this global.
 //
 // @see llvm::GlobalVariable::addDebugInfo()
 //
-// llgo:link (*OpaqueValue).GlobalAddDebugInfo C.LLVMGlobalAddDebugInfo
-func (self *OpaqueValue) GlobalAddDebugInfo(GVE MetadataRef) {
+// llgo:link ValueRef.GlobalAddDebugInfo C.LLVMGlobalAddDebugInfo
+func (self ValueRef) GlobalAddDebugInfo(GVE MetadataRef) {
 }
 
 // Retrieves an array of metadata entries representing the metadata attached to
@@ -3317,29 +3315,29 @@ func (self *OpaqueValue) GlobalAddDebugInfo(GVE MetadataRef) {
 //
 // @see llvm::GlobalObject::getAllMetadata()
 //
-// llgo:link (*OpaqueValue).GlobalCopyAllMetadata C.LLVMGlobalCopyAllMetadata
-func (self *OpaqueValue) GlobalCopyAllMetadata(NumEntries *c.SizeT) *ValueMetadataEntry {
+// llgo:link ValueRef.GlobalCopyAllMetadata C.LLVMGlobalCopyAllMetadata
+func (self ValueRef) GlobalCopyAllMetadata(NumEntries *c.SizeT) *ValueMetadataEntry {
 	return nil
 }
 
 // Destroys value metadata entries.
 //
-// llgo:link OpaqueValueMetadataEntry.DisposeValueMetadataEntries C.LLVMDisposeValueMetadataEntries
-func (self OpaqueValueMetadataEntry) DisposeValueMetadataEntries() {
+// llgo:link (*ValueMetadataEntry).DisposeValueMetadataEntries C.LLVMDisposeValueMetadataEntries
+func (self *ValueMetadataEntry) DisposeValueMetadataEntries() {
 }
 
 // Returns the kind of a value metadata entry at a specific index.
 //
-// llgo:link OpaqueValueMetadataEntry.ValueMetadataEntriesGetKind C.LLVMValueMetadataEntriesGetKind
-func (self OpaqueValueMetadataEntry) ValueMetadataEntriesGetKind(Index c.Uint) c.Uint {
+// llgo:link (*ValueMetadataEntry).ValueMetadataEntriesGetKind C.LLVMValueMetadataEntriesGetKind
+func (self *ValueMetadataEntry) ValueMetadataEntriesGetKind(Index c.Uint) c.Uint {
 	return 0
 }
 
 // Returns the underlying metadata node of a value metadata entry at a
 // specific index.
 //
-// llgo:link OpaqueValueMetadataEntry.ValueMetadataEntriesGetMetadata C.LLVMValueMetadataEntriesGetMetadata
-func (self OpaqueValueMetadataEntry) ValueMetadataEntriesGetMetadata(Index c.Uint) MetadataRef {
+// llgo:link (*ValueMetadataEntry).ValueMetadataEntriesGetMetadata C.LLVMValueMetadataEntriesGetMetadata
+func (self *ValueMetadataEntry) ValueMetadataEntriesGetMetadata(Index c.Uint) MetadataRef {
 	return nil
 }
 
@@ -3351,100 +3349,100 @@ func (self OpaqueValueMetadataEntry) ValueMetadataEntriesGetMetadata(Index c.Uin
 //
 // @{
 //
-// llgo:link (*OpaqueModule).AddGlobal C.LLVMAddGlobal
-func (self *OpaqueModule) AddGlobal(Ty TypeRef, Name *c.Char) ValueRef {
+// llgo:link ModuleRef.AddGlobal C.LLVMAddGlobal
+func (self ModuleRef) AddGlobal(Ty TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueModule).AddGlobalInAddressSpace C.LLVMAddGlobalInAddressSpace
-func (self *OpaqueModule) AddGlobalInAddressSpace(Ty TypeRef, Name *c.Char, AddressSpace c.Uint) ValueRef {
+// llgo:link ModuleRef.AddGlobalInAddressSpace C.LLVMAddGlobalInAddressSpace
+func (self ModuleRef) AddGlobalInAddressSpace(Ty TypeRef, Name *c.Char, AddressSpace c.Uint) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueModule).NamedGlobal C.LLVMGetNamedGlobal
-func (self *OpaqueModule) NamedGlobal(Name *c.Char) ValueRef {
+// llgo:link ModuleRef.NamedGlobal C.LLVMGetNamedGlobal
+func (self ModuleRef) NamedGlobal(Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueModule).NamedGlobalWithLength C.LLVMGetNamedGlobalWithLength
-func (self *OpaqueModule) NamedGlobalWithLength(Name *c.Char, Length c.SizeT) ValueRef {
+// llgo:link ModuleRef.NamedGlobalWithLength C.LLVMGetNamedGlobalWithLength
+func (self ModuleRef) NamedGlobalWithLength(Name *c.Char, Length c.SizeT) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueModule).FirstGlobal C.LLVMGetFirstGlobal
-func (self *OpaqueModule) FirstGlobal() ValueRef {
+// llgo:link ModuleRef.FirstGlobal C.LLVMGetFirstGlobal
+func (self ModuleRef) FirstGlobal() ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueModule).LastGlobal C.LLVMGetLastGlobal
-func (self *OpaqueModule) LastGlobal() ValueRef {
+// llgo:link ModuleRef.LastGlobal C.LLVMGetLastGlobal
+func (self ModuleRef) LastGlobal() ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).NextGlobal C.LLVMGetNextGlobal
-func (self *OpaqueValue) NextGlobal() ValueRef {
+// llgo:link ValueRef.NextGlobal C.LLVMGetNextGlobal
+func (self ValueRef) NextGlobal() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).PreviousGlobal C.LLVMGetPreviousGlobal
-func (self *OpaqueValue) PreviousGlobal() ValueRef {
+// llgo:link ValueRef.PreviousGlobal C.LLVMGetPreviousGlobal
+func (self ValueRef) PreviousGlobal() ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).DeleteGlobal C.LLVMDeleteGlobal
-func (self *OpaqueValue) DeleteGlobal() {
+// llgo:link ValueRef.DeleteGlobal C.LLVMDeleteGlobal
+func (self ValueRef) DeleteGlobal() {
 }
 
-// llgo:link (*OpaqueValue).Initializer C.LLVMGetInitializer
-func (self *OpaqueValue) Initializer() ValueRef {
+// llgo:link ValueRef.Initializer C.LLVMGetInitializer
+func (self ValueRef) Initializer() ValueRef {
 	return self
 }
 
 //go:linkname SetInitializer C.LLVMSetInitializer
 func SetInitializer(GlobalVar ValueRef, ConstantVal ValueRef)
 
-// llgo:link (*OpaqueValue).IsThreadLocal C.LLVMIsThreadLocal
-func (self *OpaqueValue) IsThreadLocal() Bool {
+// llgo:link ValueRef.IsThreadLocal C.LLVMIsThreadLocal
+func (self ValueRef) IsThreadLocal() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetThreadLocal C.LLVMSetThreadLocal
-func (self *OpaqueValue) SetThreadLocal(IsThreadLocal Bool) {
+// llgo:link ValueRef.SetThreadLocal C.LLVMSetThreadLocal
+func (self ValueRef) SetThreadLocal(IsThreadLocal Bool) {
 }
 
-// llgo:link (*OpaqueValue).IsGlobalConstant C.LLVMIsGlobalConstant
-func (self *OpaqueValue) IsGlobalConstant() Bool {
+// llgo:link ValueRef.IsGlobalConstant C.LLVMIsGlobalConstant
+func (self ValueRef) IsGlobalConstant() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetGlobalConstant C.LLVMSetGlobalConstant
-func (self *OpaqueValue) SetGlobalConstant(IsConstant Bool) {
+// llgo:link ValueRef.SetGlobalConstant C.LLVMSetGlobalConstant
+func (self ValueRef) SetGlobalConstant(IsConstant Bool) {
 }
 
-// llgo:link (*OpaqueValue).ThreadLocalMode C.LLVMGetThreadLocalMode
-func (self *OpaqueValue) ThreadLocalMode() ThreadLocalMode {
+// llgo:link ValueRef.ThreadLocalMode C.LLVMGetThreadLocalMode
+func (self ValueRef) ThreadLocalMode() ThreadLocalMode {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetThreadLocalMode C.LLVMSetThreadLocalMode
-func (self *OpaqueValue) SetThreadLocalMode(Mode ThreadLocalMode) {
+// llgo:link ValueRef.SetThreadLocalMode C.LLVMSetThreadLocalMode
+func (self ValueRef) SetThreadLocalMode(Mode ThreadLocalMode) {
 }
 
-// llgo:link (*OpaqueValue).IsExternallyInitialized C.LLVMIsExternallyInitialized
-func (self *OpaqueValue) IsExternallyInitialized() Bool {
+// llgo:link ValueRef.IsExternallyInitialized C.LLVMIsExternallyInitialized
+func (self ValueRef) IsExternallyInitialized() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetExternallyInitialized C.LLVMSetExternallyInitialized
-func (self *OpaqueValue) SetExternallyInitialized(IsExtInit Bool) {
+// llgo:link ValueRef.SetExternallyInitialized C.LLVMSetExternallyInitialized
+func (self ValueRef) SetExternallyInitialized(IsExtInit Bool) {
 }
 
 // Add a GlobalAlias with the given value type, address space and aliasee.
 //
 // @see llvm::GlobalAlias::create()
 //
-// llgo:link (*OpaqueModule).AddAlias2 C.LLVMAddAlias2
-func (self *OpaqueModule) AddAlias2(ValueTy TypeRef, AddrSpace c.Uint, Aliasee ValueRef, Name *c.Char) ValueRef {
+// llgo:link ModuleRef.AddAlias2 C.LLVMAddAlias2
+func (self ModuleRef) AddAlias2(ValueTy TypeRef, AddrSpace c.Uint, Aliasee ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
@@ -3454,8 +3452,8 @@ func (self *OpaqueModule) AddAlias2(ValueTy TypeRef, AddrSpace c.Uint, Aliasee V
 //
 // @see llvm::Module::getNamedAlias()
 //
-// llgo:link (*OpaqueModule).NamedGlobalAlias C.LLVMGetNamedGlobalAlias
-func (self *OpaqueModule) NamedGlobalAlias(Name *c.Char, NameLen c.SizeT) ValueRef {
+// llgo:link ModuleRef.NamedGlobalAlias C.LLVMGetNamedGlobalAlias
+func (self ModuleRef) NamedGlobalAlias(Name *c.Char, NameLen c.SizeT) ValueRef {
 	return nil
 }
 
@@ -3463,8 +3461,8 @@ func (self *OpaqueModule) NamedGlobalAlias(Name *c.Char, NameLen c.SizeT) ValueR
 //
 // @see llvm::Module::alias_begin()
 //
-// llgo:link (*OpaqueModule).FirstGlobalAlias C.LLVMGetFirstGlobalAlias
-func (self *OpaqueModule) FirstGlobalAlias() ValueRef {
+// llgo:link ModuleRef.FirstGlobalAlias C.LLVMGetFirstGlobalAlias
+func (self ModuleRef) FirstGlobalAlias() ValueRef {
 	return nil
 }
 
@@ -3472,8 +3470,8 @@ func (self *OpaqueModule) FirstGlobalAlias() ValueRef {
 //
 // @see llvm::Module::alias_end()
 //
-// llgo:link (*OpaqueModule).LastGlobalAlias C.LLVMGetLastGlobalAlias
-func (self *OpaqueModule) LastGlobalAlias() ValueRef {
+// llgo:link ModuleRef.LastGlobalAlias C.LLVMGetLastGlobalAlias
+func (self ModuleRef) LastGlobalAlias() ValueRef {
 	return nil
 }
 
@@ -3482,8 +3480,8 @@ func (self *OpaqueModule) LastGlobalAlias() ValueRef {
 // Returns NULL if the iterator was already at the end and there are no more
 // global aliases.
 //
-// llgo:link (*OpaqueValue).NextGlobalAlias C.LLVMGetNextGlobalAlias
-func (self *OpaqueValue) NextGlobalAlias() ValueRef {
+// llgo:link ValueRef.NextGlobalAlias C.LLVMGetNextGlobalAlias
+func (self ValueRef) NextGlobalAlias() ValueRef {
 	return self
 }
 
@@ -3492,15 +3490,15 @@ func (self *OpaqueValue) NextGlobalAlias() ValueRef {
 // Returns NULL if the iterator was already at the beginning and there are
 // no previous global aliases.
 //
-// llgo:link (*OpaqueValue).PreviousGlobalAlias C.LLVMGetPreviousGlobalAlias
-func (self *OpaqueValue) PreviousGlobalAlias() ValueRef {
+// llgo:link ValueRef.PreviousGlobalAlias C.LLVMGetPreviousGlobalAlias
+func (self ValueRef) PreviousGlobalAlias() ValueRef {
 	return self
 }
 
 // Retrieve the target value of an alias.
 //
-// llgo:link (*OpaqueValue).AliasGetAliasee C.LLVMAliasGetAliasee
-func (self *OpaqueValue) AliasGetAliasee() ValueRef {
+// llgo:link ValueRef.AliasGetAliasee C.LLVMAliasGetAliasee
+func (self ValueRef) AliasGetAliasee() ValueRef {
 	return self
 }
 
@@ -3513,16 +3511,16 @@ func AliasSetAliasee(Alias ValueRef, Aliasee ValueRef)
 //
 // @see llvm::Function::eraseFromParent()
 //
-// llgo:link (*OpaqueValue).DeleteFunction C.LLVMDeleteFunction
-func (self *OpaqueValue) DeleteFunction() {
+// llgo:link ValueRef.DeleteFunction C.LLVMDeleteFunction
+func (self ValueRef) DeleteFunction() {
 }
 
 // Check whether the given function has a personality function.
 //
 // @see llvm::Function::hasPersonalityFn()
 //
-// llgo:link (*OpaqueValue).HasPersonalityFn C.LLVMHasPersonalityFn
-func (self *OpaqueValue) HasPersonalityFn() Bool {
+// llgo:link ValueRef.HasPersonalityFn C.LLVMHasPersonalityFn
+func (self ValueRef) HasPersonalityFn() Bool {
 	return 0
 }
 
@@ -3530,8 +3528,8 @@ func (self *OpaqueValue) HasPersonalityFn() Bool {
 //
 // @see llvm::Function::getPersonalityFn()
 //
-// llgo:link (*OpaqueValue).PersonalityFn C.LLVMGetPersonalityFn
-func (self *OpaqueValue) PersonalityFn() ValueRef {
+// llgo:link ValueRef.PersonalityFn C.LLVMGetPersonalityFn
+func (self ValueRef) PersonalityFn() ValueRef {
 	return self
 }
 
@@ -3553,8 +3551,8 @@ func LookupIntrinsicID(Name *c.Char, NameLen c.SizeT) c.Uint
 //
 // @see llvm::Function::getIntrinsicID()
 //
-// llgo:link (*OpaqueValue).IntrinsicID C.LLVMGetIntrinsicID
-func (self *OpaqueValue) IntrinsicID() c.Uint {
+// llgo:link ValueRef.IntrinsicID C.LLVMGetIntrinsicID
+func (self ValueRef) IntrinsicID() c.Uint {
 	return 0
 }
 
@@ -3563,8 +3561,8 @@ func (self *OpaqueValue) IntrinsicID() c.Uint {
 //
 // @see llvm::Intrinsic::getOrInsertDeclaration()
 //
-// llgo:link (*OpaqueModule).IntrinsicDeclaration C.LLVMGetIntrinsicDeclaration
-func (self *OpaqueModule) IntrinsicDeclaration(ID c.Uint, ParamTypes *TypeRef, ParamCount c.SizeT) ValueRef {
+// llgo:link ModuleRef.IntrinsicDeclaration C.LLVMGetIntrinsicDeclaration
+func (self ModuleRef) IntrinsicDeclaration(ID c.Uint, ParamTypes *TypeRef, ParamCount c.SizeT) ValueRef {
 	return nil
 }
 
@@ -3573,8 +3571,8 @@ func (self *OpaqueModule) IntrinsicDeclaration(ID c.Uint, ParamTypes *TypeRef, P
 //
 // @see llvm::Intrinsic::getType()
 //
-// llgo:link (*OpaqueContext).IntrinsicGetType C.LLVMIntrinsicGetType
-func (self *OpaqueContext) IntrinsicGetType(ID c.Uint, ParamTypes *TypeRef, ParamCount c.SizeT) TypeRef {
+// llgo:link ContextRef.IntrinsicGetType C.LLVMIntrinsicGetType
+func (self ContextRef) IntrinsicGetType(ID c.Uint, ParamTypes *TypeRef, ParamCount c.SizeT) TypeRef {
 	return nil
 }
 
@@ -3600,8 +3598,8 @@ func IntrinsicCopyOverloadedName(ID c.Uint, ParamTypes *TypeRef, ParamCount c.Si
 //
 // @see llvm::Intrinsic::getName()
 //
-// llgo:link (*OpaqueModule).IntrinsicCopyOverloadedName2 C.LLVMIntrinsicCopyOverloadedName2
-func (self *OpaqueModule) IntrinsicCopyOverloadedName2(ID c.Uint, ParamTypes *TypeRef, ParamCount c.SizeT, NameLength *c.SizeT) *c.Char {
+// llgo:link ModuleRef.IntrinsicCopyOverloadedName2 C.LLVMIntrinsicCopyOverloadedName2
+func (self ModuleRef) IntrinsicCopyOverloadedName2(ID c.Uint, ParamTypes *TypeRef, ParamCount c.SizeT, NameLength *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -3618,8 +3616,8 @@ func IntrinsicIsOverloaded(ID c.Uint) Bool
 //
 // @see llvm::Function::getCallingConv()
 //
-// llgo:link (*OpaqueValue).FunctionCallConv C.LLVMGetFunctionCallConv
-func (self *OpaqueValue) FunctionCallConv() c.Uint {
+// llgo:link ValueRef.FunctionCallConv C.LLVMGetFunctionCallConv
+func (self ValueRef) FunctionCallConv() c.Uint {
 	return 0
 }
 
@@ -3630,8 +3628,8 @@ func (self *OpaqueValue) FunctionCallConv() c.Uint {
 // @param Fn Function to operate on
 // @param CC LLVMCallConv to set calling convention to
 //
-// llgo:link (*OpaqueValue).SetFunctionCallConv C.LLVMSetFunctionCallConv
-func (self *OpaqueValue) SetFunctionCallConv(CC c.Uint) {
+// llgo:link ValueRef.SetFunctionCallConv C.LLVMSetFunctionCallConv
+func (self ValueRef) SetFunctionCallConv(CC c.Uint) {
 }
 
 // Obtain the name of the garbage collector to use during code
@@ -3639,8 +3637,8 @@ func (self *OpaqueValue) SetFunctionCallConv(CC c.Uint) {
 //
 // @see llvm::Function::getGC()
 //
-// llgo:link (*OpaqueValue).GC C.LLVMGetGC
-func (self *OpaqueValue) GC() *c.Char {
+// llgo:link ValueRef.GC C.LLVMGetGC
+func (self ValueRef) GC() *c.Char {
 	return nil
 }
 
@@ -3648,24 +3646,24 @@ func (self *OpaqueValue) GC() *c.Char {
 //
 // @see llvm::Function::setGC()
 //
-// llgo:link (*OpaqueValue).SetGC C.LLVMSetGC
-func (self *OpaqueValue) SetGC(Name *c.Char) {
+// llgo:link ValueRef.SetGC C.LLVMSetGC
+func (self ValueRef) SetGC(Name *c.Char) {
 }
 
 // Gets the prefix data associated with a function. Only valid on functions, and
 // only if LLVMHasPrefixData returns true.
 // See https://llvm.org/docs/LangRef.html#prefix-data
 //
-// llgo:link (*OpaqueValue).PrefixData C.LLVMGetPrefixData
-func (self *OpaqueValue) PrefixData() ValueRef {
+// llgo:link ValueRef.PrefixData C.LLVMGetPrefixData
+func (self ValueRef) PrefixData() ValueRef {
 	return self
 }
 
 // Check if a given function has prefix data. Only valid on functions.
 // See https://llvm.org/docs/LangRef.html#prefix-data
 //
-// llgo:link (*OpaqueValue).HasPrefixData C.LLVMHasPrefixData
-func (self *OpaqueValue) HasPrefixData() Bool {
+// llgo:link ValueRef.HasPrefixData C.LLVMHasPrefixData
+func (self ValueRef) HasPrefixData() Bool {
 	return 0
 }
 
@@ -3679,16 +3677,16 @@ func SetPrefixData(Fn ValueRef, prefixData ValueRef)
 // and only if LLVMHasPrologueData returns true.
 // See https://llvm.org/docs/LangRef.html#prologue-data
 //
-// llgo:link (*OpaqueValue).PrologueData C.LLVMGetPrologueData
-func (self *OpaqueValue) PrologueData() ValueRef {
+// llgo:link ValueRef.PrologueData C.LLVMGetPrologueData
+func (self ValueRef) PrologueData() ValueRef {
 	return self
 }
 
 // Check if a given function has prologue data. Only valid on functions.
 // See https://llvm.org/docs/LangRef.html#prologue-data
 //
-// llgo:link (*OpaqueValue).HasPrologueData C.LLVMHasPrologueData
-func (self *OpaqueValue) HasPrologueData() Bool {
+// llgo:link ValueRef.HasPrologueData C.LLVMHasPrologueData
+func (self ValueRef) HasPrologueData() Bool {
 	return 0
 }
 
@@ -3702,50 +3700,50 @@ func SetPrologueData(Fn ValueRef, prologueData ValueRef)
 //
 // @see llvm::Function::addAttribute()
 //
-// llgo:link (*OpaqueValue).AddAttributeAtIndex C.LLVMAddAttributeAtIndex
-func (self *OpaqueValue) AddAttributeAtIndex(Idx AttributeIndex, A AttributeRef) {
+// llgo:link ValueRef.AddAttributeAtIndex C.LLVMAddAttributeAtIndex
+func (self ValueRef) AddAttributeAtIndex(Idx AttributeIndex, A AttributeRef) {
 }
 
-// llgo:link (*OpaqueValue).AttributeCountAtIndex C.LLVMGetAttributeCountAtIndex
-func (self *OpaqueValue) AttributeCountAtIndex(Idx AttributeIndex) c.Uint {
+// llgo:link ValueRef.AttributeCountAtIndex C.LLVMGetAttributeCountAtIndex
+func (self ValueRef) AttributeCountAtIndex(Idx AttributeIndex) c.Uint {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).AttributesAtIndex C.LLVMGetAttributesAtIndex
-func (self *OpaqueValue) AttributesAtIndex(Idx AttributeIndex, Attrs *AttributeRef) {
+// llgo:link ValueRef.AttributesAtIndex C.LLVMGetAttributesAtIndex
+func (self ValueRef) AttributesAtIndex(Idx AttributeIndex, Attrs *AttributeRef) {
 }
 
-// llgo:link (*OpaqueValue).EnumAttributeAtIndex C.LLVMGetEnumAttributeAtIndex
-func (self *OpaqueValue) EnumAttributeAtIndex(Idx AttributeIndex, KindID c.Uint) AttributeRef {
+// llgo:link ValueRef.EnumAttributeAtIndex C.LLVMGetEnumAttributeAtIndex
+func (self ValueRef) EnumAttributeAtIndex(Idx AttributeIndex, KindID c.Uint) AttributeRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).StringAttributeAtIndex C.LLVMGetStringAttributeAtIndex
-func (self *OpaqueValue) StringAttributeAtIndex(Idx AttributeIndex, K *c.Char, KLen c.Uint) AttributeRef {
+// llgo:link ValueRef.StringAttributeAtIndex C.LLVMGetStringAttributeAtIndex
+func (self ValueRef) StringAttributeAtIndex(Idx AttributeIndex, K *c.Char, KLen c.Uint) AttributeRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).RemoveEnumAttributeAtIndex C.LLVMRemoveEnumAttributeAtIndex
-func (self *OpaqueValue) RemoveEnumAttributeAtIndex(Idx AttributeIndex, KindID c.Uint) {
+// llgo:link ValueRef.RemoveEnumAttributeAtIndex C.LLVMRemoveEnumAttributeAtIndex
+func (self ValueRef) RemoveEnumAttributeAtIndex(Idx AttributeIndex, KindID c.Uint) {
 }
 
-// llgo:link (*OpaqueValue).RemoveStringAttributeAtIndex C.LLVMRemoveStringAttributeAtIndex
-func (self *OpaqueValue) RemoveStringAttributeAtIndex(Idx AttributeIndex, K *c.Char, KLen c.Uint) {
+// llgo:link ValueRef.RemoveStringAttributeAtIndex C.LLVMRemoveStringAttributeAtIndex
+func (self ValueRef) RemoveStringAttributeAtIndex(Idx AttributeIndex, K *c.Char, KLen c.Uint) {
 }
 
 // Add a target-dependent attribute to a function
 // @see llvm::AttrBuilder::addAttribute()
 //
-// llgo:link (*OpaqueValue).AddTargetDependentFunctionAttr C.LLVMAddTargetDependentFunctionAttr
-func (self *OpaqueValue) AddTargetDependentFunctionAttr(A *c.Char, V *c.Char) {
+// llgo:link ValueRef.AddTargetDependentFunctionAttr C.LLVMAddTargetDependentFunctionAttr
+func (self ValueRef) AddTargetDependentFunctionAttr(A *c.Char, V *c.Char) {
 }
 
 // Obtain the number of parameters in a function.
 //
 // @see llvm::Function::arg_size()
 //
-// llgo:link (*OpaqueValue).CountParams C.LLVMCountParams
-func (self *OpaqueValue) CountParams() c.Uint {
+// llgo:link ValueRef.CountParams C.LLVMCountParams
+func (self ValueRef) CountParams() c.Uint {
 	return 0
 }
 
@@ -3759,8 +3757,8 @@ func (self *OpaqueValue) CountParams() c.Uint {
 //
 // @see llvm::Function::arg_begin()
 //
-// llgo:link (*OpaqueValue).Params C.LLVMGetParams
-func (self *OpaqueValue) Params(Params *ValueRef) {
+// llgo:link ValueRef.Params C.LLVMGetParams
+func (self ValueRef) Params(Params *ValueRef) {
 }
 
 // Obtain the parameter at the specified index.
@@ -3769,8 +3767,8 @@ func (self *OpaqueValue) Params(Params *ValueRef) {
 //
 // @see llvm::Function::arg_begin()
 //
-// llgo:link (*OpaqueValue).Param C.LLVMGetParam
-func (self *OpaqueValue) Param(Index c.Uint) ValueRef {
+// llgo:link ValueRef.Param C.LLVMGetParam
+func (self ValueRef) Param(Index c.Uint) ValueRef {
 	return self
 }
 
@@ -3782,8 +3780,8 @@ func (self *OpaqueValue) Param(Index c.Uint) ValueRef {
 // The returned LLVMValueRef is the llvm::Function to which this
 // argument belongs.
 //
-// llgo:link (*OpaqueValue).ParamParent C.LLVMGetParamParent
-func (self *OpaqueValue) ParamParent() ValueRef {
+// llgo:link ValueRef.ParamParent C.LLVMGetParamParent
+func (self ValueRef) ParamParent() ValueRef {
 	return self
 }
 
@@ -3791,8 +3789,8 @@ func (self *OpaqueValue) ParamParent() ValueRef {
 //
 // @see llvm::Function::arg_begin()
 //
-// llgo:link (*OpaqueValue).FirstParam C.LLVMGetFirstParam
-func (self *OpaqueValue) FirstParam() ValueRef {
+// llgo:link ValueRef.FirstParam C.LLVMGetFirstParam
+func (self ValueRef) FirstParam() ValueRef {
 	return self
 }
 
@@ -3800,8 +3798,8 @@ func (self *OpaqueValue) FirstParam() ValueRef {
 //
 // @see llvm::Function::arg_end()
 //
-// llgo:link (*OpaqueValue).LastParam C.LLVMGetLastParam
-func (self *OpaqueValue) LastParam() ValueRef {
+// llgo:link ValueRef.LastParam C.LLVMGetLastParam
+func (self ValueRef) LastParam() ValueRef {
 	return self
 }
 
@@ -3811,8 +3809,8 @@ func (self *OpaqueValue) LastParam() ValueRef {
 // actually a wrapped iterator) and obtains the next parameter from the
 // underlying iterator.
 //
-// llgo:link (*OpaqueValue).NextParam C.LLVMGetNextParam
-func (self *OpaqueValue) NextParam() ValueRef {
+// llgo:link ValueRef.NextParam C.LLVMGetNextParam
+func (self ValueRef) NextParam() ValueRef {
 	return self
 }
 
@@ -3820,8 +3818,8 @@ func (self *OpaqueValue) NextParam() ValueRef {
 //
 // This is the opposite of LLVMGetNextParam().
 //
-// llgo:link (*OpaqueValue).PreviousParam C.LLVMGetPreviousParam
-func (self *OpaqueValue) PreviousParam() ValueRef {
+// llgo:link ValueRef.PreviousParam C.LLVMGetPreviousParam
+func (self ValueRef) PreviousParam() ValueRef {
 	return self
 }
 
@@ -3830,16 +3828,16 @@ func (self *OpaqueValue) PreviousParam() ValueRef {
 // @see llvm::Argument::addAttr()
 // @see llvm::AttrBuilder::addAlignmentAttr()
 //
-// llgo:link (*OpaqueValue).SetParamAlignment C.LLVMSetParamAlignment
-func (self *OpaqueValue) SetParamAlignment(Align c.Uint) {
+// llgo:link ValueRef.SetParamAlignment C.LLVMSetParamAlignment
+func (self ValueRef) SetParamAlignment(Align c.Uint) {
 }
 
 // Add a global indirect function to a module under a specified name.
 //
 // @see llvm::GlobalIFunc::create()
 //
-// llgo:link (*OpaqueModule).AddGlobalIFunc C.LLVMAddGlobalIFunc
-func (self *OpaqueModule) AddGlobalIFunc(Name *c.Char, NameLen c.SizeT, Ty TypeRef, AddrSpace c.Uint, Resolver ValueRef) ValueRef {
+// llgo:link ModuleRef.AddGlobalIFunc C.LLVMAddGlobalIFunc
+func (self ModuleRef) AddGlobalIFunc(Name *c.Char, NameLen c.SizeT, Ty TypeRef, AddrSpace c.Uint, Resolver ValueRef) ValueRef {
 	return nil
 }
 
@@ -3849,8 +3847,8 @@ func (self *OpaqueModule) AddGlobalIFunc(Name *c.Char, NameLen c.SizeT, Ty TypeR
 //
 // @see llvm::Module::getNamedIFunc()
 //
-// llgo:link (*OpaqueModule).NamedGlobalIFunc C.LLVMGetNamedGlobalIFunc
-func (self *OpaqueModule) NamedGlobalIFunc(Name *c.Char, NameLen c.SizeT) ValueRef {
+// llgo:link ModuleRef.NamedGlobalIFunc C.LLVMGetNamedGlobalIFunc
+func (self ModuleRef) NamedGlobalIFunc(Name *c.Char, NameLen c.SizeT) ValueRef {
 	return nil
 }
 
@@ -3858,8 +3856,8 @@ func (self *OpaqueModule) NamedGlobalIFunc(Name *c.Char, NameLen c.SizeT) ValueR
 //
 // @see llvm::Module::ifunc_begin()
 //
-// llgo:link (*OpaqueModule).FirstGlobalIFunc C.LLVMGetFirstGlobalIFunc
-func (self *OpaqueModule) FirstGlobalIFunc() ValueRef {
+// llgo:link ModuleRef.FirstGlobalIFunc C.LLVMGetFirstGlobalIFunc
+func (self ModuleRef) FirstGlobalIFunc() ValueRef {
 	return nil
 }
 
@@ -3867,8 +3865,8 @@ func (self *OpaqueModule) FirstGlobalIFunc() ValueRef {
 //
 // @see llvm::Module::ifunc_end()
 //
-// llgo:link (*OpaqueModule).LastGlobalIFunc C.LLVMGetLastGlobalIFunc
-func (self *OpaqueModule) LastGlobalIFunc() ValueRef {
+// llgo:link ModuleRef.LastGlobalIFunc C.LLVMGetLastGlobalIFunc
+func (self ModuleRef) LastGlobalIFunc() ValueRef {
 	return nil
 }
 
@@ -3877,8 +3875,8 @@ func (self *OpaqueModule) LastGlobalIFunc() ValueRef {
 // Returns NULL if the iterator was already at the end and there are no more
 // global aliases.
 //
-// llgo:link (*OpaqueValue).NextGlobalIFunc C.LLVMGetNextGlobalIFunc
-func (self *OpaqueValue) NextGlobalIFunc() ValueRef {
+// llgo:link ValueRef.NextGlobalIFunc C.LLVMGetNextGlobalIFunc
+func (self ValueRef) NextGlobalIFunc() ValueRef {
 	return self
 }
 
@@ -3887,8 +3885,8 @@ func (self *OpaqueValue) NextGlobalIFunc() ValueRef {
 // Returns NULL if the iterator was already at the beginning and there are
 // no previous global aliases.
 //
-// llgo:link (*OpaqueValue).PreviousGlobalIFunc C.LLVMGetPreviousGlobalIFunc
-func (self *OpaqueValue) PreviousGlobalIFunc() ValueRef {
+// llgo:link ValueRef.PreviousGlobalIFunc C.LLVMGetPreviousGlobalIFunc
+func (self ValueRef) PreviousGlobalIFunc() ValueRef {
 	return self
 }
 
@@ -3897,8 +3895,8 @@ func (self *OpaqueValue) PreviousGlobalIFunc() ValueRef {
 //
 // @see llvm::GlobalIFunc::getResolver()
 //
-// llgo:link (*OpaqueValue).GlobalIFuncResolver C.LLVMGetGlobalIFuncResolver
-func (self *OpaqueValue) GlobalIFuncResolver() ValueRef {
+// llgo:link ValueRef.GlobalIFuncResolver C.LLVMGetGlobalIFuncResolver
+func (self ValueRef) GlobalIFuncResolver() ValueRef {
 	return self
 }
 
@@ -3913,8 +3911,8 @@ func SetGlobalIFuncResolver(IFunc ValueRef, Resolver ValueRef)
 //
 // @see llvm::GlobalIFunc::eraseFromParent()
 //
-// llgo:link (*OpaqueValue).EraseGlobalIFunc C.LLVMEraseGlobalIFunc
-func (self *OpaqueValue) EraseGlobalIFunc() {
+// llgo:link ValueRef.EraseGlobalIFunc C.LLVMEraseGlobalIFunc
+func (self ValueRef) EraseGlobalIFunc() {
 }
 
 // Remove a global indirect function from its parent module.
@@ -3924,8 +3922,8 @@ func (self *OpaqueValue) EraseGlobalIFunc() {
 //
 // @see llvm::GlobalIFunc::removeFromParent()
 //
-// llgo:link (*OpaqueValue).RemoveGlobalIFunc C.LLVMRemoveGlobalIFunc
-func (self *OpaqueValue) RemoveGlobalIFunc() {
+// llgo:link ValueRef.RemoveGlobalIFunc C.LLVMRemoveGlobalIFunc
+func (self ValueRef) RemoveGlobalIFunc() {
 }
 
 // Create an MDString value from a given string value.
@@ -3935,8 +3933,8 @@ func (self *OpaqueValue) RemoveGlobalIFunc() {
 //
 // @see llvm::MDString::get()
 //
-// llgo:link (*OpaqueContext).MDStringInContext2 C.LLVMMDStringInContext2
-func (self *OpaqueContext) MDStringInContext2(Str *c.Char, SLen c.SizeT) MetadataRef {
+// llgo:link ContextRef.MDStringInContext2 C.LLVMMDStringInContext2
+func (self ContextRef) MDStringInContext2(Str *c.Char, SLen c.SizeT) MetadataRef {
 	return nil
 }
 
@@ -3944,22 +3942,22 @@ func (self *OpaqueContext) MDStringInContext2(Str *c.Char, SLen c.SizeT) Metadat
 //
 // @see llvm::MDNode::get()
 //
-// llgo:link (*OpaqueContext).MDNodeInContext2 C.LLVMMDNodeInContext2
-func (self *OpaqueContext) MDNodeInContext2(MDs *MetadataRef, Count c.SizeT) MetadataRef {
+// llgo:link ContextRef.MDNodeInContext2 C.LLVMMDNodeInContext2
+func (self ContextRef) MDNodeInContext2(MDs *MetadataRef, Count c.SizeT) MetadataRef {
 	return nil
 }
 
 // Obtain a Metadata as a Value.
 //
-// llgo:link (*OpaqueContext).MetadataAsValue C.LLVMMetadataAsValue
-func (self *OpaqueContext) MetadataAsValue(MD MetadataRef) ValueRef {
+// llgo:link ContextRef.MetadataAsValue C.LLVMMetadataAsValue
+func (self ContextRef) MetadataAsValue(MD MetadataRef) ValueRef {
 	return nil
 }
 
 // Obtain a Value as a Metadata.
 //
-// llgo:link (*OpaqueValue).ValueAsMetadata C.LLVMValueAsMetadata
-func (self *OpaqueValue) ValueAsMetadata() MetadataRef {
+// llgo:link ValueRef.ValueAsMetadata C.LLVMValueAsMetadata
+func (self ValueRef) ValueAsMetadata() MetadataRef {
 	return nil
 }
 
@@ -3969,8 +3967,8 @@ func (self *OpaqueValue) ValueAsMetadata() MetadataRef {
 // @param Length Memory address which will hold length of returned string.
 // @return String data in MDString.
 //
-// llgo:link (*OpaqueValue).MDString C.LLVMGetMDString
-func (self *OpaqueValue) MDString(Length *c.Uint) *c.Char {
+// llgo:link ValueRef.MDString C.LLVMGetMDString
+func (self ValueRef) MDString(Length *c.Uint) *c.Char {
 	return nil
 }
 
@@ -3979,8 +3977,8 @@ func (self *OpaqueValue) MDString(Length *c.Uint) *c.Char {
 // @param V MDNode to get number of operands from.
 // @return Number of operands of the MDNode.
 //
-// llgo:link (*OpaqueValue).MDNodeNumOperands C.LLVMGetMDNodeNumOperands
-func (self *OpaqueValue) MDNodeNumOperands() c.Uint {
+// llgo:link ValueRef.MDNodeNumOperands C.LLVMGetMDNodeNumOperands
+func (self ValueRef) MDNodeNumOperands() c.Uint {
 	return 0
 }
 
@@ -3994,22 +3992,22 @@ func (self *OpaqueValue) MDNodeNumOperands() c.Uint {
 // @param V MDNode to get the operands from.
 // @param Dest Destination array for operands.
 //
-// llgo:link (*OpaqueValue).MDNodeOperands C.LLVMGetMDNodeOperands
-func (self *OpaqueValue) MDNodeOperands(Dest *ValueRef) {
+// llgo:link ValueRef.MDNodeOperands C.LLVMGetMDNodeOperands
+func (self ValueRef) MDNodeOperands(Dest *ValueRef) {
 }
 
 // Replace an operand at a specific index in a llvm::MDNode value.
 //
 // @see llvm::MDNode::replaceOperandWith()
 //
-// llgo:link (*OpaqueValue).ReplaceMDNodeOperandWith C.LLVMReplaceMDNodeOperandWith
-func (self *OpaqueValue) ReplaceMDNodeOperandWith(Index c.Uint, Replacement MetadataRef) {
+// llgo:link ValueRef.ReplaceMDNodeOperandWith C.LLVMReplaceMDNodeOperandWith
+func (self ValueRef) ReplaceMDNodeOperandWith(Index c.Uint, Replacement MetadataRef) {
 }
 
 // Deprecated: Use LLVMMDStringInContext2 instead.
 //
-// llgo:link (*OpaqueContext).MDStringInContext C.LLVMMDStringInContext
-func (self *OpaqueContext) MDStringInContext(Str *c.Char, SLen c.Uint) ValueRef {
+// llgo:link ContextRef.MDStringInContext C.LLVMMDStringInContext
+func (self ContextRef) MDStringInContext(Str *c.Char, SLen c.Uint) ValueRef {
 	return nil
 }
 
@@ -4020,17 +4018,15 @@ func MDString(Str *c.Char, SLen c.Uint) ValueRef
 
 // Deprecated: Use LLVMMDNodeInContext2 instead.
 //
-// llgo:link (*OpaqueContext).MDNodeInContext C.LLVMMDNodeInContext
-func (self *OpaqueContext) MDNodeInContext(Vals *ValueRef, Count c.Uint) ValueRef {
+// llgo:link ContextRef.MDNodeInContext C.LLVMMDNodeInContext
+func (self ContextRef) MDNodeInContext(Vals *ValueRef, Count c.Uint) ValueRef {
 	return nil
 }
 
 // Deprecated: Use LLVMMDNodeInContext2 instead.
 //
-// llgo:link (*OpaqueValue).MDNode C.LLVMMDNode
-func (self *OpaqueValue) MDNode(Count c.Uint) ValueRef {
-	return self
-}
+//go:linkname MDNode C.LLVMMDNode
+func MDNode(Vals *ValueRef, Count c.Uint) ValueRef
 
 // Create a new operand bundle.
 //
@@ -4050,8 +4046,8 @@ func CreateOperandBundle(Tag *c.Char, TagLen c.SizeT, Args *ValueRef, NumArgs c.
 // This must be called for every created operand bundle or memory will be
 // leaked.
 //
-// llgo:link (*OpaqueOperandBundle).DisposeOperandBundle C.LLVMDisposeOperandBundle
-func (self *OpaqueOperandBundle) DisposeOperandBundle() {
+// llgo:link OperandBundleRef.DisposeOperandBundle C.LLVMDisposeOperandBundle
+func (self OperandBundleRef) DisposeOperandBundle() {
 }
 
 // Obtain the tag of an operand bundle as a string.
@@ -4061,8 +4057,8 @@ func (self *OpaqueOperandBundle) DisposeOperandBundle() {
 // @return The tag name of Bundle.
 // @see OperandBundleDef::getTag()
 //
-// llgo:link (*OpaqueOperandBundle).OperandBundleTag C.LLVMGetOperandBundleTag
-func (self *OpaqueOperandBundle) OperandBundleTag(Len *c.SizeT) *c.Char {
+// llgo:link OperandBundleRef.OperandBundleTag C.LLVMGetOperandBundleTag
+func (self OperandBundleRef) OperandBundleTag(Len *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -4072,8 +4068,8 @@ func (self *OpaqueOperandBundle) OperandBundleTag(Len *c.SizeT) *c.Char {
 // @return The number of operands.
 // @see OperandBundleDef::input_size()
 //
-// llgo:link (*OpaqueOperandBundle).NumOperandBundleArgs C.LLVMGetNumOperandBundleArgs
-func (self *OpaqueOperandBundle) NumOperandBundleArgs() c.Uint {
+// llgo:link OperandBundleRef.NumOperandBundleArgs C.LLVMGetNumOperandBundleArgs
+func (self OperandBundleRef) NumOperandBundleArgs() c.Uint {
 	return 0
 }
 
@@ -4084,36 +4080,36 @@ func (self *OpaqueOperandBundle) NumOperandBundleArgs() c.Uint {
 // LLVMGetNumOperandBundleArgs().
 // @return The operand.
 //
-// llgo:link (*OpaqueOperandBundle).OperandBundleArgAtIndex C.LLVMGetOperandBundleArgAtIndex
-func (self *OpaqueOperandBundle) OperandBundleArgAtIndex(Index c.Uint) ValueRef {
+// llgo:link OperandBundleRef.OperandBundleArgAtIndex C.LLVMGetOperandBundleArgAtIndex
+func (self OperandBundleRef) OperandBundleArgAtIndex(Index c.Uint) ValueRef {
 	return nil
 }
 
 // Convert a basic block instance to a value type.
 //
-// llgo:link (*OpaqueBasicBlock).BasicBlockAsValue C.LLVMBasicBlockAsValue
-func (self *OpaqueBasicBlock) BasicBlockAsValue() ValueRef {
+// llgo:link BasicBlockRef.BasicBlockAsValue C.LLVMBasicBlockAsValue
+func (self BasicBlockRef) BasicBlockAsValue() ValueRef {
 	return nil
 }
 
 // Determine whether an LLVMValueRef is itself a basic block.
 //
-// llgo:link (*OpaqueValue).ValueIsBasicBlock C.LLVMValueIsBasicBlock
-func (self *OpaqueValue) ValueIsBasicBlock() Bool {
+// llgo:link ValueRef.ValueIsBasicBlock C.LLVMValueIsBasicBlock
+func (self ValueRef) ValueIsBasicBlock() Bool {
 	return 0
 }
 
 // Convert an LLVMValueRef to an LLVMBasicBlockRef instance.
 //
-// llgo:link (*OpaqueValue).ValueAsBasicBlock C.LLVMValueAsBasicBlock
-func (self *OpaqueValue) ValueAsBasicBlock() BasicBlockRef {
+// llgo:link ValueRef.ValueAsBasicBlock C.LLVMValueAsBasicBlock
+func (self ValueRef) ValueAsBasicBlock() BasicBlockRef {
 	return nil
 }
 
 // Obtain the string name of a basic block.
 //
-// llgo:link (*OpaqueBasicBlock).BasicBlockName C.LLVMGetBasicBlockName
-func (self *OpaqueBasicBlock) BasicBlockName() *c.Char {
+// llgo:link BasicBlockRef.BasicBlockName C.LLVMGetBasicBlockName
+func (self BasicBlockRef) BasicBlockName() *c.Char {
 	return nil
 }
 
@@ -4121,8 +4117,8 @@ func (self *OpaqueBasicBlock) BasicBlockName() *c.Char {
 //
 // @see llvm::BasicBlock::getParent()
 //
-// llgo:link (*OpaqueBasicBlock).BasicBlockParent C.LLVMGetBasicBlockParent
-func (self *OpaqueBasicBlock) BasicBlockParent() ValueRef {
+// llgo:link BasicBlockRef.BasicBlockParent C.LLVMGetBasicBlockParent
+func (self BasicBlockRef) BasicBlockParent() ValueRef {
 	return nil
 }
 
@@ -4135,8 +4131,8 @@ func (self *OpaqueBasicBlock) BasicBlockParent() ValueRef {
 //
 // @see llvm::BasicBlock::getTerminator()
 //
-// llgo:link (*OpaqueBasicBlock).BasicBlockTerminator C.LLVMGetBasicBlockTerminator
-func (self *OpaqueBasicBlock) BasicBlockTerminator() ValueRef {
+// llgo:link BasicBlockRef.BasicBlockTerminator C.LLVMGetBasicBlockTerminator
+func (self BasicBlockRef) BasicBlockTerminator() ValueRef {
 	return nil
 }
 
@@ -4144,8 +4140,8 @@ func (self *OpaqueBasicBlock) BasicBlockTerminator() ValueRef {
 //
 // @param Fn Function value to operate on.
 //
-// llgo:link (*OpaqueValue).CountBasicBlocks C.LLVMCountBasicBlocks
-func (self *OpaqueValue) CountBasicBlocks() c.Uint {
+// llgo:link ValueRef.CountBasicBlocks C.LLVMCountBasicBlocks
+func (self ValueRef) CountBasicBlocks() c.Uint {
 	return 0
 }
 
@@ -4156,8 +4152,8 @@ func (self *OpaqueValue) CountBasicBlocks() c.Uint {
 // LLVMCountBasicBlocks() in length. This array is populated with
 // LLVMBasicBlockRef instances.
 //
-// llgo:link (*OpaqueValue).BasicBlocks C.LLVMGetBasicBlocks
-func (self *OpaqueValue) BasicBlocks(BasicBlocks *BasicBlockRef) {
+// llgo:link ValueRef.BasicBlocks C.LLVMGetBasicBlocks
+func (self ValueRef) BasicBlocks(BasicBlocks *BasicBlockRef) {
 }
 
 // Obtain the first basic block in a function.
@@ -4167,8 +4163,8 @@ func (self *OpaqueValue) BasicBlocks(BasicBlocks *BasicBlockRef) {
 //
 // @see llvm::Function::begin()
 //
-// llgo:link (*OpaqueValue).FirstBasicBlock C.LLVMGetFirstBasicBlock
-func (self *OpaqueValue) FirstBasicBlock() BasicBlockRef {
+// llgo:link ValueRef.FirstBasicBlock C.LLVMGetFirstBasicBlock
+func (self ValueRef) FirstBasicBlock() BasicBlockRef {
 	return nil
 }
 
@@ -4176,22 +4172,22 @@ func (self *OpaqueValue) FirstBasicBlock() BasicBlockRef {
 //
 // @see llvm::Function::end()
 //
-// llgo:link (*OpaqueValue).LastBasicBlock C.LLVMGetLastBasicBlock
-func (self *OpaqueValue) LastBasicBlock() BasicBlockRef {
+// llgo:link ValueRef.LastBasicBlock C.LLVMGetLastBasicBlock
+func (self ValueRef) LastBasicBlock() BasicBlockRef {
 	return nil
 }
 
 // Advance a basic block iterator.
 //
-// llgo:link (*OpaqueBasicBlock).NextBasicBlock C.LLVMGetNextBasicBlock
-func (self *OpaqueBasicBlock) NextBasicBlock() BasicBlockRef {
+// llgo:link BasicBlockRef.NextBasicBlock C.LLVMGetNextBasicBlock
+func (self BasicBlockRef) NextBasicBlock() BasicBlockRef {
 	return self
 }
 
 // Go backwards in a basic block iterator.
 //
-// llgo:link (*OpaqueBasicBlock).PreviousBasicBlock C.LLVMGetPreviousBasicBlock
-func (self *OpaqueBasicBlock) PreviousBasicBlock() BasicBlockRef {
+// llgo:link BasicBlockRef.PreviousBasicBlock C.LLVMGetPreviousBasicBlock
+func (self BasicBlockRef) PreviousBasicBlock() BasicBlockRef {
 	return self
 }
 
@@ -4200,8 +4196,8 @@ func (self *OpaqueBasicBlock) PreviousBasicBlock() BasicBlockRef {
 //
 // @see llvm::Function::getEntryBlock()
 //
-// llgo:link (*OpaqueValue).EntryBasicBlock C.LLVMGetEntryBasicBlock
-func (self *OpaqueValue) EntryBasicBlock() BasicBlockRef {
+// llgo:link ValueRef.EntryBasicBlock C.LLVMGetEntryBasicBlock
+func (self ValueRef) EntryBasicBlock() BasicBlockRef {
 	return nil
 }
 
@@ -4211,24 +4207,24 @@ func (self *OpaqueValue) EntryBasicBlock() BasicBlockRef {
 //
 // @see llvm::Function::BasicBlockListType::insertAfter()
 //
-// llgo:link (*OpaqueBuilder).InsertExistingBasicBlockAfterInsertBlock C.LLVMInsertExistingBasicBlockAfterInsertBlock
-func (self *OpaqueBuilder) InsertExistingBasicBlockAfterInsertBlock(BB BasicBlockRef) {
+// llgo:link BuilderRef.InsertExistingBasicBlockAfterInsertBlock C.LLVMInsertExistingBasicBlockAfterInsertBlock
+func (self BuilderRef) InsertExistingBasicBlockAfterInsertBlock(BB BasicBlockRef) {
 }
 
 // Append the given basic block to the basic block list of the given function.
 //
 // @see llvm::Function::BasicBlockListType::push_back()
 //
-// llgo:link (*OpaqueValue).AppendExistingBasicBlock C.LLVMAppendExistingBasicBlock
-func (self *OpaqueValue) AppendExistingBasicBlock(BB BasicBlockRef) {
+// llgo:link ValueRef.AppendExistingBasicBlock C.LLVMAppendExistingBasicBlock
+func (self ValueRef) AppendExistingBasicBlock(BB BasicBlockRef) {
 }
 
 // Create a new basic block without inserting it into a function.
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link (*OpaqueContext).CreateBasicBlockInContext C.LLVMCreateBasicBlockInContext
-func (self *OpaqueContext) CreateBasicBlockInContext(Name *c.Char) BasicBlockRef {
+// llgo:link ContextRef.CreateBasicBlockInContext C.LLVMCreateBasicBlockInContext
+func (self ContextRef) CreateBasicBlockInContext(Name *c.Char) BasicBlockRef {
 	return nil
 }
 
@@ -4236,8 +4232,8 @@ func (self *OpaqueContext) CreateBasicBlockInContext(Name *c.Char) BasicBlockRef
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link (*OpaqueContext).AppendBasicBlockInContext C.LLVMAppendBasicBlockInContext
-func (self *OpaqueContext) AppendBasicBlockInContext(Fn ValueRef, Name *c.Char) BasicBlockRef {
+// llgo:link ContextRef.AppendBasicBlockInContext C.LLVMAppendBasicBlockInContext
+func (self ContextRef) AppendBasicBlockInContext(Fn ValueRef, Name *c.Char) BasicBlockRef {
 	return nil
 }
 
@@ -4246,8 +4242,8 @@ func (self *OpaqueContext) AppendBasicBlockInContext(Fn ValueRef, Name *c.Char) 
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link (*OpaqueValue).AppendBasicBlock C.LLVMAppendBasicBlock
-func (self *OpaqueValue) AppendBasicBlock(Name *c.Char) BasicBlockRef {
+// llgo:link ValueRef.AppendBasicBlock C.LLVMAppendBasicBlock
+func (self ValueRef) AppendBasicBlock(Name *c.Char) BasicBlockRef {
 	return nil
 }
 
@@ -4258,8 +4254,8 @@ func (self *OpaqueValue) AppendBasicBlock(Name *c.Char) BasicBlockRef {
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link (*OpaqueContext).InsertBasicBlockInContext C.LLVMInsertBasicBlockInContext
-func (self *OpaqueContext) InsertBasicBlockInContext(BB BasicBlockRef, Name *c.Char) BasicBlockRef {
+// llgo:link ContextRef.InsertBasicBlockInContext C.LLVMInsertBasicBlockInContext
+func (self ContextRef) InsertBasicBlockInContext(BB BasicBlockRef, Name *c.Char) BasicBlockRef {
 	return nil
 }
 
@@ -4267,8 +4263,8 @@ func (self *OpaqueContext) InsertBasicBlockInContext(BB BasicBlockRef, Name *c.C
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link (*OpaqueBasicBlock).InsertBasicBlock C.LLVMInsertBasicBlock
-func (self *OpaqueBasicBlock) InsertBasicBlock(Name *c.Char) BasicBlockRef {
+// llgo:link BasicBlockRef.InsertBasicBlock C.LLVMInsertBasicBlock
+func (self BasicBlockRef) InsertBasicBlock(Name *c.Char) BasicBlockRef {
 	return self
 }
 
@@ -4279,8 +4275,8 @@ func (self *OpaqueBasicBlock) InsertBasicBlock(Name *c.Char) BasicBlockRef {
 //
 // @see llvm::BasicBlock::eraseFromParent()
 //
-// llgo:link (*OpaqueBasicBlock).DeleteBasicBlock C.LLVMDeleteBasicBlock
-func (self *OpaqueBasicBlock) DeleteBasicBlock() {
+// llgo:link BasicBlockRef.DeleteBasicBlock C.LLVMDeleteBasicBlock
+func (self BasicBlockRef) DeleteBasicBlock() {
 }
 
 // Remove a basic block from a function.
@@ -4290,8 +4286,8 @@ func (self *OpaqueBasicBlock) DeleteBasicBlock() {
 //
 // @see llvm::BasicBlock::removeFromParent()
 //
-// llgo:link (*OpaqueBasicBlock).RemoveBasicBlockFromParent C.LLVMRemoveBasicBlockFromParent
-func (self *OpaqueBasicBlock) RemoveBasicBlockFromParent() {
+// llgo:link BasicBlockRef.RemoveBasicBlockFromParent C.LLVMRemoveBasicBlockFromParent
+func (self BasicBlockRef) RemoveBasicBlockFromParent() {
 }
 
 // Move a basic block to before another one.
@@ -4313,8 +4309,8 @@ func MoveBasicBlockAfter(BB BasicBlockRef, MovePos BasicBlockRef)
 // The returned LLVMValueRef corresponds to a llvm::Instruction
 // instance.
 //
-// llgo:link (*OpaqueBasicBlock).FirstInstruction C.LLVMGetFirstInstruction
-func (self *OpaqueBasicBlock) FirstInstruction() ValueRef {
+// llgo:link BasicBlockRef.FirstInstruction C.LLVMGetFirstInstruction
+func (self BasicBlockRef) FirstInstruction() ValueRef {
 	return nil
 }
 
@@ -4322,29 +4318,29 @@ func (self *OpaqueBasicBlock) FirstInstruction() ValueRef {
 //
 // The returned LLVMValueRef corresponds to an LLVM:Instruction.
 //
-// llgo:link (*OpaqueBasicBlock).LastInstruction C.LLVMGetLastInstruction
-func (self *OpaqueBasicBlock) LastInstruction() ValueRef {
+// llgo:link BasicBlockRef.LastInstruction C.LLVMGetLastInstruction
+func (self BasicBlockRef) LastInstruction() ValueRef {
 	return nil
 }
 
 // Determine whether an instruction has any metadata attached.
 //
-// llgo:link (*OpaqueValue).HasMetadata C.LLVMHasMetadata
-func (self *OpaqueValue) HasMetadata() c.Int {
+// llgo:link ValueRef.HasMetadata C.LLVMHasMetadata
+func (self ValueRef) HasMetadata() c.Int {
 	return 0
 }
 
 // Return metadata associated with an instruction value.
 //
-// llgo:link (*OpaqueValue).Metadata C.LLVMGetMetadata
-func (self *OpaqueValue) Metadata(KindID c.Uint) ValueRef {
+// llgo:link ValueRef.Metadata C.LLVMGetMetadata
+func (self ValueRef) Metadata(KindID c.Uint) ValueRef {
 	return self
 }
 
 // Set metadata associated with an instruction value.
 //
-// llgo:link (*OpaqueValue).SetMetadata C.LLVMSetMetadata
-func (self *OpaqueValue) SetMetadata(KindID c.Uint, Node ValueRef) {
+// llgo:link ValueRef.SetMetadata C.LLVMSetMetadata
+func (self ValueRef) SetMetadata(KindID c.Uint, Node ValueRef) {
 }
 
 // Returns the metadata associated with an instruction value, but filters out
@@ -4352,8 +4348,8 @@ func (self *OpaqueValue) SetMetadata(KindID c.Uint, Node ValueRef) {
 //
 // @see llvm::Instruction::getAllMetadataOtherThanDebugLoc()
 //
-// llgo:link (*OpaqueValue).InstructionGetAllMetadataOtherThanDebugLoc C.LLVMInstructionGetAllMetadataOtherThanDebugLoc
-func (self *OpaqueValue) InstructionGetAllMetadataOtherThanDebugLoc(NumEntries *c.SizeT) *ValueMetadataEntry {
+// llgo:link ValueRef.InstructionGetAllMetadataOtherThanDebugLoc C.LLVMInstructionGetAllMetadataOtherThanDebugLoc
+func (self ValueRef) InstructionGetAllMetadataOtherThanDebugLoc(NumEntries *c.SizeT) *ValueMetadataEntry {
 	return nil
 }
 
@@ -4361,8 +4357,8 @@ func (self *OpaqueValue) InstructionGetAllMetadataOtherThanDebugLoc(NumEntries *
 //
 // @see llvm::Instruction::getParent()
 //
-// llgo:link (*OpaqueValue).InstructionParent C.LLVMGetInstructionParent
-func (self *OpaqueValue) InstructionParent() BasicBlockRef {
+// llgo:link ValueRef.InstructionParent C.LLVMGetInstructionParent
+func (self ValueRef) InstructionParent() BasicBlockRef {
 	return nil
 }
 
@@ -4373,8 +4369,8 @@ func (self *OpaqueValue) InstructionParent() BasicBlockRef {
 // If this is the last instruction in a basic block, NULL will be
 // returned.
 //
-// llgo:link (*OpaqueValue).NextInstruction C.LLVMGetNextInstruction
-func (self *OpaqueValue) NextInstruction() ValueRef {
+// llgo:link ValueRef.NextInstruction C.LLVMGetNextInstruction
+func (self ValueRef) NextInstruction() ValueRef {
 	return self
 }
 
@@ -4383,8 +4379,8 @@ func (self *OpaqueValue) NextInstruction() ValueRef {
 // If the instruction is the first instruction in a basic block, NULL
 // will be returned.
 //
-// llgo:link (*OpaqueValue).PreviousInstruction C.LLVMGetPreviousInstruction
-func (self *OpaqueValue) PreviousInstruction() ValueRef {
+// llgo:link ValueRef.PreviousInstruction C.LLVMGetPreviousInstruction
+func (self ValueRef) PreviousInstruction() ValueRef {
 	return self
 }
 
@@ -4395,8 +4391,8 @@ func (self *OpaqueValue) PreviousInstruction() ValueRef {
 //
 // @see llvm::Instruction::removeFromParent()
 //
-// llgo:link (*OpaqueValue).InstructionRemoveFromParent C.LLVMInstructionRemoveFromParent
-func (self *OpaqueValue) InstructionRemoveFromParent() {
+// llgo:link ValueRef.InstructionRemoveFromParent C.LLVMInstructionRemoveFromParent
+func (self ValueRef) InstructionRemoveFromParent() {
 }
 
 // Remove and delete an instruction.
@@ -4406,8 +4402,8 @@ func (self *OpaqueValue) InstructionRemoveFromParent() {
 //
 // @see llvm::Instruction::eraseFromParent()
 //
-// llgo:link (*OpaqueValue).InstructionEraseFromParent C.LLVMInstructionEraseFromParent
-func (self *OpaqueValue) InstructionEraseFromParent() {
+// llgo:link ValueRef.InstructionEraseFromParent C.LLVMInstructionEraseFromParent
+func (self ValueRef) InstructionEraseFromParent() {
 }
 
 // Delete an instruction.
@@ -4417,16 +4413,16 @@ func (self *OpaqueValue) InstructionEraseFromParent() {
 //
 // @see llvm::Value::deleteValue()
 //
-// llgo:link (*OpaqueValue).DeleteInstruction C.LLVMDeleteInstruction
-func (self *OpaqueValue) DeleteInstruction() {
+// llgo:link ValueRef.DeleteInstruction C.LLVMDeleteInstruction
+func (self ValueRef) DeleteInstruction() {
 }
 
 // Obtain the code opcode for an individual instruction.
 //
 // @see llvm::Instruction::getOpCode()
 //
-// llgo:link (*OpaqueValue).InstructionOpcode C.LLVMGetInstructionOpcode
-func (self *OpaqueValue) InstructionOpcode() Opcode {
+// llgo:link ValueRef.InstructionOpcode C.LLVMGetInstructionOpcode
+func (self ValueRef) InstructionOpcode() Opcode {
 	return 0
 }
 
@@ -4436,8 +4432,8 @@ func (self *OpaqueValue) InstructionOpcode() Opcode {
 //
 // @see llvm::ICmpInst::getPredicate()
 //
-// llgo:link (*OpaqueValue).ICmpPredicate C.LLVMGetICmpPredicate
-func (self *OpaqueValue) ICmpPredicate() IntPredicate {
+// llgo:link ValueRef.ICmpPredicate C.LLVMGetICmpPredicate
+func (self ValueRef) ICmpPredicate() IntPredicate {
 	return 0
 }
 
@@ -4447,8 +4443,8 @@ func (self *OpaqueValue) ICmpPredicate() IntPredicate {
 //
 // @see llvm::ICmpInst::hasSameSign()
 //
-// llgo:link (*OpaqueValue).ICmpSameSign C.LLVMGetICmpSameSign
-func (self *OpaqueValue) ICmpSameSign() Bool {
+// llgo:link ValueRef.ICmpSameSign C.LLVMGetICmpSameSign
+func (self ValueRef) ICmpSameSign() Bool {
 	return 0
 }
 
@@ -4458,8 +4454,8 @@ func (self *OpaqueValue) ICmpSameSign() Bool {
 //
 // @see llvm::ICmpInst::setSameSign()
 //
-// llgo:link (*OpaqueValue).SetICmpSameSign C.LLVMSetICmpSameSign
-func (self *OpaqueValue) SetICmpSameSign(SameSign Bool) {
+// llgo:link ValueRef.SetICmpSameSign C.LLVMSetICmpSameSign
+func (self ValueRef) SetICmpSameSign(SameSign Bool) {
 }
 
 // Obtain the float predicate of an instruction.
@@ -4468,8 +4464,8 @@ func (self *OpaqueValue) SetICmpSameSign(SameSign Bool) {
 //
 // @see llvm::FCmpInst::getPredicate()
 //
-// llgo:link (*OpaqueValue).FCmpPredicate C.LLVMGetFCmpPredicate
-func (self *OpaqueValue) FCmpPredicate() RealPredicate {
+// llgo:link ValueRef.FCmpPredicate C.LLVMGetFCmpPredicate
+func (self ValueRef) FCmpPredicate() RealPredicate {
 	return 0
 }
 
@@ -4480,8 +4476,8 @@ func (self *OpaqueValue) FCmpPredicate() RealPredicate {
 //
 // @see llvm::Instruction::clone()
 //
-// llgo:link (*OpaqueValue).InstructionClone C.LLVMInstructionClone
-func (self *OpaqueValue) InstructionClone() ValueRef {
+// llgo:link ValueRef.InstructionClone C.LLVMInstructionClone
+func (self ValueRef) InstructionClone() ValueRef {
 	return self
 }
 
@@ -4491,8 +4487,8 @@ func (self *OpaqueValue) InstructionClone() ValueRef {
 //
 // @see llvm::Instruction::isTerminator()
 //
-// llgo:link (*OpaqueValue).IsATerminatorInst C.LLVMIsATerminatorInst
-func (self *OpaqueValue) IsATerminatorInst() ValueRef {
+// llgo:link ValueRef.IsATerminatorInst C.LLVMIsATerminatorInst
+func (self ValueRef) IsATerminatorInst() ValueRef {
 	return self
 }
 
@@ -4505,8 +4501,8 @@ func (self *OpaqueValue) IsATerminatorInst() ValueRef {
 //
 // @see llvm::Instruction::getDbgRecordRange()
 //
-// llgo:link (*OpaqueValue).FirstDbgRecord C.LLVMGetFirstDbgRecord
-func (self *OpaqueValue) FirstDbgRecord() DbgRecordRef {
+// llgo:link ValueRef.FirstDbgRecord C.LLVMGetFirstDbgRecord
+func (self ValueRef) FirstDbgRecord() DbgRecordRef {
 	return nil
 }
 
@@ -4516,8 +4512,8 @@ func (self *OpaqueValue) FirstDbgRecord() DbgRecordRef {
 //
 // @see llvm::Instruction::getDbgRecordRange()
 //
-// llgo:link (*OpaqueValue).LastDbgRecord C.LLVMGetLastDbgRecord
-func (self *OpaqueValue) LastDbgRecord() DbgRecordRef {
+// llgo:link ValueRef.LastDbgRecord C.LLVMGetLastDbgRecord
+func (self ValueRef) LastDbgRecord() DbgRecordRef {
 	return nil
 }
 
@@ -4525,8 +4521,8 @@ func (self *OpaqueValue) LastDbgRecord() DbgRecordRef {
 //
 // @see llvm::Instruction::getDbgRecordRange()
 //
-// llgo:link (*OpaqueDbgRecord).NextDbgRecord C.LLVMGetNextDbgRecord
-func (self *OpaqueDbgRecord) NextDbgRecord() DbgRecordRef {
+// llgo:link DbgRecordRef.NextDbgRecord C.LLVMGetNextDbgRecord
+func (self DbgRecordRef) NextDbgRecord() DbgRecordRef {
 	return self
 }
 
@@ -4534,8 +4530,8 @@ func (self *OpaqueDbgRecord) NextDbgRecord() DbgRecordRef {
 //
 // @see llvm::Instruction::getDbgRecordRange()
 //
-// llgo:link (*OpaqueDbgRecord).PreviousDbgRecord C.LLVMGetPreviousDbgRecord
-func (self *OpaqueDbgRecord) PreviousDbgRecord() DbgRecordRef {
+// llgo:link DbgRecordRef.PreviousDbgRecord C.LLVMGetPreviousDbgRecord
+func (self DbgRecordRef) PreviousDbgRecord() DbgRecordRef {
 	return self
 }
 
@@ -4543,13 +4539,13 @@ func (self *OpaqueDbgRecord) PreviousDbgRecord() DbgRecordRef {
 //
 // @see llvm::DbgRecord::getDebugLoc()
 //
-// llgo:link (*OpaqueDbgRecord).DbgRecordGetDebugLoc C.LLVMDbgRecordGetDebugLoc
-func (self *OpaqueDbgRecord) DbgRecordGetDebugLoc() MetadataRef {
+// llgo:link DbgRecordRef.DbgRecordGetDebugLoc C.LLVMDbgRecordGetDebugLoc
+func (self DbgRecordRef) DbgRecordGetDebugLoc() MetadataRef {
 	return nil
 }
 
-// llgo:link (*OpaqueDbgRecord).DbgRecordGetKind C.LLVMDbgRecordGetKind
-func (self *OpaqueDbgRecord) DbgRecordGetKind() DbgRecordKind {
+// llgo:link DbgRecordRef.DbgRecordGetKind C.LLVMDbgRecordGetKind
+func (self DbgRecordRef) DbgRecordGetKind() DbgRecordKind {
 	return 0
 }
 
@@ -4557,8 +4553,8 @@ func (self *OpaqueDbgRecord) DbgRecordGetKind() DbgRecordKind {
 //
 // @see llvm::DbgVariableRecord::getValue()
 //
-// llgo:link (*OpaqueDbgRecord).DbgVariableRecordGetValue C.LLVMDbgVariableRecordGetValue
-func (self *OpaqueDbgRecord) DbgVariableRecordGetValue(OpIdx c.Uint) ValueRef {
+// llgo:link DbgRecordRef.DbgVariableRecordGetValue C.LLVMDbgVariableRecordGetValue
+func (self DbgRecordRef) DbgVariableRecordGetValue(OpIdx c.Uint) ValueRef {
 	return nil
 }
 
@@ -4566,8 +4562,8 @@ func (self *OpaqueDbgRecord) DbgVariableRecordGetValue(OpIdx c.Uint) ValueRef {
 //
 // @see llvm::DbgVariableRecord::getVariable()
 //
-// llgo:link (*OpaqueDbgRecord).DbgVariableRecordGetVariable C.LLVMDbgVariableRecordGetVariable
-func (self *OpaqueDbgRecord) DbgVariableRecordGetVariable() MetadataRef {
+// llgo:link DbgRecordRef.DbgVariableRecordGetVariable C.LLVMDbgVariableRecordGetVariable
+func (self DbgRecordRef) DbgVariableRecordGetVariable() MetadataRef {
 	return nil
 }
 
@@ -4575,8 +4571,8 @@ func (self *OpaqueDbgRecord) DbgVariableRecordGetVariable() MetadataRef {
 //
 // @see llvm::DbgVariableRecord::getExpression()
 //
-// llgo:link (*OpaqueDbgRecord).DbgVariableRecordGetExpression C.LLVMDbgVariableRecordGetExpression
-func (self *OpaqueDbgRecord) DbgVariableRecordGetExpression() MetadataRef {
+// llgo:link DbgRecordRef.DbgVariableRecordGetExpression C.LLVMDbgVariableRecordGetExpression
+func (self DbgRecordRef) DbgVariableRecordGetExpression() MetadataRef {
 	return nil
 }
 
@@ -4589,8 +4585,8 @@ func (self *OpaqueDbgRecord) DbgVariableRecordGetExpression() MetadataRef {
 // @see llvm::InvokeInst::getNumArgOperands()
 // @see llvm::FuncletPadInst::getNumArgOperands()
 //
-// llgo:link (*OpaqueValue).NumArgOperands C.LLVMGetNumArgOperands
-func (self *OpaqueValue) NumArgOperands() c.Uint {
+// llgo:link ValueRef.NumArgOperands C.LLVMGetNumArgOperands
+func (self ValueRef) NumArgOperands() c.Uint {
 	return 0
 }
 
@@ -4602,8 +4598,8 @@ func (self *OpaqueValue) NumArgOperands() c.Uint {
 // @see llvm::CallInst::setCallingConv()
 // @see llvm::InvokeInst::setCallingConv()
 //
-// llgo:link (*OpaqueValue).SetInstructionCallConv C.LLVMSetInstructionCallConv
-func (self *OpaqueValue) SetInstructionCallConv(CC c.Uint) {
+// llgo:link ValueRef.SetInstructionCallConv C.LLVMSetInstructionCallConv
+func (self ValueRef) SetInstructionCallConv(CC c.Uint) {
 }
 
 // Obtain the calling convention for a call instruction.
@@ -4613,52 +4609,52 @@ func (self *OpaqueValue) SetInstructionCallConv(CC c.Uint) {
 //
 // @see LLVMSetInstructionCallConv()
 //
-// llgo:link (*OpaqueValue).InstructionCallConv C.LLVMGetInstructionCallConv
-func (self *OpaqueValue) InstructionCallConv() c.Uint {
+// llgo:link ValueRef.InstructionCallConv C.LLVMGetInstructionCallConv
+func (self ValueRef) InstructionCallConv() c.Uint {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetInstrParamAlignment C.LLVMSetInstrParamAlignment
-func (self *OpaqueValue) SetInstrParamAlignment(Idx AttributeIndex, Align c.Uint) {
+// llgo:link ValueRef.SetInstrParamAlignment C.LLVMSetInstrParamAlignment
+func (self ValueRef) SetInstrParamAlignment(Idx AttributeIndex, Align c.Uint) {
 }
 
-// llgo:link (*OpaqueValue).AddCallSiteAttribute C.LLVMAddCallSiteAttribute
-func (self *OpaqueValue) AddCallSiteAttribute(Idx AttributeIndex, A AttributeRef) {
+// llgo:link ValueRef.AddCallSiteAttribute C.LLVMAddCallSiteAttribute
+func (self ValueRef) AddCallSiteAttribute(Idx AttributeIndex, A AttributeRef) {
 }
 
-// llgo:link (*OpaqueValue).CallSiteAttributeCount C.LLVMGetCallSiteAttributeCount
-func (self *OpaqueValue) CallSiteAttributeCount(Idx AttributeIndex) c.Uint {
+// llgo:link ValueRef.CallSiteAttributeCount C.LLVMGetCallSiteAttributeCount
+func (self ValueRef) CallSiteAttributeCount(Idx AttributeIndex) c.Uint {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).CallSiteAttributes C.LLVMGetCallSiteAttributes
-func (self *OpaqueValue) CallSiteAttributes(Idx AttributeIndex, Attrs *AttributeRef) {
+// llgo:link ValueRef.CallSiteAttributes C.LLVMGetCallSiteAttributes
+func (self ValueRef) CallSiteAttributes(Idx AttributeIndex, Attrs *AttributeRef) {
 }
 
-// llgo:link (*OpaqueValue).CallSiteEnumAttribute C.LLVMGetCallSiteEnumAttribute
-func (self *OpaqueValue) CallSiteEnumAttribute(Idx AttributeIndex, KindID c.Uint) AttributeRef {
+// llgo:link ValueRef.CallSiteEnumAttribute C.LLVMGetCallSiteEnumAttribute
+func (self ValueRef) CallSiteEnumAttribute(Idx AttributeIndex, KindID c.Uint) AttributeRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).CallSiteStringAttribute C.LLVMGetCallSiteStringAttribute
-func (self *OpaqueValue) CallSiteStringAttribute(Idx AttributeIndex, K *c.Char, KLen c.Uint) AttributeRef {
+// llgo:link ValueRef.CallSiteStringAttribute C.LLVMGetCallSiteStringAttribute
+func (self ValueRef) CallSiteStringAttribute(Idx AttributeIndex, K *c.Char, KLen c.Uint) AttributeRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).RemoveCallSiteEnumAttribute C.LLVMRemoveCallSiteEnumAttribute
-func (self *OpaqueValue) RemoveCallSiteEnumAttribute(Idx AttributeIndex, KindID c.Uint) {
+// llgo:link ValueRef.RemoveCallSiteEnumAttribute C.LLVMRemoveCallSiteEnumAttribute
+func (self ValueRef) RemoveCallSiteEnumAttribute(Idx AttributeIndex, KindID c.Uint) {
 }
 
-// llgo:link (*OpaqueValue).RemoveCallSiteStringAttribute C.LLVMRemoveCallSiteStringAttribute
-func (self *OpaqueValue) RemoveCallSiteStringAttribute(Idx AttributeIndex, K *c.Char, KLen c.Uint) {
+// llgo:link ValueRef.RemoveCallSiteStringAttribute C.LLVMRemoveCallSiteStringAttribute
+func (self ValueRef) RemoveCallSiteStringAttribute(Idx AttributeIndex, K *c.Char, KLen c.Uint) {
 }
 
 // Obtain the function type called by this instruction.
 //
 // @see llvm::CallBase::getFunctionType()
 //
-// llgo:link (*OpaqueValue).CalledFunctionType C.LLVMGetCalledFunctionType
-func (self *OpaqueValue) CalledFunctionType() TypeRef {
+// llgo:link ValueRef.CalledFunctionType C.LLVMGetCalledFunctionType
+func (self ValueRef) CalledFunctionType() TypeRef {
 	return nil
 }
 
@@ -4670,8 +4666,8 @@ func (self *OpaqueValue) CalledFunctionType() TypeRef {
 // @see llvm::CallInst::getCalledOperand()
 // @see llvm::InvokeInst::getCalledOperand()
 //
-// llgo:link (*OpaqueValue).CalledValue C.LLVMGetCalledValue
-func (self *OpaqueValue) CalledValue() ValueRef {
+// llgo:link ValueRef.CalledValue C.LLVMGetCalledValue
+func (self ValueRef) CalledValue() ValueRef {
 	return self
 }
 
@@ -4681,8 +4677,8 @@ func (self *OpaqueValue) CalledValue() ValueRef {
 //
 // @see llvm::CallBase::getNumOperandBundles()
 //
-// llgo:link (*OpaqueValue).NumOperandBundles C.LLVMGetNumOperandBundles
-func (self *OpaqueValue) NumOperandBundles() c.Uint {
+// llgo:link ValueRef.NumOperandBundles C.LLVMGetNumOperandBundles
+func (self ValueRef) NumOperandBundles() c.Uint {
 	return 0
 }
 
@@ -4691,8 +4687,8 @@ func (self *OpaqueValue) NumOperandBundles() c.Uint {
 //
 // This only works on llvm::CallInst and llvm::InvokeInst instructions.
 //
-// llgo:link (*OpaqueValue).OperandBundleAtIndex C.LLVMGetOperandBundleAtIndex
-func (self *OpaqueValue) OperandBundleAtIndex(Index c.Uint) OperandBundleRef {
+// llgo:link ValueRef.OperandBundleAtIndex C.LLVMGetOperandBundleAtIndex
+func (self ValueRef) OperandBundleAtIndex(Index c.Uint) OperandBundleRef {
 	return nil
 }
 
@@ -4702,8 +4698,8 @@ func (self *OpaqueValue) OperandBundleAtIndex(Index c.Uint) OperandBundleRef {
 //
 // @see llvm::CallInst::isTailCall()
 //
-// llgo:link (*OpaqueValue).IsTailCall C.LLVMIsTailCall
-func (self *OpaqueValue) IsTailCall() Bool {
+// llgo:link ValueRef.IsTailCall C.LLVMIsTailCall
+func (self ValueRef) IsTailCall() Bool {
 	return 0
 }
 
@@ -4713,16 +4709,16 @@ func (self *OpaqueValue) IsTailCall() Bool {
 //
 // @see llvm::CallInst::setTailCall()
 //
-// llgo:link (*OpaqueValue).SetTailCall C.LLVMSetTailCall
-func (self *OpaqueValue) SetTailCall(IsTailCall Bool) {
+// llgo:link ValueRef.SetTailCall C.LLVMSetTailCall
+func (self ValueRef) SetTailCall(IsTailCall Bool) {
 }
 
 // Obtain a tail call kind of the call instruction.
 //
 // @see llvm::CallInst::setTailCallKind()
 //
-// llgo:link (*OpaqueValue).TailCallKind C.LLVMGetTailCallKind
-func (self *OpaqueValue) TailCallKind() TailCallKind {
+// llgo:link ValueRef.TailCallKind C.LLVMGetTailCallKind
+func (self ValueRef) TailCallKind() TailCallKind {
 	return 0
 }
 
@@ -4730,8 +4726,8 @@ func (self *OpaqueValue) TailCallKind() TailCallKind {
 //
 // @see llvm::CallInst::getTailCallKind()
 //
-// llgo:link (*OpaqueValue).SetTailCallKind C.LLVMSetTailCallKind
-func (self *OpaqueValue) SetTailCallKind(kind TailCallKind) {
+// llgo:link ValueRef.SetTailCallKind C.LLVMSetTailCallKind
+func (self ValueRef) SetTailCallKind(kind TailCallKind) {
 }
 
 // Return the normal destination basic block.
@@ -4740,8 +4736,8 @@ func (self *OpaqueValue) SetTailCallKind(kind TailCallKind) {
 //
 // @see llvm::InvokeInst::getNormalDest()
 //
-// llgo:link (*OpaqueValue).NormalDest C.LLVMGetNormalDest
-func (self *OpaqueValue) NormalDest() BasicBlockRef {
+// llgo:link ValueRef.NormalDest C.LLVMGetNormalDest
+func (self ValueRef) NormalDest() BasicBlockRef {
 	return nil
 }
 
@@ -4754,8 +4750,8 @@ func (self *OpaqueValue) NormalDest() BasicBlockRef {
 // @see llvm::CleanupReturnInst::getUnwindDest()
 // @see llvm::CatchSwitchInst::getUnwindDest()
 //
-// llgo:link (*OpaqueValue).UnwindDest C.LLVMGetUnwindDest
-func (self *OpaqueValue) UnwindDest() BasicBlockRef {
+// llgo:link ValueRef.UnwindDest C.LLVMGetUnwindDest
+func (self ValueRef) UnwindDest() BasicBlockRef {
 	return nil
 }
 
@@ -4765,8 +4761,8 @@ func (self *OpaqueValue) UnwindDest() BasicBlockRef {
 //
 // @see llvm::InvokeInst::setNormalDest()
 //
-// llgo:link (*OpaqueValue).SetNormalDest C.LLVMSetNormalDest
-func (self *OpaqueValue) SetNormalDest(B BasicBlockRef) {
+// llgo:link ValueRef.SetNormalDest C.LLVMSetNormalDest
+func (self ValueRef) SetNormalDest(B BasicBlockRef) {
 }
 
 // Set the unwind destination basic block.
@@ -4778,16 +4774,16 @@ func (self *OpaqueValue) SetNormalDest(B BasicBlockRef) {
 // @see llvm::CleanupReturnInst::setUnwindDest()
 // @see llvm::CatchSwitchInst::setUnwindDest()
 //
-// llgo:link (*OpaqueValue).SetUnwindDest C.LLVMSetUnwindDest
-func (self *OpaqueValue) SetUnwindDest(B BasicBlockRef) {
+// llgo:link ValueRef.SetUnwindDest C.LLVMSetUnwindDest
+func (self ValueRef) SetUnwindDest(B BasicBlockRef) {
 }
 
 // Get the default destination of a CallBr instruction.
 //
 // @see llvm::CallBrInst::getDefaultDest()
 //
-// llgo:link (*OpaqueValue).CallBrDefaultDest C.LLVMGetCallBrDefaultDest
-func (self *OpaqueValue) CallBrDefaultDest() BasicBlockRef {
+// llgo:link ValueRef.CallBrDefaultDest C.LLVMGetCallBrDefaultDest
+func (self ValueRef) CallBrDefaultDest() BasicBlockRef {
 	return nil
 }
 
@@ -4795,8 +4791,8 @@ func (self *OpaqueValue) CallBrDefaultDest() BasicBlockRef {
 //
 // @see llvm::CallBrInst::getNumIndirectDests()
 //
-// llgo:link (*OpaqueValue).CallBrNumIndirectDests C.LLVMGetCallBrNumIndirectDests
-func (self *OpaqueValue) CallBrNumIndirectDests() c.Uint {
+// llgo:link ValueRef.CallBrNumIndirectDests C.LLVMGetCallBrNumIndirectDests
+func (self ValueRef) CallBrNumIndirectDests() c.Uint {
 	return 0
 }
 
@@ -4804,8 +4800,8 @@ func (self *OpaqueValue) CallBrNumIndirectDests() c.Uint {
 //
 // @see llvm::CallBrInst::getIndirectDest()
 //
-// llgo:link (*OpaqueValue).CallBrIndirectDest C.LLVMGetCallBrIndirectDest
-func (self *OpaqueValue) CallBrIndirectDest(Idx c.Uint) BasicBlockRef {
+// llgo:link ValueRef.CallBrIndirectDest C.LLVMGetCallBrIndirectDest
+func (self ValueRef) CallBrIndirectDest(Idx c.Uint) BasicBlockRef {
 	return nil
 }
 
@@ -4813,8 +4809,8 @@ func (self *OpaqueValue) CallBrIndirectDest(Idx c.Uint) BasicBlockRef {
 //
 // @see llvm::Instruction::getNumSuccessors
 //
-// llgo:link (*OpaqueValue).NumSuccessors C.LLVMGetNumSuccessors
-func (self *OpaqueValue) NumSuccessors() c.Uint {
+// llgo:link ValueRef.NumSuccessors C.LLVMGetNumSuccessors
+func (self ValueRef) NumSuccessors() c.Uint {
 	return 0
 }
 
@@ -4822,8 +4818,8 @@ func (self *OpaqueValue) NumSuccessors() c.Uint {
 //
 // @see llvm::Instruction::getSuccessor
 //
-// llgo:link (*OpaqueValue).Successor C.LLVMGetSuccessor
-func (self *OpaqueValue) Successor(i c.Uint) BasicBlockRef {
+// llgo:link ValueRef.Successor C.LLVMGetSuccessor
+func (self ValueRef) Successor(i c.Uint) BasicBlockRef {
 	return nil
 }
 
@@ -4831,8 +4827,8 @@ func (self *OpaqueValue) Successor(i c.Uint) BasicBlockRef {
 //
 // @see llvm::Instruction::setSuccessor
 //
-// llgo:link (*OpaqueValue).SetSuccessor C.LLVMSetSuccessor
-func (self *OpaqueValue) SetSuccessor(i c.Uint, block BasicBlockRef) {
+// llgo:link ValueRef.SetSuccessor C.LLVMSetSuccessor
+func (self ValueRef) SetSuccessor(i c.Uint, block BasicBlockRef) {
 }
 
 // Return if a branch is conditional.
@@ -4841,8 +4837,8 @@ func (self *OpaqueValue) SetSuccessor(i c.Uint, block BasicBlockRef) {
 //
 // @see llvm::BranchInst::isConditional
 //
-// llgo:link (*OpaqueValue).IsConditional C.LLVMIsConditional
-func (self *OpaqueValue) IsConditional() Bool {
+// llgo:link ValueRef.IsConditional C.LLVMIsConditional
+func (self ValueRef) IsConditional() Bool {
 	return 0
 }
 
@@ -4852,8 +4848,8 @@ func (self *OpaqueValue) IsConditional() Bool {
 //
 // @see llvm::BranchInst::getCondition
 //
-// llgo:link (*OpaqueValue).Condition C.LLVMGetCondition
-func (self *OpaqueValue) Condition() ValueRef {
+// llgo:link ValueRef.Condition C.LLVMGetCondition
+func (self ValueRef) Condition() ValueRef {
 	return self
 }
 
@@ -4872,8 +4868,8 @@ func SetCondition(Branch ValueRef, Cond ValueRef)
 //
 // @see llvm::SwitchInst::getDefaultDest()
 //
-// llgo:link (*OpaqueValue).SwitchDefaultDest C.LLVMGetSwitchDefaultDest
-func (self *OpaqueValue) SwitchDefaultDest() BasicBlockRef {
+// llgo:link ValueRef.SwitchDefaultDest C.LLVMGetSwitchDefaultDest
+func (self ValueRef) SwitchDefaultDest() BasicBlockRef {
 	return nil
 }
 
@@ -4885,8 +4881,8 @@ func (self *OpaqueValue) SwitchDefaultDest() BasicBlockRef {
 //
 // @see llvm::SwitchInst::CaseHandle::getCaseValue()
 //
-// llgo:link (*OpaqueValue).SwitchCaseValue C.LLVMGetSwitchCaseValue
-func (self *OpaqueValue) SwitchCaseValue(i c.Uint) ValueRef {
+// llgo:link ValueRef.SwitchCaseValue C.LLVMGetSwitchCaseValue
+func (self ValueRef) SwitchCaseValue(i c.Uint) ValueRef {
 	return self
 }
 
@@ -4898,34 +4894,34 @@ func (self *OpaqueValue) SwitchCaseValue(i c.Uint) ValueRef {
 //
 // @see llvm::SwitchInst::CaseHandle::setValue()
 //
-// llgo:link (*OpaqueValue).SetSwitchCaseValue C.LLVMSetSwitchCaseValue
-func (self *OpaqueValue) SetSwitchCaseValue(i c.Uint, CaseValue ValueRef) {
+// llgo:link ValueRef.SetSwitchCaseValue C.LLVMSetSwitchCaseValue
+func (self ValueRef) SetSwitchCaseValue(i c.Uint, CaseValue ValueRef) {
 }
 
 // Obtain the type that is being allocated by the alloca instruction.
 //
-// llgo:link (*OpaqueValue).AllocatedType C.LLVMGetAllocatedType
-func (self *OpaqueValue) AllocatedType() TypeRef {
+// llgo:link ValueRef.AllocatedType C.LLVMGetAllocatedType
+func (self ValueRef) AllocatedType() TypeRef {
 	return nil
 }
 
 // Check whether the given GEP operator is inbounds.
 //
-// llgo:link (*OpaqueValue).IsInBounds C.LLVMIsInBounds
-func (self *OpaqueValue) IsInBounds() Bool {
+// llgo:link ValueRef.IsInBounds C.LLVMIsInBounds
+func (self ValueRef) IsInBounds() Bool {
 	return 0
 }
 
 // Set the given GEP instruction to be inbounds or not.
 //
-// llgo:link (*OpaqueValue).SetIsInBounds C.LLVMSetIsInBounds
-func (self *OpaqueValue) SetIsInBounds(InBounds Bool) {
+// llgo:link ValueRef.SetIsInBounds C.LLVMSetIsInBounds
+func (self ValueRef) SetIsInBounds(InBounds Bool) {
 }
 
 // Get the source element type of the given GEP operator.
 //
-// llgo:link (*OpaqueValue).GEPSourceElementType C.LLVMGetGEPSourceElementType
-func (self *OpaqueValue) GEPSourceElementType() TypeRef {
+// llgo:link ValueRef.GEPSourceElementType C.LLVMGetGEPSourceElementType
+func (self ValueRef) GEPSourceElementType() TypeRef {
 	return nil
 }
 
@@ -4933,8 +4929,8 @@ func (self *OpaqueValue) GEPSourceElementType() TypeRef {
 //
 // @see llvm::GetElementPtrInst::getNoWrapFlags
 //
-// llgo:link (*OpaqueValue).GEPGetNoWrapFlags C.LLVMGEPGetNoWrapFlags
-func (self *OpaqueValue) GEPGetNoWrapFlags() GEPNoWrapFlags {
+// llgo:link ValueRef.GEPGetNoWrapFlags C.LLVMGEPGetNoWrapFlags
+func (self ValueRef) GEPGetNoWrapFlags() GEPNoWrapFlags {
 	return 0
 }
 
@@ -4942,49 +4938,49 @@ func (self *OpaqueValue) GEPGetNoWrapFlags() GEPNoWrapFlags {
 //
 // @see llvm::GetElementPtrInst::setNoWrapFlags
 //
-// llgo:link (*OpaqueValue).GEPSetNoWrapFlags C.LLVMGEPSetNoWrapFlags
-func (self *OpaqueValue) GEPSetNoWrapFlags(NoWrapFlags GEPNoWrapFlags) {
+// llgo:link ValueRef.GEPSetNoWrapFlags C.LLVMGEPSetNoWrapFlags
+func (self ValueRef) GEPSetNoWrapFlags(NoWrapFlags GEPNoWrapFlags) {
 }
 
 // Add an incoming value to the end of a PHI list.
 //
-// llgo:link (*OpaqueValue).AddIncoming C.LLVMAddIncoming
-func (self *OpaqueValue) AddIncoming(IncomingValues *ValueRef, IncomingBlocks *BasicBlockRef, Count c.Uint) {
+// llgo:link ValueRef.AddIncoming C.LLVMAddIncoming
+func (self ValueRef) AddIncoming(IncomingValues *ValueRef, IncomingBlocks *BasicBlockRef, Count c.Uint) {
 }
 
 // Obtain the number of incoming basic blocks to a PHI node.
 //
-// llgo:link (*OpaqueValue).CountIncoming C.LLVMCountIncoming
-func (self *OpaqueValue) CountIncoming() c.Uint {
+// llgo:link ValueRef.CountIncoming C.LLVMCountIncoming
+func (self ValueRef) CountIncoming() c.Uint {
 	return 0
 }
 
 // Obtain an incoming value to a PHI node as an LLVMValueRef.
 //
-// llgo:link (*OpaqueValue).IncomingValue C.LLVMGetIncomingValue
-func (self *OpaqueValue) IncomingValue(Index c.Uint) ValueRef {
+// llgo:link ValueRef.IncomingValue C.LLVMGetIncomingValue
+func (self ValueRef) IncomingValue(Index c.Uint) ValueRef {
 	return self
 }
 
 // Obtain an incoming value to a PHI node as an LLVMBasicBlockRef.
 //
-// llgo:link (*OpaqueValue).IncomingBlock C.LLVMGetIncomingBlock
-func (self *OpaqueValue) IncomingBlock(Index c.Uint) BasicBlockRef {
+// llgo:link ValueRef.IncomingBlock C.LLVMGetIncomingBlock
+func (self ValueRef) IncomingBlock(Index c.Uint) BasicBlockRef {
 	return nil
 }
 
 // Obtain the number of indices.
 // NB: This also works on GEP operators.
 //
-// llgo:link (*OpaqueValue).NumIndices C.LLVMGetNumIndices
-func (self *OpaqueValue) NumIndices() c.Uint {
+// llgo:link ValueRef.NumIndices C.LLVMGetNumIndices
+func (self ValueRef) NumIndices() c.Uint {
 	return 0
 }
 
 // Obtain the indices as an array.
 //
-// llgo:link (*OpaqueValue).Indices C.LLVMGetIndices
-func (self *OpaqueValue) Indices() *c.Uint {
+// llgo:link ValueRef.Indices C.LLVMGetIndices
+func (self ValueRef) Indices() *c.Uint {
 	return nil
 }
 
@@ -4995,8 +4991,8 @@ func (self *OpaqueValue) Indices() *c.Uint {
 //
 // @{
 //
-// llgo:link (*OpaqueContext).CreateBuilderInContext C.LLVMCreateBuilderInContext
-func (self *OpaqueContext) CreateBuilderInContext() BuilderRef {
+// llgo:link ContextRef.CreateBuilderInContext C.LLVMCreateBuilderInContext
+func (self ContextRef) CreateBuilderInContext() BuilderRef {
 	return nil
 }
 
@@ -5006,60 +5002,60 @@ func CreateBuilder() BuilderRef
 // Set the builder position before Instr but after any attached debug records,
 // or if Instr is null set the position to the end of Block.
 //
-// llgo:link (*OpaqueBuilder).PositionBuilder C.LLVMPositionBuilder
-func (self *OpaqueBuilder) PositionBuilder(Block BasicBlockRef, Instr ValueRef) {
+// llgo:link BuilderRef.PositionBuilder C.LLVMPositionBuilder
+func (self BuilderRef) PositionBuilder(Block BasicBlockRef, Instr ValueRef) {
 }
 
 // Set the builder position before Instr and any attached debug records,
 // or if Instr is null set the position to the end of Block.
 //
-// llgo:link (*OpaqueBuilder).PositionBuilderBeforeDbgRecords C.LLVMPositionBuilderBeforeDbgRecords
-func (self *OpaqueBuilder) PositionBuilderBeforeDbgRecords(Block BasicBlockRef, Inst ValueRef) {
+// llgo:link BuilderRef.PositionBuilderBeforeDbgRecords C.LLVMPositionBuilderBeforeDbgRecords
+func (self BuilderRef) PositionBuilderBeforeDbgRecords(Block BasicBlockRef, Inst ValueRef) {
 }
 
 // Set the builder position before Instr but after any attached debug records.
 //
-// llgo:link (*OpaqueBuilder).PositionBuilderBefore C.LLVMPositionBuilderBefore
-func (self *OpaqueBuilder) PositionBuilderBefore(Instr ValueRef) {
+// llgo:link BuilderRef.PositionBuilderBefore C.LLVMPositionBuilderBefore
+func (self BuilderRef) PositionBuilderBefore(Instr ValueRef) {
 }
 
 // Set the builder position before Instr and any attached debug records.
 //
-// llgo:link (*OpaqueBuilder).PositionBuilderBeforeInstrAndDbgRecords C.LLVMPositionBuilderBeforeInstrAndDbgRecords
-func (self *OpaqueBuilder) PositionBuilderBeforeInstrAndDbgRecords(Instr ValueRef) {
+// llgo:link BuilderRef.PositionBuilderBeforeInstrAndDbgRecords C.LLVMPositionBuilderBeforeInstrAndDbgRecords
+func (self BuilderRef) PositionBuilderBeforeInstrAndDbgRecords(Instr ValueRef) {
 }
 
-// llgo:link (*OpaqueBuilder).PositionBuilderAtEnd C.LLVMPositionBuilderAtEnd
-func (self *OpaqueBuilder) PositionBuilderAtEnd(Block BasicBlockRef) {
+// llgo:link BuilderRef.PositionBuilderAtEnd C.LLVMPositionBuilderAtEnd
+func (self BuilderRef) PositionBuilderAtEnd(Block BasicBlockRef) {
 }
 
-// llgo:link (*OpaqueBuilder).InsertBlock C.LLVMGetInsertBlock
-func (self *OpaqueBuilder) InsertBlock() BasicBlockRef {
+// llgo:link BuilderRef.InsertBlock C.LLVMGetInsertBlock
+func (self BuilderRef) InsertBlock() BasicBlockRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).ClearInsertionPosition C.LLVMClearInsertionPosition
-func (self *OpaqueBuilder) ClearInsertionPosition() {
+// llgo:link BuilderRef.ClearInsertionPosition C.LLVMClearInsertionPosition
+func (self BuilderRef) ClearInsertionPosition() {
 }
 
-// llgo:link (*OpaqueBuilder).InsertIntoBuilder C.LLVMInsertIntoBuilder
-func (self *OpaqueBuilder) InsertIntoBuilder(Instr ValueRef) {
+// llgo:link BuilderRef.InsertIntoBuilder C.LLVMInsertIntoBuilder
+func (self BuilderRef) InsertIntoBuilder(Instr ValueRef) {
 }
 
-// llgo:link (*OpaqueBuilder).InsertIntoBuilderWithName C.LLVMInsertIntoBuilderWithName
-func (self *OpaqueBuilder) InsertIntoBuilderWithName(Instr ValueRef, Name *c.Char) {
+// llgo:link BuilderRef.InsertIntoBuilderWithName C.LLVMInsertIntoBuilderWithName
+func (self BuilderRef) InsertIntoBuilderWithName(Instr ValueRef, Name *c.Char) {
 }
 
-// llgo:link (*OpaqueBuilder).DisposeBuilder C.LLVMDisposeBuilder
-func (self *OpaqueBuilder) DisposeBuilder() {
+// llgo:link BuilderRef.DisposeBuilder C.LLVMDisposeBuilder
+func (self BuilderRef) DisposeBuilder() {
 }
 
 // Get location information used by debugging information.
 //
 // @see llvm::IRBuilder::getCurrentDebugLocation()
 //
-// llgo:link (*OpaqueBuilder).CurrentDebugLocation2 C.LLVMGetCurrentDebugLocation2
-func (self *OpaqueBuilder) CurrentDebugLocation2() MetadataRef {
+// llgo:link BuilderRef.CurrentDebugLocation2 C.LLVMGetCurrentDebugLocation2
+func (self BuilderRef) CurrentDebugLocation2() MetadataRef {
 	return nil
 }
 
@@ -5069,8 +5065,8 @@ func (self *OpaqueBuilder) CurrentDebugLocation2() MetadataRef {
 //
 // @see llvm::IRBuilder::SetCurrentDebugLocation()
 //
-// llgo:link (*OpaqueBuilder).SetCurrentDebugLocation2 C.LLVMSetCurrentDebugLocation2
-func (self *OpaqueBuilder) SetCurrentDebugLocation2(Loc MetadataRef) {
+// llgo:link BuilderRef.SetCurrentDebugLocation2 C.LLVMSetCurrentDebugLocation2
+func (self BuilderRef) SetCurrentDebugLocation2(Loc MetadataRef) {
 }
 
 // Attempts to set the debug location for the given instruction using the
@@ -5082,24 +5078,24 @@ func (self *OpaqueBuilder) SetCurrentDebugLocation2(Loc MetadataRef) {
 //
 // @see llvm::IRBuilder::SetInstDebugLocation()
 //
-// llgo:link (*OpaqueBuilder).SetInstDebugLocation C.LLVMSetInstDebugLocation
-func (self *OpaqueBuilder) SetInstDebugLocation(Inst ValueRef) {
+// llgo:link BuilderRef.SetInstDebugLocation C.LLVMSetInstDebugLocation
+func (self BuilderRef) SetInstDebugLocation(Inst ValueRef) {
 }
 
 // Adds the metadata registered with the given builder to the given instruction.
 //
 // @see llvm::IRBuilder::AddMetadataToInst()
 //
-// llgo:link (*OpaqueBuilder).AddMetadataToInst C.LLVMAddMetadataToInst
-func (self *OpaqueBuilder) AddMetadataToInst(Inst ValueRef) {
+// llgo:link BuilderRef.AddMetadataToInst C.LLVMAddMetadataToInst
+func (self BuilderRef) AddMetadataToInst(Inst ValueRef) {
 }
 
 // Get the dafult floating-point math metadata for a given builder.
 //
 // @see llvm::IRBuilder::getDefaultFPMathTag()
 //
-// llgo:link (*OpaqueBuilder).BuilderGetDefaultFPMathTag C.LLVMBuilderGetDefaultFPMathTag
-func (self *OpaqueBuilder) BuilderGetDefaultFPMathTag() MetadataRef {
+// llgo:link BuilderRef.BuilderGetDefaultFPMathTag C.LLVMBuilderGetDefaultFPMathTag
+func (self BuilderRef) BuilderGetDefaultFPMathTag() MetadataRef {
 	return nil
 }
 
@@ -5109,160 +5105,160 @@ func (self *OpaqueBuilder) BuilderGetDefaultFPMathTag() MetadataRef {
 //
 // @see llvm::IRBuilder::setDefaultFPMathTag()
 //
-// llgo:link (*OpaqueBuilder).BuilderSetDefaultFPMathTag C.LLVMBuilderSetDefaultFPMathTag
-func (self *OpaqueBuilder) BuilderSetDefaultFPMathTag(FPMathTag MetadataRef) {
+// llgo:link BuilderRef.BuilderSetDefaultFPMathTag C.LLVMBuilderSetDefaultFPMathTag
+func (self BuilderRef) BuilderSetDefaultFPMathTag(FPMathTag MetadataRef) {
 }
 
 // Obtain the context to which this builder is associated.
 //
 // @see llvm::IRBuilder::getContext()
 //
-// llgo:link (*OpaqueBuilder).BuilderContext C.LLVMGetBuilderContext
-func (self *OpaqueBuilder) BuilderContext() ContextRef {
+// llgo:link BuilderRef.BuilderContext C.LLVMGetBuilderContext
+func (self BuilderRef) BuilderContext() ContextRef {
 	return nil
 }
 
 // Deprecated: Passing the NULL location will crash.
 // Use LLVMGetCurrentDebugLocation2 instead.
 //
-// llgo:link (*OpaqueBuilder).SetCurrentDebugLocation C.LLVMSetCurrentDebugLocation
-func (self *OpaqueBuilder) SetCurrentDebugLocation(L ValueRef) {
+// llgo:link BuilderRef.SetCurrentDebugLocation C.LLVMSetCurrentDebugLocation
+func (self BuilderRef) SetCurrentDebugLocation(L ValueRef) {
 }
 
 // Deprecated: Returning the NULL location will crash.
 // Use LLVMGetCurrentDebugLocation2 instead.
 //
-// llgo:link (*OpaqueBuilder).CurrentDebugLocation C.LLVMGetCurrentDebugLocation
-func (self *OpaqueBuilder) CurrentDebugLocation() ValueRef {
+// llgo:link BuilderRef.CurrentDebugLocation C.LLVMGetCurrentDebugLocation
+func (self BuilderRef) CurrentDebugLocation() ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildRetVoid C.LLVMBuildRetVoid
-func (self *OpaqueBuilder) BuildRetVoid() ValueRef {
+// llgo:link BuilderRef.BuildRetVoid C.LLVMBuildRetVoid
+func (self BuilderRef) BuildRetVoid() ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildRet C.LLVMBuildRet
-func (self *OpaqueBuilder) BuildRet(V ValueRef) ValueRef {
+// llgo:link BuilderRef.BuildRet C.LLVMBuildRet
+func (self BuilderRef) BuildRet(V ValueRef) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildAggregateRet C.LLVMBuildAggregateRet
-func (self *OpaqueBuilder) BuildAggregateRet(RetVals *ValueRef, N c.Uint) ValueRef {
+// llgo:link BuilderRef.BuildAggregateRet C.LLVMBuildAggregateRet
+func (self BuilderRef) BuildAggregateRet(RetVals *ValueRef, N c.Uint) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildBr C.LLVMBuildBr
-func (self *OpaqueBuilder) BuildBr(Dest BasicBlockRef) ValueRef {
+// llgo:link BuilderRef.BuildBr C.LLVMBuildBr
+func (self BuilderRef) BuildBr(Dest BasicBlockRef) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildCondBr C.LLVMBuildCondBr
-func (self *OpaqueBuilder) BuildCondBr(If ValueRef, Then BasicBlockRef, Else BasicBlockRef) ValueRef {
+// llgo:link BuilderRef.BuildCondBr C.LLVMBuildCondBr
+func (self BuilderRef) BuildCondBr(If ValueRef, Then BasicBlockRef, Else BasicBlockRef) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildSwitch C.LLVMBuildSwitch
-func (self *OpaqueBuilder) BuildSwitch(V ValueRef, Else BasicBlockRef, NumCases c.Uint) ValueRef {
+// llgo:link BuilderRef.BuildSwitch C.LLVMBuildSwitch
+func (self BuilderRef) BuildSwitch(V ValueRef, Else BasicBlockRef, NumCases c.Uint) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildIndirectBr C.LLVMBuildIndirectBr
-func (self *OpaqueBuilder) BuildIndirectBr(Addr ValueRef, NumDests c.Uint) ValueRef {
+// llgo:link BuilderRef.BuildIndirectBr C.LLVMBuildIndirectBr
+func (self BuilderRef) BuildIndirectBr(Addr ValueRef, NumDests c.Uint) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildCallBr C.LLVMBuildCallBr
-func (self *OpaqueBuilder) BuildCallBr(Ty TypeRef, Fn ValueRef, DefaultDest BasicBlockRef, IndirectDests *BasicBlockRef, NumIndirectDests c.Uint, Args *ValueRef, NumArgs c.Uint, Bundles *OperandBundleRef, NumBundles c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildCallBr C.LLVMBuildCallBr
+func (self BuilderRef) BuildCallBr(Ty TypeRef, Fn ValueRef, DefaultDest BasicBlockRef, IndirectDests *BasicBlockRef, NumIndirectDests c.Uint, Args *ValueRef, NumArgs c.Uint, Bundles *OperandBundleRef, NumBundles c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildInvoke2 C.LLVMBuildInvoke2
-func (self *OpaqueBuilder) BuildInvoke2(Ty TypeRef, Fn ValueRef, Args *ValueRef, NumArgs c.Uint, Then BasicBlockRef, Catch BasicBlockRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildInvoke2 C.LLVMBuildInvoke2
+func (self BuilderRef) BuildInvoke2(Ty TypeRef, Fn ValueRef, Args *ValueRef, NumArgs c.Uint, Then BasicBlockRef, Catch BasicBlockRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildInvokeWithOperandBundles C.LLVMBuildInvokeWithOperandBundles
-func (self *OpaqueBuilder) BuildInvokeWithOperandBundles(Ty TypeRef, Fn ValueRef, Args *ValueRef, NumArgs c.Uint, Then BasicBlockRef, Catch BasicBlockRef, Bundles *OperandBundleRef, NumBundles c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildInvokeWithOperandBundles C.LLVMBuildInvokeWithOperandBundles
+func (self BuilderRef) BuildInvokeWithOperandBundles(Ty TypeRef, Fn ValueRef, Args *ValueRef, NumArgs c.Uint, Then BasicBlockRef, Catch BasicBlockRef, Bundles *OperandBundleRef, NumBundles c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildUnreachable C.LLVMBuildUnreachable
-func (self *OpaqueBuilder) BuildUnreachable() ValueRef {
+// llgo:link BuilderRef.BuildUnreachable C.LLVMBuildUnreachable
+func (self BuilderRef) BuildUnreachable() ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildResume C.LLVMBuildResume
-func (self *OpaqueBuilder) BuildResume(Exn ValueRef) ValueRef {
+// llgo:link BuilderRef.BuildResume C.LLVMBuildResume
+func (self BuilderRef) BuildResume(Exn ValueRef) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildLandingPad C.LLVMBuildLandingPad
-func (self *OpaqueBuilder) BuildLandingPad(Ty TypeRef, PersFn ValueRef, NumClauses c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildLandingPad C.LLVMBuildLandingPad
+func (self BuilderRef) BuildLandingPad(Ty TypeRef, PersFn ValueRef, NumClauses c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildCleanupRet C.LLVMBuildCleanupRet
-func (self *OpaqueBuilder) BuildCleanupRet(CatchPad ValueRef, BB BasicBlockRef) ValueRef {
+// llgo:link BuilderRef.BuildCleanupRet C.LLVMBuildCleanupRet
+func (self BuilderRef) BuildCleanupRet(CatchPad ValueRef, BB BasicBlockRef) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildCatchRet C.LLVMBuildCatchRet
-func (self *OpaqueBuilder) BuildCatchRet(CatchPad ValueRef, BB BasicBlockRef) ValueRef {
+// llgo:link BuilderRef.BuildCatchRet C.LLVMBuildCatchRet
+func (self BuilderRef) BuildCatchRet(CatchPad ValueRef, BB BasicBlockRef) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildCatchPad C.LLVMBuildCatchPad
-func (self *OpaqueBuilder) BuildCatchPad(ParentPad ValueRef, Args *ValueRef, NumArgs c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildCatchPad C.LLVMBuildCatchPad
+func (self BuilderRef) BuildCatchPad(ParentPad ValueRef, Args *ValueRef, NumArgs c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildCleanupPad C.LLVMBuildCleanupPad
-func (self *OpaqueBuilder) BuildCleanupPad(ParentPad ValueRef, Args *ValueRef, NumArgs c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildCleanupPad C.LLVMBuildCleanupPad
+func (self BuilderRef) BuildCleanupPad(ParentPad ValueRef, Args *ValueRef, NumArgs c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildCatchSwitch C.LLVMBuildCatchSwitch
-func (self *OpaqueBuilder) BuildCatchSwitch(ParentPad ValueRef, UnwindBB BasicBlockRef, NumHandlers c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildCatchSwitch C.LLVMBuildCatchSwitch
+func (self BuilderRef) BuildCatchSwitch(ParentPad ValueRef, UnwindBB BasicBlockRef, NumHandlers c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).AddCase C.LLVMAddCase
-func (self *OpaqueValue) AddCase(OnVal ValueRef, Dest BasicBlockRef) {
+// llgo:link ValueRef.AddCase C.LLVMAddCase
+func (self ValueRef) AddCase(OnVal ValueRef, Dest BasicBlockRef) {
 }
 
-// llgo:link (*OpaqueValue).AddDestination C.LLVMAddDestination
-func (self *OpaqueValue) AddDestination(Dest BasicBlockRef) {
+// llgo:link ValueRef.AddDestination C.LLVMAddDestination
+func (self ValueRef) AddDestination(Dest BasicBlockRef) {
 }
 
-// llgo:link (*OpaqueValue).NumClauses C.LLVMGetNumClauses
-func (self *OpaqueValue) NumClauses() c.Uint {
+// llgo:link ValueRef.NumClauses C.LLVMGetNumClauses
+func (self ValueRef) NumClauses() c.Uint {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).Clause C.LLVMGetClause
-func (self *OpaqueValue) Clause(Idx c.Uint) ValueRef {
+// llgo:link ValueRef.Clause C.LLVMGetClause
+func (self ValueRef) Clause(Idx c.Uint) ValueRef {
 	return self
 }
 
 //go:linkname AddClause C.LLVMAddClause
 func AddClause(LandingPad ValueRef, ClauseVal ValueRef)
 
-// llgo:link (*OpaqueValue).IsCleanup C.LLVMIsCleanup
-func (self *OpaqueValue) IsCleanup() Bool {
+// llgo:link ValueRef.IsCleanup C.LLVMIsCleanup
+func (self ValueRef) IsCleanup() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetCleanup C.LLVMSetCleanup
-func (self *OpaqueValue) SetCleanup(Val Bool) {
+// llgo:link ValueRef.SetCleanup C.LLVMSetCleanup
+func (self ValueRef) SetCleanup(Val Bool) {
 }
 
-// llgo:link (*OpaqueValue).AddHandler C.LLVMAddHandler
-func (self *OpaqueValue) AddHandler(Dest BasicBlockRef) {
+// llgo:link ValueRef.AddHandler C.LLVMAddHandler
+func (self ValueRef) AddHandler(Dest BasicBlockRef) {
 }
 
-// llgo:link (*OpaqueValue).NumHandlers C.LLVMGetNumHandlers
-func (self *OpaqueValue) NumHandlers() c.Uint {
+// llgo:link ValueRef.NumHandlers C.LLVMGetNumHandlers
+func (self ValueRef) NumHandlers() c.Uint {
 	return 0
 }
 
@@ -5276,17 +5272,17 @@ func (self *OpaqueValue) NumHandlers() c.Uint {
 // @param CatchSwitch The catchswitch instruction to operate on.
 // @param Handlers Memory address of an array to be filled with basic blocks.
 //
-// llgo:link (*OpaqueValue).Handlers C.LLVMGetHandlers
-func (self *OpaqueValue) Handlers(Handlers *BasicBlockRef) {
+// llgo:link ValueRef.Handlers C.LLVMGetHandlers
+func (self ValueRef) Handlers(Handlers *BasicBlockRef) {
 }
 
-// llgo:link (*OpaqueValue).ArgOperand C.LLVMGetArgOperand
-func (self *OpaqueValue) ArgOperand(i c.Uint) ValueRef {
+// llgo:link ValueRef.ArgOperand C.LLVMGetArgOperand
+func (self ValueRef) ArgOperand(i c.Uint) ValueRef {
 	return self
 }
 
-// llgo:link (*OpaqueValue).SetArgOperand C.LLVMSetArgOperand
-func (self *OpaqueValue) SetArgOperand(i c.Uint, value ValueRef) {
+// llgo:link ValueRef.SetArgOperand C.LLVMSetArgOperand
+func (self ValueRef) SetArgOperand(i c.Uint, value ValueRef) {
 }
 
 // Get the parent catchswitch instruction of a catchpad instruction.
@@ -5295,8 +5291,8 @@ func (self *OpaqueValue) SetArgOperand(i c.Uint, value ValueRef) {
 //
 // @see llvm::CatchPadInst::getCatchSwitch()
 //
-// llgo:link (*OpaqueValue).ParentCatchSwitch C.LLVMGetParentCatchSwitch
-func (self *OpaqueValue) ParentCatchSwitch() ValueRef {
+// llgo:link ValueRef.ParentCatchSwitch C.LLVMGetParentCatchSwitch
+func (self ValueRef) ParentCatchSwitch() ValueRef {
 	return self
 }
 
@@ -5309,206 +5305,206 @@ func (self *OpaqueValue) ParentCatchSwitch() ValueRef {
 //go:linkname SetParentCatchSwitch C.LLVMSetParentCatchSwitch
 func SetParentCatchSwitch(CatchPad ValueRef, CatchSwitch ValueRef)
 
-// llgo:link (*OpaqueBuilder).BuildAdd C.LLVMBuildAdd
-func (self *OpaqueBuilder) BuildAdd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildAdd C.LLVMBuildAdd
+func (self BuilderRef) BuildAdd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildNSWAdd C.LLVMBuildNSWAdd
-func (self *OpaqueBuilder) BuildNSWAdd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildNSWAdd C.LLVMBuildNSWAdd
+func (self BuilderRef) BuildNSWAdd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildNUWAdd C.LLVMBuildNUWAdd
-func (self *OpaqueBuilder) BuildNUWAdd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildNUWAdd C.LLVMBuildNUWAdd
+func (self BuilderRef) BuildNUWAdd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFAdd C.LLVMBuildFAdd
-func (self *OpaqueBuilder) BuildFAdd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFAdd C.LLVMBuildFAdd
+func (self BuilderRef) BuildFAdd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildSub C.LLVMBuildSub
-func (self *OpaqueBuilder) BuildSub(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildSub C.LLVMBuildSub
+func (self BuilderRef) BuildSub(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildNSWSub C.LLVMBuildNSWSub
-func (self *OpaqueBuilder) BuildNSWSub(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildNSWSub C.LLVMBuildNSWSub
+func (self BuilderRef) BuildNSWSub(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildNUWSub C.LLVMBuildNUWSub
-func (self *OpaqueBuilder) BuildNUWSub(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildNUWSub C.LLVMBuildNUWSub
+func (self BuilderRef) BuildNUWSub(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFSub C.LLVMBuildFSub
-func (self *OpaqueBuilder) BuildFSub(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFSub C.LLVMBuildFSub
+func (self BuilderRef) BuildFSub(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildMul C.LLVMBuildMul
-func (self *OpaqueBuilder) BuildMul(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildMul C.LLVMBuildMul
+func (self BuilderRef) BuildMul(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildNSWMul C.LLVMBuildNSWMul
-func (self *OpaqueBuilder) BuildNSWMul(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildNSWMul C.LLVMBuildNSWMul
+func (self BuilderRef) BuildNSWMul(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildNUWMul C.LLVMBuildNUWMul
-func (self *OpaqueBuilder) BuildNUWMul(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildNUWMul C.LLVMBuildNUWMul
+func (self BuilderRef) BuildNUWMul(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFMul C.LLVMBuildFMul
-func (self *OpaqueBuilder) BuildFMul(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFMul C.LLVMBuildFMul
+func (self BuilderRef) BuildFMul(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildUDiv C.LLVMBuildUDiv
-func (self *OpaqueBuilder) BuildUDiv(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildUDiv C.LLVMBuildUDiv
+func (self BuilderRef) BuildUDiv(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildExactUDiv C.LLVMBuildExactUDiv
-func (self *OpaqueBuilder) BuildExactUDiv(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildExactUDiv C.LLVMBuildExactUDiv
+func (self BuilderRef) BuildExactUDiv(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildSDiv C.LLVMBuildSDiv
-func (self *OpaqueBuilder) BuildSDiv(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildSDiv C.LLVMBuildSDiv
+func (self BuilderRef) BuildSDiv(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildExactSDiv C.LLVMBuildExactSDiv
-func (self *OpaqueBuilder) BuildExactSDiv(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildExactSDiv C.LLVMBuildExactSDiv
+func (self BuilderRef) BuildExactSDiv(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFDiv C.LLVMBuildFDiv
-func (self *OpaqueBuilder) BuildFDiv(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFDiv C.LLVMBuildFDiv
+func (self BuilderRef) BuildFDiv(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildURem C.LLVMBuildURem
-func (self *OpaqueBuilder) BuildURem(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildURem C.LLVMBuildURem
+func (self BuilderRef) BuildURem(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildSRem C.LLVMBuildSRem
-func (self *OpaqueBuilder) BuildSRem(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildSRem C.LLVMBuildSRem
+func (self BuilderRef) BuildSRem(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFRem C.LLVMBuildFRem
-func (self *OpaqueBuilder) BuildFRem(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFRem C.LLVMBuildFRem
+func (self BuilderRef) BuildFRem(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildShl C.LLVMBuildShl
-func (self *OpaqueBuilder) BuildShl(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildShl C.LLVMBuildShl
+func (self BuilderRef) BuildShl(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildLShr C.LLVMBuildLShr
-func (self *OpaqueBuilder) BuildLShr(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildLShr C.LLVMBuildLShr
+func (self BuilderRef) BuildLShr(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildAShr C.LLVMBuildAShr
-func (self *OpaqueBuilder) BuildAShr(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildAShr C.LLVMBuildAShr
+func (self BuilderRef) BuildAShr(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildAnd C.LLVMBuildAnd
-func (self *OpaqueBuilder) BuildAnd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildAnd C.LLVMBuildAnd
+func (self BuilderRef) BuildAnd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildOr C.LLVMBuildOr
-func (self *OpaqueBuilder) BuildOr(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildOr C.LLVMBuildOr
+func (self BuilderRef) BuildOr(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildXor C.LLVMBuildXor
-func (self *OpaqueBuilder) BuildXor(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildXor C.LLVMBuildXor
+func (self BuilderRef) BuildXor(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildBinOp C.LLVMBuildBinOp
-func (self *OpaqueBuilder) BuildBinOp(Op Opcode, LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildBinOp C.LLVMBuildBinOp
+func (self BuilderRef) BuildBinOp(Op Opcode, LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildNeg C.LLVMBuildNeg
-func (self *OpaqueBuilder) BuildNeg(V ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildNeg C.LLVMBuildNeg
+func (self BuilderRef) BuildNeg(V ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildNSWNeg C.LLVMBuildNSWNeg
-func (self *OpaqueBuilder) BuildNSWNeg(V ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildNSWNeg C.LLVMBuildNSWNeg
+func (self BuilderRef) BuildNSWNeg(V ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildNUWNeg C.LLVMBuildNUWNeg
-func (self *OpaqueBuilder) BuildNUWNeg(V ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildNUWNeg C.LLVMBuildNUWNeg
+func (self BuilderRef) BuildNUWNeg(V ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFNeg C.LLVMBuildFNeg
-func (self *OpaqueBuilder) BuildFNeg(V ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFNeg C.LLVMBuildFNeg
+func (self BuilderRef) BuildFNeg(V ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildNot C.LLVMBuildNot
-func (self *OpaqueBuilder) BuildNot(V ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildNot C.LLVMBuildNot
+func (self BuilderRef) BuildNot(V ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).NUW C.LLVMGetNUW
-func (self *OpaqueValue) NUW() Bool {
+// llgo:link ValueRef.NUW C.LLVMGetNUW
+func (self ValueRef) NUW() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetNUW C.LLVMSetNUW
-func (self *OpaqueValue) SetNUW(HasNUW Bool) {
+// llgo:link ValueRef.SetNUW C.LLVMSetNUW
+func (self ValueRef) SetNUW(HasNUW Bool) {
 }
 
-// llgo:link (*OpaqueValue).NSW C.LLVMGetNSW
-func (self *OpaqueValue) NSW() Bool {
+// llgo:link ValueRef.NSW C.LLVMGetNSW
+func (self ValueRef) NSW() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetNSW C.LLVMSetNSW
-func (self *OpaqueValue) SetNSW(HasNSW Bool) {
+// llgo:link ValueRef.SetNSW C.LLVMSetNSW
+func (self ValueRef) SetNSW(HasNSW Bool) {
 }
 
-// llgo:link (*OpaqueValue).Exact C.LLVMGetExact
-func (self *OpaqueValue) Exact() Bool {
+// llgo:link ValueRef.Exact C.LLVMGetExact
+func (self ValueRef) Exact() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetExact C.LLVMSetExact
-func (self *OpaqueValue) SetExact(IsExact Bool) {
+// llgo:link ValueRef.SetExact C.LLVMSetExact
+func (self ValueRef) SetExact(IsExact Bool) {
 }
 
 // Gets if the instruction has the non-negative flag set.
 // Only valid for zext instructions.
 //
-// llgo:link (*OpaqueValue).NNeg C.LLVMGetNNeg
-func (self *OpaqueValue) NNeg() Bool {
+// llgo:link ValueRef.NNeg C.LLVMGetNNeg
+func (self ValueRef) NNeg() Bool {
 	return 0
 }
 
 // Sets the non-negative flag for the instruction.
 // Only valid for zext instructions.
 //
-// llgo:link (*OpaqueValue).SetNNeg C.LLVMSetNNeg
-func (self *OpaqueValue) SetNNeg(IsNonNeg Bool) {
+// llgo:link ValueRef.SetNNeg C.LLVMSetNNeg
+func (self ValueRef) SetNNeg(IsNonNeg Bool) {
 }
 
 // Get the flags for which fast-math-style optimizations are allowed for this
@@ -5517,8 +5513,8 @@ func (self *OpaqueValue) SetNNeg(IsNonNeg Bool) {
 // Only valid on floating point instructions.
 // @see LLVMCanValueUseFastMathFlags
 //
-// llgo:link (*OpaqueValue).FastMathFlags C.LLVMGetFastMathFlags
-func (self *OpaqueValue) FastMathFlags() FastMathFlags {
+// llgo:link ValueRef.FastMathFlags C.LLVMGetFastMathFlags
+func (self ValueRef) FastMathFlags() FastMathFlags {
 	return 0
 }
 
@@ -5528,8 +5524,8 @@ func (self *OpaqueValue) FastMathFlags() FastMathFlags {
 // Only valid on floating point instructions.
 // @see LLVMCanValueUseFastMathFlags
 //
-// llgo:link (*OpaqueValue).SetFastMathFlags C.LLVMSetFastMathFlags
-func (self *OpaqueValue) SetFastMathFlags(FMF FastMathFlags) {
+// llgo:link ValueRef.SetFastMathFlags C.LLVMSetFastMathFlags
+func (self ValueRef) SetFastMathFlags(FMF FastMathFlags) {
 }
 
 // Check if a given value can potentially have fast math flags.
@@ -5538,33 +5534,33 @@ func (self *OpaqueValue) SetFastMathFlags(FMF FastMathFlags) {
 // phi, and call instructions whose type is a floating point type, or a vector
 // or array thereof. See https://llvm.org/docs/LangRef.html#fast-math-flags
 //
-// llgo:link (*OpaqueValue).CanValueUseFastMathFlags C.LLVMCanValueUseFastMathFlags
-func (self *OpaqueValue) CanValueUseFastMathFlags() Bool {
+// llgo:link ValueRef.CanValueUseFastMathFlags C.LLVMCanValueUseFastMathFlags
+func (self ValueRef) CanValueUseFastMathFlags() Bool {
 	return 0
 }
 
 // Gets whether the instruction has the disjoint flag set.
 // Only valid for or instructions.
 //
-// llgo:link (*OpaqueValue).IsDisjoint C.LLVMGetIsDisjoint
-func (self *OpaqueValue) IsDisjoint() Bool {
+// llgo:link ValueRef.IsDisjoint C.LLVMGetIsDisjoint
+func (self ValueRef) IsDisjoint() Bool {
 	return 0
 }
 
 // Sets the disjoint flag for the instruction.
 // Only valid for or instructions.
 //
-// llgo:link (*OpaqueValue).SetIsDisjoint C.LLVMSetIsDisjoint
-func (self *OpaqueValue) SetIsDisjoint(IsDisjoint Bool) {
+// llgo:link ValueRef.SetIsDisjoint C.LLVMSetIsDisjoint
+func (self ValueRef) SetIsDisjoint(IsDisjoint Bool) {
 }
 
-// llgo:link (*OpaqueBuilder).BuildMalloc C.LLVMBuildMalloc
-func (self *OpaqueBuilder) BuildMalloc(Ty TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildMalloc C.LLVMBuildMalloc
+func (self BuilderRef) BuildMalloc(Ty TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildArrayMalloc C.LLVMBuildArrayMalloc
-func (self *OpaqueBuilder) BuildArrayMalloc(Ty TypeRef, Val ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildArrayMalloc C.LLVMBuildArrayMalloc
+func (self BuilderRef) BuildArrayMalloc(Ty TypeRef, Val ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
@@ -5573,8 +5569,8 @@ func (self *OpaqueBuilder) BuildArrayMalloc(Ty TypeRef, Val ValueRef, Name *c.Ch
 //
 // @see llvm::IRRBuilder::CreateMemSet()
 //
-// llgo:link (*OpaqueBuilder).BuildMemSet C.LLVMBuildMemSet
-func (self *OpaqueBuilder) BuildMemSet(Ptr ValueRef, Val ValueRef, Len ValueRef, Align c.Uint) ValueRef {
+// llgo:link BuilderRef.BuildMemSet C.LLVMBuildMemSet
+func (self BuilderRef) BuildMemSet(Ptr ValueRef, Val ValueRef, Len ValueRef, Align c.Uint) ValueRef {
 	return nil
 }
 
@@ -5582,8 +5578,8 @@ func (self *OpaqueBuilder) BuildMemSet(Ptr ValueRef, Val ValueRef, Len ValueRef,
 //
 // @see llvm::IRRBuilder::CreateMemCpy()
 //
-// llgo:link (*OpaqueBuilder).BuildMemCpy C.LLVMBuildMemCpy
-func (self *OpaqueBuilder) BuildMemCpy(Dst ValueRef, DstAlign c.Uint, Src ValueRef, SrcAlign c.Uint, Size ValueRef) ValueRef {
+// llgo:link BuilderRef.BuildMemCpy C.LLVMBuildMemCpy
+func (self BuilderRef) BuildMemCpy(Dst ValueRef, DstAlign c.Uint, Src ValueRef, SrcAlign c.Uint, Size ValueRef) ValueRef {
 	return nil
 }
 
@@ -5591,43 +5587,43 @@ func (self *OpaqueBuilder) BuildMemCpy(Dst ValueRef, DstAlign c.Uint, Src ValueR
 //
 // @see llvm::IRRBuilder::CreateMemMove()
 //
-// llgo:link (*OpaqueBuilder).BuildMemMove C.LLVMBuildMemMove
-func (self *OpaqueBuilder) BuildMemMove(Dst ValueRef, DstAlign c.Uint, Src ValueRef, SrcAlign c.Uint, Size ValueRef) ValueRef {
+// llgo:link BuilderRef.BuildMemMove C.LLVMBuildMemMove
+func (self BuilderRef) BuildMemMove(Dst ValueRef, DstAlign c.Uint, Src ValueRef, SrcAlign c.Uint, Size ValueRef) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildAlloca C.LLVMBuildAlloca
-func (self *OpaqueBuilder) BuildAlloca(Ty TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildAlloca C.LLVMBuildAlloca
+func (self BuilderRef) BuildAlloca(Ty TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildArrayAlloca C.LLVMBuildArrayAlloca
-func (self *OpaqueBuilder) BuildArrayAlloca(Ty TypeRef, Val ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildArrayAlloca C.LLVMBuildArrayAlloca
+func (self BuilderRef) BuildArrayAlloca(Ty TypeRef, Val ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFree C.LLVMBuildFree
-func (self *OpaqueBuilder) BuildFree(PointerVal ValueRef) ValueRef {
+// llgo:link BuilderRef.BuildFree C.LLVMBuildFree
+func (self BuilderRef) BuildFree(PointerVal ValueRef) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildLoad2 C.LLVMBuildLoad2
-func (self *OpaqueBuilder) BuildLoad2(Ty TypeRef, PointerVal ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildLoad2 C.LLVMBuildLoad2
+func (self BuilderRef) BuildLoad2(Ty TypeRef, PointerVal ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildStore C.LLVMBuildStore
-func (self *OpaqueBuilder) BuildStore(Val ValueRef, Ptr ValueRef) ValueRef {
+// llgo:link BuilderRef.BuildStore C.LLVMBuildStore
+func (self BuilderRef) BuildStore(Val ValueRef, Ptr ValueRef) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildGEP2 C.LLVMBuildGEP2
-func (self *OpaqueBuilder) BuildGEP2(Ty TypeRef, Pointer ValueRef, Indices *ValueRef, NumIndices c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildGEP2 C.LLVMBuildGEP2
+func (self BuilderRef) BuildGEP2(Ty TypeRef, Pointer ValueRef, Indices *ValueRef, NumIndices c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildInBoundsGEP2 C.LLVMBuildInBoundsGEP2
-func (self *OpaqueBuilder) BuildInBoundsGEP2(Ty TypeRef, Pointer ValueRef, Indices *ValueRef, NumIndices c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildInBoundsGEP2 C.LLVMBuildInBoundsGEP2
+func (self BuilderRef) BuildInBoundsGEP2(Ty TypeRef, Pointer ValueRef, Indices *ValueRef, NumIndices c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
@@ -5636,290 +5632,290 @@ func (self *OpaqueBuilder) BuildInBoundsGEP2(Ty TypeRef, Pointer ValueRef, Indic
 //
 // @see llvm::IRBuilder::CreateGEP()
 //
-// llgo:link (*OpaqueBuilder).BuildGEPWithNoWrapFlags C.LLVMBuildGEPWithNoWrapFlags
-func (self *OpaqueBuilder) BuildGEPWithNoWrapFlags(Ty TypeRef, Pointer ValueRef, Indices *ValueRef, NumIndices c.Uint, Name *c.Char, NoWrapFlags GEPNoWrapFlags) ValueRef {
+// llgo:link BuilderRef.BuildGEPWithNoWrapFlags C.LLVMBuildGEPWithNoWrapFlags
+func (self BuilderRef) BuildGEPWithNoWrapFlags(Ty TypeRef, Pointer ValueRef, Indices *ValueRef, NumIndices c.Uint, Name *c.Char, NoWrapFlags GEPNoWrapFlags) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildStructGEP2 C.LLVMBuildStructGEP2
-func (self *OpaqueBuilder) BuildStructGEP2(Ty TypeRef, Pointer ValueRef, Idx c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildStructGEP2 C.LLVMBuildStructGEP2
+func (self BuilderRef) BuildStructGEP2(Ty TypeRef, Pointer ValueRef, Idx c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildGlobalString C.LLVMBuildGlobalString
-func (self *OpaqueBuilder) BuildGlobalString(Str *c.Char, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildGlobalString C.LLVMBuildGlobalString
+func (self BuilderRef) BuildGlobalString(Str *c.Char, Name *c.Char) ValueRef {
 	return nil
 }
 
 // Deprecated: Use LLVMBuildGlobalString instead, which has identical behavior.
 //
-// llgo:link (*OpaqueBuilder).BuildGlobalStringPtr C.LLVMBuildGlobalStringPtr
-func (self *OpaqueBuilder) BuildGlobalStringPtr(Str *c.Char, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildGlobalStringPtr C.LLVMBuildGlobalStringPtr
+func (self BuilderRef) BuildGlobalStringPtr(Str *c.Char, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).Volatile C.LLVMGetVolatile
-func (self *OpaqueValue) Volatile() Bool {
+// llgo:link ValueRef.Volatile C.LLVMGetVolatile
+func (self ValueRef) Volatile() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetVolatile C.LLVMSetVolatile
-func (self *OpaqueValue) SetVolatile(IsVolatile Bool) {
+// llgo:link ValueRef.SetVolatile C.LLVMSetVolatile
+func (self ValueRef) SetVolatile(IsVolatile Bool) {
 }
 
-// llgo:link (*OpaqueValue).Weak C.LLVMGetWeak
-func (self *OpaqueValue) Weak() Bool {
+// llgo:link ValueRef.Weak C.LLVMGetWeak
+func (self ValueRef) Weak() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetWeak C.LLVMSetWeak
-func (self *OpaqueValue) SetWeak(IsWeak Bool) {
+// llgo:link ValueRef.SetWeak C.LLVMSetWeak
+func (self ValueRef) SetWeak(IsWeak Bool) {
 }
 
-// llgo:link (*OpaqueValue).Ordering C.LLVMGetOrdering
-func (self *OpaqueValue) Ordering() AtomicOrdering {
+// llgo:link ValueRef.Ordering C.LLVMGetOrdering
+func (self ValueRef) Ordering() AtomicOrdering {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetOrdering C.LLVMSetOrdering
-func (self *OpaqueValue) SetOrdering(Ordering AtomicOrdering) {
+// llgo:link ValueRef.SetOrdering C.LLVMSetOrdering
+func (self ValueRef) SetOrdering(Ordering AtomicOrdering) {
 }
 
-// llgo:link (*OpaqueValue).AtomicRMWBinOp C.LLVMGetAtomicRMWBinOp
-func (self *OpaqueValue) AtomicRMWBinOp() AtomicRMWBinOp {
+// llgo:link ValueRef.AtomicRMWBinOp C.LLVMGetAtomicRMWBinOp
+func (self ValueRef) AtomicRMWBinOp() AtomicRMWBinOp {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetAtomicRMWBinOp C.LLVMSetAtomicRMWBinOp
-func (self *OpaqueValue) SetAtomicRMWBinOp(BinOp AtomicRMWBinOp) {
+// llgo:link ValueRef.SetAtomicRMWBinOp C.LLVMSetAtomicRMWBinOp
+func (self ValueRef) SetAtomicRMWBinOp(BinOp AtomicRMWBinOp) {
 }
 
-// llgo:link (*OpaqueBuilder).BuildTrunc C.LLVMBuildTrunc
-func (self *OpaqueBuilder) BuildTrunc(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildTrunc C.LLVMBuildTrunc
+func (self BuilderRef) BuildTrunc(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildZExt C.LLVMBuildZExt
-func (self *OpaqueBuilder) BuildZExt(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildZExt C.LLVMBuildZExt
+func (self BuilderRef) BuildZExt(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildSExt C.LLVMBuildSExt
-func (self *OpaqueBuilder) BuildSExt(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildSExt C.LLVMBuildSExt
+func (self BuilderRef) BuildSExt(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFPToUI C.LLVMBuildFPToUI
-func (self *OpaqueBuilder) BuildFPToUI(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFPToUI C.LLVMBuildFPToUI
+func (self BuilderRef) BuildFPToUI(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFPToSI C.LLVMBuildFPToSI
-func (self *OpaqueBuilder) BuildFPToSI(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFPToSI C.LLVMBuildFPToSI
+func (self BuilderRef) BuildFPToSI(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildUIToFP C.LLVMBuildUIToFP
-func (self *OpaqueBuilder) BuildUIToFP(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildUIToFP C.LLVMBuildUIToFP
+func (self BuilderRef) BuildUIToFP(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildSIToFP C.LLVMBuildSIToFP
-func (self *OpaqueBuilder) BuildSIToFP(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildSIToFP C.LLVMBuildSIToFP
+func (self BuilderRef) BuildSIToFP(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFPTrunc C.LLVMBuildFPTrunc
-func (self *OpaqueBuilder) BuildFPTrunc(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFPTrunc C.LLVMBuildFPTrunc
+func (self BuilderRef) BuildFPTrunc(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFPExt C.LLVMBuildFPExt
-func (self *OpaqueBuilder) BuildFPExt(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFPExt C.LLVMBuildFPExt
+func (self BuilderRef) BuildFPExt(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildPtrToInt C.LLVMBuildPtrToInt
-func (self *OpaqueBuilder) BuildPtrToInt(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildPtrToInt C.LLVMBuildPtrToInt
+func (self BuilderRef) BuildPtrToInt(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildIntToPtr C.LLVMBuildIntToPtr
-func (self *OpaqueBuilder) BuildIntToPtr(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildIntToPtr C.LLVMBuildIntToPtr
+func (self BuilderRef) BuildIntToPtr(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildBitCast C.LLVMBuildBitCast
-func (self *OpaqueBuilder) BuildBitCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildBitCast C.LLVMBuildBitCast
+func (self BuilderRef) BuildBitCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildAddrSpaceCast C.LLVMBuildAddrSpaceCast
-func (self *OpaqueBuilder) BuildAddrSpaceCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildAddrSpaceCast C.LLVMBuildAddrSpaceCast
+func (self BuilderRef) BuildAddrSpaceCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildZExtOrBitCast C.LLVMBuildZExtOrBitCast
-func (self *OpaqueBuilder) BuildZExtOrBitCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildZExtOrBitCast C.LLVMBuildZExtOrBitCast
+func (self BuilderRef) BuildZExtOrBitCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildSExtOrBitCast C.LLVMBuildSExtOrBitCast
-func (self *OpaqueBuilder) BuildSExtOrBitCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildSExtOrBitCast C.LLVMBuildSExtOrBitCast
+func (self BuilderRef) BuildSExtOrBitCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildTruncOrBitCast C.LLVMBuildTruncOrBitCast
-func (self *OpaqueBuilder) BuildTruncOrBitCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildTruncOrBitCast C.LLVMBuildTruncOrBitCast
+func (self BuilderRef) BuildTruncOrBitCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildCast C.LLVMBuildCast
-func (self *OpaqueBuilder) BuildCast(Op Opcode, Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildCast C.LLVMBuildCast
+func (self BuilderRef) BuildCast(Op Opcode, Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildPointerCast C.LLVMBuildPointerCast
-func (self *OpaqueBuilder) BuildPointerCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildPointerCast C.LLVMBuildPointerCast
+func (self BuilderRef) BuildPointerCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildIntCast2 C.LLVMBuildIntCast2
-func (self *OpaqueBuilder) BuildIntCast2(Val ValueRef, DestTy TypeRef, IsSigned Bool, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildIntCast2 C.LLVMBuildIntCast2
+func (self BuilderRef) BuildIntCast2(Val ValueRef, DestTy TypeRef, IsSigned Bool, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFPCast C.LLVMBuildFPCast
-func (self *OpaqueBuilder) BuildFPCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFPCast C.LLVMBuildFPCast
+func (self BuilderRef) BuildFPCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
 // Deprecated: This cast is always signed. Use LLVMBuildIntCast2 instead.
 //
-// llgo:link (*OpaqueBuilder).BuildIntCast C.LLVMBuildIntCast
-func (self *OpaqueBuilder) BuildIntCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildIntCast C.LLVMBuildIntCast
+func (self BuilderRef) BuildIntCast(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueValue).CastOpcode C.LLVMGetCastOpcode
-func (self *OpaqueValue) CastOpcode(SrcIsSigned Bool, DestTy TypeRef, DestIsSigned Bool) Opcode {
+// llgo:link ValueRef.CastOpcode C.LLVMGetCastOpcode
+func (self ValueRef) CastOpcode(SrcIsSigned Bool, DestTy TypeRef, DestIsSigned Bool) Opcode {
 	return 0
 }
 
-// llgo:link (*OpaqueBuilder).BuildICmp C.LLVMBuildICmp
-func (self *OpaqueBuilder) BuildICmp(Op IntPredicate, LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildICmp C.LLVMBuildICmp
+func (self BuilderRef) BuildICmp(Op IntPredicate, LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFCmp C.LLVMBuildFCmp
-func (self *OpaqueBuilder) BuildFCmp(Op RealPredicate, LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFCmp C.LLVMBuildFCmp
+func (self BuilderRef) BuildFCmp(Op RealPredicate, LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildPhi C.LLVMBuildPhi
-func (self *OpaqueBuilder) BuildPhi(Ty TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildPhi C.LLVMBuildPhi
+func (self BuilderRef) BuildPhi(Ty TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildCall2 C.LLVMBuildCall2
-func (self *OpaqueBuilder) BuildCall2(_llcppg_param2 TypeRef, Fn ValueRef, Args *ValueRef, NumArgs c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildCall2 C.LLVMBuildCall2
+func (self BuilderRef) BuildCall2(_llcppg_param2 TypeRef, Fn ValueRef, Args *ValueRef, NumArgs c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildCallWithOperandBundles C.LLVMBuildCallWithOperandBundles
-func (self *OpaqueBuilder) BuildCallWithOperandBundles(_llcppg_param2 TypeRef, Fn ValueRef, Args *ValueRef, NumArgs c.Uint, Bundles *OperandBundleRef, NumBundles c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildCallWithOperandBundles C.LLVMBuildCallWithOperandBundles
+func (self BuilderRef) BuildCallWithOperandBundles(_llcppg_param2 TypeRef, Fn ValueRef, Args *ValueRef, NumArgs c.Uint, Bundles *OperandBundleRef, NumBundles c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildSelect C.LLVMBuildSelect
-func (self *OpaqueBuilder) BuildSelect(If ValueRef, Then ValueRef, Else ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildSelect C.LLVMBuildSelect
+func (self BuilderRef) BuildSelect(If ValueRef, Then ValueRef, Else ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildVAArg C.LLVMBuildVAArg
-func (self *OpaqueBuilder) BuildVAArg(List ValueRef, Ty TypeRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildVAArg C.LLVMBuildVAArg
+func (self BuilderRef) BuildVAArg(List ValueRef, Ty TypeRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildExtractElement C.LLVMBuildExtractElement
-func (self *OpaqueBuilder) BuildExtractElement(VecVal ValueRef, Index ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildExtractElement C.LLVMBuildExtractElement
+func (self BuilderRef) BuildExtractElement(VecVal ValueRef, Index ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildInsertElement C.LLVMBuildInsertElement
-func (self *OpaqueBuilder) BuildInsertElement(VecVal ValueRef, EltVal ValueRef, Index ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildInsertElement C.LLVMBuildInsertElement
+func (self BuilderRef) BuildInsertElement(VecVal ValueRef, EltVal ValueRef, Index ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildShuffleVector C.LLVMBuildShuffleVector
-func (self *OpaqueBuilder) BuildShuffleVector(V1 ValueRef, V2 ValueRef, Mask ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildShuffleVector C.LLVMBuildShuffleVector
+func (self BuilderRef) BuildShuffleVector(V1 ValueRef, V2 ValueRef, Mask ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildExtractValue C.LLVMBuildExtractValue
-func (self *OpaqueBuilder) BuildExtractValue(AggVal ValueRef, Index c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildExtractValue C.LLVMBuildExtractValue
+func (self BuilderRef) BuildExtractValue(AggVal ValueRef, Index c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildInsertValue C.LLVMBuildInsertValue
-func (self *OpaqueBuilder) BuildInsertValue(AggVal ValueRef, EltVal ValueRef, Index c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildInsertValue C.LLVMBuildInsertValue
+func (self BuilderRef) BuildInsertValue(AggVal ValueRef, EltVal ValueRef, Index c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFreeze C.LLVMBuildFreeze
-func (self *OpaqueBuilder) BuildFreeze(Val ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFreeze C.LLVMBuildFreeze
+func (self BuilderRef) BuildFreeze(Val ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildIsNull C.LLVMBuildIsNull
-func (self *OpaqueBuilder) BuildIsNull(Val ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildIsNull C.LLVMBuildIsNull
+func (self BuilderRef) BuildIsNull(Val ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildIsNotNull C.LLVMBuildIsNotNull
-func (self *OpaqueBuilder) BuildIsNotNull(Val ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildIsNotNull C.LLVMBuildIsNotNull
+func (self BuilderRef) BuildIsNotNull(Val ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildPtrDiff2 C.LLVMBuildPtrDiff2
-func (self *OpaqueBuilder) BuildPtrDiff2(ElemTy TypeRef, LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildPtrDiff2 C.LLVMBuildPtrDiff2
+func (self BuilderRef) BuildPtrDiff2(ElemTy TypeRef, LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFence C.LLVMBuildFence
-func (self *OpaqueBuilder) BuildFence(ordering AtomicOrdering, singleThread Bool, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFence C.LLVMBuildFence
+func (self BuilderRef) BuildFence(ordering AtomicOrdering, singleThread Bool, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildFenceSyncScope C.LLVMBuildFenceSyncScope
-func (self *OpaqueBuilder) BuildFenceSyncScope(ordering AtomicOrdering, SSID c.Uint, Name *c.Char) ValueRef {
+// llgo:link BuilderRef.BuildFenceSyncScope C.LLVMBuildFenceSyncScope
+func (self BuilderRef) BuildFenceSyncScope(ordering AtomicOrdering, SSID c.Uint, Name *c.Char) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildAtomicRMW C.LLVMBuildAtomicRMW
-func (self *OpaqueBuilder) BuildAtomicRMW(op AtomicRMWBinOp, PTR ValueRef, Val ValueRef, ordering AtomicOrdering, singleThread Bool) ValueRef {
+// llgo:link BuilderRef.BuildAtomicRMW C.LLVMBuildAtomicRMW
+func (self BuilderRef) BuildAtomicRMW(op AtomicRMWBinOp, PTR ValueRef, Val ValueRef, ordering AtomicOrdering, singleThread Bool) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildAtomicRMWSyncScope C.LLVMBuildAtomicRMWSyncScope
-func (self *OpaqueBuilder) BuildAtomicRMWSyncScope(op AtomicRMWBinOp, PTR ValueRef, Val ValueRef, ordering AtomicOrdering, SSID c.Uint) ValueRef {
+// llgo:link BuilderRef.BuildAtomicRMWSyncScope C.LLVMBuildAtomicRMWSyncScope
+func (self BuilderRef) BuildAtomicRMWSyncScope(op AtomicRMWBinOp, PTR ValueRef, Val ValueRef, ordering AtomicOrdering, SSID c.Uint) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildAtomicCmpXchg C.LLVMBuildAtomicCmpXchg
-func (self *OpaqueBuilder) BuildAtomicCmpXchg(Ptr ValueRef, Cmp ValueRef, New ValueRef, SuccessOrdering AtomicOrdering, FailureOrdering AtomicOrdering, SingleThread Bool) ValueRef {
+// llgo:link BuilderRef.BuildAtomicCmpXchg C.LLVMBuildAtomicCmpXchg
+func (self BuilderRef) BuildAtomicCmpXchg(Ptr ValueRef, Cmp ValueRef, New ValueRef, SuccessOrdering AtomicOrdering, FailureOrdering AtomicOrdering, SingleThread Bool) ValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueBuilder).BuildAtomicCmpXchgSyncScope C.LLVMBuildAtomicCmpXchgSyncScope
-func (self *OpaqueBuilder) BuildAtomicCmpXchgSyncScope(Ptr ValueRef, Cmp ValueRef, New ValueRef, SuccessOrdering AtomicOrdering, FailureOrdering AtomicOrdering, SSID c.Uint) ValueRef {
+// llgo:link BuilderRef.BuildAtomicCmpXchgSyncScope C.LLVMBuildAtomicCmpXchgSyncScope
+func (self BuilderRef) BuildAtomicCmpXchgSyncScope(Ptr ValueRef, Cmp ValueRef, New ValueRef, SuccessOrdering AtomicOrdering, FailureOrdering AtomicOrdering, SSID c.Uint) ValueRef {
 	return nil
 }
 
 // Get the number of elements in the mask of a ShuffleVector instruction.
 //
-// llgo:link (*OpaqueValue).NumMaskElements C.LLVMGetNumMaskElements
-func (self *OpaqueValue) NumMaskElements() c.Uint {
+// llgo:link ValueRef.NumMaskElements C.LLVMGetNumMaskElements
+func (self ValueRef) NumMaskElements() c.Uint {
 	return 0
 }
 
@@ -5935,71 +5931,71 @@ func GetUndefMaskElem() c.Int
 // \Returns the result of \c LLVMGetUndefMaskElem() if the mask value is
 // poison at that position.
 //
-// llgo:link (*OpaqueValue).MaskValue C.LLVMGetMaskValue
-func (self *OpaqueValue) MaskValue(Elt c.Uint) c.Int {
+// llgo:link ValueRef.MaskValue C.LLVMGetMaskValue
+func (self ValueRef) MaskValue(Elt c.Uint) c.Int {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).IsAtomicSingleThread C.LLVMIsAtomicSingleThread
-func (self *OpaqueValue) IsAtomicSingleThread() Bool {
+// llgo:link ValueRef.IsAtomicSingleThread C.LLVMIsAtomicSingleThread
+func (self ValueRef) IsAtomicSingleThread() Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetAtomicSingleThread C.LLVMSetAtomicSingleThread
-func (self *OpaqueValue) SetAtomicSingleThread(SingleThread Bool) {
+// llgo:link ValueRef.SetAtomicSingleThread C.LLVMSetAtomicSingleThread
+func (self ValueRef) SetAtomicSingleThread(SingleThread Bool) {
 }
 
 // Returns whether an instruction is an atomic instruction, e.g., atomicrmw,
 // cmpxchg, fence, or loads and stores with atomic ordering.
 //
-// llgo:link (*OpaqueValue).IsAtomic C.LLVMIsAtomic
-func (self *OpaqueValue) IsAtomic() Bool {
+// llgo:link ValueRef.IsAtomic C.LLVMIsAtomic
+func (self ValueRef) IsAtomic() Bool {
 	return 0
 }
 
 // Returns the synchronization scope ID of an atomic instruction.
 //
-// llgo:link (*OpaqueValue).AtomicSyncScopeID C.LLVMGetAtomicSyncScopeID
-func (self *OpaqueValue) AtomicSyncScopeID() c.Uint {
+// llgo:link ValueRef.AtomicSyncScopeID C.LLVMGetAtomicSyncScopeID
+func (self ValueRef) AtomicSyncScopeID() c.Uint {
 	return 0
 }
 
 // Sets the synchronization scope ID of an atomic instruction.
 //
-// llgo:link (*OpaqueValue).SetAtomicSyncScopeID C.LLVMSetAtomicSyncScopeID
-func (self *OpaqueValue) SetAtomicSyncScopeID(SSID c.Uint) {
+// llgo:link ValueRef.SetAtomicSyncScopeID C.LLVMSetAtomicSyncScopeID
+func (self ValueRef) SetAtomicSyncScopeID(SSID c.Uint) {
 }
 
-// llgo:link (*OpaqueValue).CmpXchgSuccessOrdering C.LLVMGetCmpXchgSuccessOrdering
-func (self *OpaqueValue) CmpXchgSuccessOrdering() AtomicOrdering {
+// llgo:link ValueRef.CmpXchgSuccessOrdering C.LLVMGetCmpXchgSuccessOrdering
+func (self ValueRef) CmpXchgSuccessOrdering() AtomicOrdering {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetCmpXchgSuccessOrdering C.LLVMSetCmpXchgSuccessOrdering
-func (self *OpaqueValue) SetCmpXchgSuccessOrdering(Ordering AtomicOrdering) {
+// llgo:link ValueRef.SetCmpXchgSuccessOrdering C.LLVMSetCmpXchgSuccessOrdering
+func (self ValueRef) SetCmpXchgSuccessOrdering(Ordering AtomicOrdering) {
 }
 
-// llgo:link (*OpaqueValue).CmpXchgFailureOrdering C.LLVMGetCmpXchgFailureOrdering
-func (self *OpaqueValue) CmpXchgFailureOrdering() AtomicOrdering {
+// llgo:link ValueRef.CmpXchgFailureOrdering C.LLVMGetCmpXchgFailureOrdering
+func (self ValueRef) CmpXchgFailureOrdering() AtomicOrdering {
 	return 0
 }
 
-// llgo:link (*OpaqueValue).SetCmpXchgFailureOrdering C.LLVMSetCmpXchgFailureOrdering
-func (self *OpaqueValue) SetCmpXchgFailureOrdering(Ordering AtomicOrdering) {
+// llgo:link ValueRef.SetCmpXchgFailureOrdering C.LLVMSetCmpXchgFailureOrdering
+func (self ValueRef) SetCmpXchgFailureOrdering(Ordering AtomicOrdering) {
 }
 
 // Changes the type of M so it can be passed to FunctionPassManagers and the
 // JIT.  They take ModuleProviders for historical reasons.
 //
-// llgo:link (*OpaqueModule).CreateModuleProviderForExistingModule C.LLVMCreateModuleProviderForExistingModule
-func (self *OpaqueModule) CreateModuleProviderForExistingModule() ModuleProviderRef {
+// llgo:link ModuleRef.CreateModuleProviderForExistingModule C.LLVMCreateModuleProviderForExistingModule
+func (self ModuleRef) CreateModuleProviderForExistingModule() ModuleProviderRef {
 	return nil
 }
 
 // Destroys the module M.
 //
-// llgo:link (*OpaqueModuleProvider).DisposeModuleProvider C.LLVMDisposeModuleProvider
-func (self *OpaqueModuleProvider) DisposeModuleProvider() {
+// llgo:link ModuleProviderRef.DisposeModuleProvider C.LLVMDisposeModuleProvider
+func (self ModuleProviderRef) DisposeModuleProvider() {
 }
 
 // @defgroup LLVMCCoreMemoryBuffers Memory Buffers
@@ -6009,10 +6005,8 @@ func (self *OpaqueModuleProvider) DisposeModuleProvider() {
 //go:linkname CreateMemoryBufferWithContentsOfFile C.LLVMCreateMemoryBufferWithContentsOfFile
 func CreateMemoryBufferWithContentsOfFile(Path *c.Char, OutMemBuf *MemoryBufferRef, OutMessage **c.Char) Bool
 
-// llgo:link (*OpaqueMemoryBuffer).CreateMemoryBufferWithSTDIN C.LLVMCreateMemoryBufferWithSTDIN
-func (self *OpaqueMemoryBuffer) CreateMemoryBufferWithSTDIN(OutMessage **c.Char) Bool {
-	return 0
-}
+//go:linkname CreateMemoryBufferWithSTDIN C.LLVMCreateMemoryBufferWithSTDIN
+func CreateMemoryBufferWithSTDIN(OutMemBuf *MemoryBufferRef, OutMessage **c.Char) Bool
 
 //go:linkname CreateMemoryBufferWithMemoryRange C.LLVMCreateMemoryBufferWithMemoryRange
 func CreateMemoryBufferWithMemoryRange(InputData *c.Char, InputDataLength c.SizeT, BufferName *c.Char, RequiresNullTerminator Bool) MemoryBufferRef
@@ -6020,18 +6014,18 @@ func CreateMemoryBufferWithMemoryRange(InputData *c.Char, InputDataLength c.Size
 //go:linkname CreateMemoryBufferWithMemoryRangeCopy C.LLVMCreateMemoryBufferWithMemoryRangeCopy
 func CreateMemoryBufferWithMemoryRangeCopy(InputData *c.Char, InputDataLength c.SizeT, BufferName *c.Char) MemoryBufferRef
 
-// llgo:link (*OpaqueMemoryBuffer).BufferStart C.LLVMGetBufferStart
-func (self *OpaqueMemoryBuffer) BufferStart() *c.Char {
+// llgo:link MemoryBufferRef.BufferStart C.LLVMGetBufferStart
+func (self MemoryBufferRef) BufferStart() *c.Char {
 	return nil
 }
 
-// llgo:link (*OpaqueMemoryBuffer).BufferSize C.LLVMGetBufferSize
-func (self *OpaqueMemoryBuffer) BufferSize() c.SizeT {
+// llgo:link MemoryBufferRef.BufferSize C.LLVMGetBufferSize
+func (self MemoryBufferRef) BufferSize() c.SizeT {
 	return 0
 }
 
-// llgo:link (*OpaqueMemoryBuffer).DisposeMemoryBuffer C.LLVMDisposeMemoryBuffer
-func (self *OpaqueMemoryBuffer) DisposeMemoryBuffer() {
+// llgo:link MemoryBufferRef.DisposeMemoryBuffer C.LLVMDisposeMemoryBuffer
+func (self MemoryBufferRef) DisposeMemoryBuffer() {
 }
 
 // Constructs a new whole-module pass pipeline. This type of pipeline is
@@ -6046,15 +6040,15 @@ func CreatePassManager() PassManagerRef
 // pipeline is suitable for code generation and JIT compilation tasks.
 // @see llvm::FunctionPassManager::FunctionPassManager
 //
-// llgo:link (*OpaqueModule).CreateFunctionPassManagerForModule C.LLVMCreateFunctionPassManagerForModule
-func (self *OpaqueModule) CreateFunctionPassManagerForModule() PassManagerRef {
+// llgo:link ModuleRef.CreateFunctionPassManagerForModule C.LLVMCreateFunctionPassManagerForModule
+func (self ModuleRef) CreateFunctionPassManagerForModule() PassManagerRef {
 	return nil
 }
 
 // Deprecated: Use LLVMCreateFunctionPassManagerForModule instead.
 //
-// llgo:link (*OpaqueModuleProvider).CreateFunctionPassManager C.LLVMCreateFunctionPassManager
-func (self *OpaqueModuleProvider) CreateFunctionPassManager() PassManagerRef {
+// llgo:link ModuleProviderRef.CreateFunctionPassManager C.LLVMCreateFunctionPassManager
+func (self ModuleProviderRef) CreateFunctionPassManager() PassManagerRef {
 	return nil
 }
 
@@ -6063,8 +6057,8 @@ func (self *OpaqueModuleProvider) CreateFunctionPassManager() PassManagerRef {
 // modified the module, 0 otherwise.
 // @see llvm::PassManager::run(Module&)
 //
-// llgo:link (*OpaquePassManager).RunPassManager C.LLVMRunPassManager
-func (self *OpaquePassManager) RunPassManager(M ModuleRef) Bool {
+// llgo:link PassManagerRef.RunPassManager C.LLVMRunPassManager
+func (self PassManagerRef) RunPassManager(M ModuleRef) Bool {
 	return 0
 }
 
@@ -6072,8 +6066,8 @@ func (self *OpaquePassManager) RunPassManager(M ModuleRef) Bool {
 // manager. Returns 1 if any of the passes modified the module, 0 otherwise.
 // @see llvm::FunctionPassManager::doInitialization
 //
-// llgo:link (*OpaquePassManager).InitializeFunctionPassManager C.LLVMInitializeFunctionPassManager
-func (self *OpaquePassManager) InitializeFunctionPassManager() Bool {
+// llgo:link PassManagerRef.InitializeFunctionPassManager C.LLVMInitializeFunctionPassManager
+func (self PassManagerRef) InitializeFunctionPassManager() Bool {
 	return 0
 }
 
@@ -6082,8 +6076,8 @@ func (self *OpaquePassManager) InitializeFunctionPassManager() Bool {
 // function, false otherwise.
 // @see llvm::FunctionPassManager::run(Function&)
 //
-// llgo:link (*OpaquePassManager).RunFunctionPassManager C.LLVMRunFunctionPassManager
-func (self *OpaquePassManager) RunFunctionPassManager(F ValueRef) Bool {
+// llgo:link PassManagerRef.RunFunctionPassManager C.LLVMRunFunctionPassManager
+func (self PassManagerRef) RunFunctionPassManager(F ValueRef) Bool {
 	return 0
 }
 
@@ -6091,8 +6085,8 @@ func (self *OpaquePassManager) RunFunctionPassManager(F ValueRef) Bool {
 // manager. Returns 1 if any of the passes modified the module, 0 otherwise.
 // @see llvm::FunctionPassManager::doFinalization
 //
-// llgo:link (*OpaquePassManager).FinalizeFunctionPassManager C.LLVMFinalizeFunctionPassManager
-func (self *OpaquePassManager) FinalizeFunctionPassManager() Bool {
+// llgo:link PassManagerRef.FinalizeFunctionPassManager C.LLVMFinalizeFunctionPassManager
+func (self PassManagerRef) FinalizeFunctionPassManager() Bool {
 	return 0
 }
 
@@ -6100,8 +6094,8 @@ func (self *OpaquePassManager) FinalizeFunctionPassManager() Bool {
 // the module provider.
 // @see llvm::PassManagerBase::~PassManagerBase.
 //
-// llgo:link (*OpaquePassManager).DisposePassManager C.LLVMDisposePassManager
-func (self *OpaquePassManager) DisposePassManager() {
+// llgo:link PassManagerRef.DisposePassManager C.LLVMDisposePassManager
+func (self PassManagerRef) DisposePassManager() {
 }
 
 // Deprecated: Multi-threading can only be enabled/disabled with the compile

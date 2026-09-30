@@ -9,23 +9,23 @@ import "github.com/goplus/lib/c"
 //
 // @{
 //
-// llgo:link (*OpaqueMemoryBuffer).ParseBitcode C.LLVMParseBitcode
-func (self *OpaqueMemoryBuffer) ParseBitcode(OutModule *ModuleRef, OutMessage **c.Char) Bool {
+// llgo:link MemoryBufferRef.ParseBitcode C.LLVMParseBitcode
+func (self MemoryBufferRef) ParseBitcode(OutModule *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueMemoryBuffer).ParseBitcode2 C.LLVMParseBitcode2
-func (self *OpaqueMemoryBuffer) ParseBitcode2(OutModule *ModuleRef) Bool {
+// llgo:link MemoryBufferRef.ParseBitcode2 C.LLVMParseBitcode2
+func (self MemoryBufferRef) ParseBitcode2(OutModule *ModuleRef) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueContext).ParseBitcodeInContext C.LLVMParseBitcodeInContext
-func (self *OpaqueContext) ParseBitcodeInContext(MemBuf MemoryBufferRef, OutModule *ModuleRef, OutMessage **c.Char) Bool {
+// llgo:link ContextRef.ParseBitcodeInContext C.LLVMParseBitcodeInContext
+func (self ContextRef) ParseBitcodeInContext(MemBuf MemoryBufferRef, OutModule *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueContext).ParseBitcodeInContext2 C.LLVMParseBitcodeInContext2
-func (self *OpaqueContext) ParseBitcodeInContext2(MemBuf MemoryBufferRef, OutModule *ModuleRef) Bool {
+// llgo:link ContextRef.ParseBitcodeInContext2 C.LLVMParseBitcodeInContext2
+func (self ContextRef) ParseBitcodeInContext2(MemBuf MemoryBufferRef, OutModule *ModuleRef) Bool {
 	return 0
 }
 
@@ -34,8 +34,8 @@ func (self *OpaqueContext) ParseBitcodeInContext2(MemBuf MemoryBufferRef, OutMod
 // Optionally returns a human-readable error message via OutMessage.
 // This is deprecated. Use LLVMGetBitcodeModuleInContext2.
 //
-// llgo:link (*OpaqueContext).BitcodeModuleInContext C.LLVMGetBitcodeModuleInContext
-func (self *OpaqueContext) BitcodeModuleInContext(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
+// llgo:link ContextRef.BitcodeModuleInContext C.LLVMGetBitcodeModuleInContext
+func (self ContextRef) BitcodeModuleInContext(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }
 
@@ -47,17 +47,17 @@ func (self *OpaqueContext) BitcodeModuleInContext(MemBuf MemoryBufferRef, OutM *
 // Takes ownership of \p MemBuf if (and only if) the module was read
 // successfully.
 //
-// llgo:link (*OpaqueContext).BitcodeModuleInContext2 C.LLVMGetBitcodeModuleInContext2
-func (self *OpaqueContext) BitcodeModuleInContext2(MemBuf MemoryBufferRef, OutM *ModuleRef) Bool {
+// llgo:link ContextRef.BitcodeModuleInContext2 C.LLVMGetBitcodeModuleInContext2
+func (self ContextRef) BitcodeModuleInContext2(MemBuf MemoryBufferRef, OutM *ModuleRef) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueMemoryBuffer).BitcodeModule C.LLVMGetBitcodeModule
-func (self *OpaqueMemoryBuffer) BitcodeModule(OutM *ModuleRef, OutMessage **c.Char) Bool {
+// llgo:link MemoryBufferRef.BitcodeModule C.LLVMGetBitcodeModule
+func (self MemoryBufferRef) BitcodeModule(OutM *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueMemoryBuffer).BitcodeModule2 C.LLVMGetBitcodeModule2
-func (self *OpaqueMemoryBuffer) BitcodeModule2(OutM *ModuleRef) Bool {
+// llgo:link MemoryBufferRef.BitcodeModule2 C.LLVMGetBitcodeModule2
+func (self MemoryBufferRef) BitcodeModule2(OutM *ModuleRef) Bool {
 	return 0
 }

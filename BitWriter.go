@@ -6,29 +6,29 @@ import "github.com/goplus/lib/c"
 
 // Writes a module to the specified path. Returns 0 on success.
 //
-// llgo:link (*OpaqueModule).WriteBitcodeToFile C.LLVMWriteBitcodeToFile
-func (self *OpaqueModule) WriteBitcodeToFile(Path *c.Char) c.Int {
+// llgo:link ModuleRef.WriteBitcodeToFile C.LLVMWriteBitcodeToFile
+func (self ModuleRef) WriteBitcodeToFile(Path *c.Char) c.Int {
 	return 0
 }
 
 // Writes a module to an open file descriptor. Returns 0 on success.
 //
-// llgo:link (*OpaqueModule).WriteBitcodeToFD C.LLVMWriteBitcodeToFD
-func (self *OpaqueModule) WriteBitcodeToFD(FD c.Int, ShouldClose c.Int, Unbuffered c.Int) c.Int {
+// llgo:link ModuleRef.WriteBitcodeToFD C.LLVMWriteBitcodeToFD
+func (self ModuleRef) WriteBitcodeToFD(FD c.Int, ShouldClose c.Int, Unbuffered c.Int) c.Int {
 	return 0
 }
 
 // Deprecated for LLVMWriteBitcodeToFD. Writes a module to an open file
 // descriptor. Returns 0 on success. Closes the Handle.
 //
-// llgo:link (*OpaqueModule).WriteBitcodeToFileHandle C.LLVMWriteBitcodeToFileHandle
-func (self *OpaqueModule) WriteBitcodeToFileHandle(Handle c.Int) c.Int {
+// llgo:link ModuleRef.WriteBitcodeToFileHandle C.LLVMWriteBitcodeToFileHandle
+func (self ModuleRef) WriteBitcodeToFileHandle(Handle c.Int) c.Int {
 	return 0
 }
 
 // Writes a module to a new memory buffer and returns it.
 //
-// llgo:link (*OpaqueModule).WriteBitcodeToMemoryBuffer C.LLVMWriteBitcodeToMemoryBuffer
-func (self *OpaqueModule) WriteBitcodeToMemoryBuffer() MemoryBufferRef {
+// llgo:link ModuleRef.WriteBitcodeToMemoryBuffer C.LLVMWriteBitcodeToMemoryBuffer
+func (self ModuleRef) WriteBitcodeToMemoryBuffer() MemoryBufferRef {
 	return nil
 }

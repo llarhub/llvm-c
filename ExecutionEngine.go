@@ -48,57 +48,51 @@ func LinkInMCJIT()
 //go:linkname LinkInInterpreter C.LLVMLinkInInterpreter
 func LinkInInterpreter()
 
-// llgo:link (*OpaqueType).CreateGenericValueOfInt C.LLVMCreateGenericValueOfInt
-func (self *OpaqueType) CreateGenericValueOfInt(N c.UlongLong, IsSigned Bool) GenericValueRef {
+// llgo:link TypeRef.CreateGenericValueOfInt C.LLVMCreateGenericValueOfInt
+func (self TypeRef) CreateGenericValueOfInt(N c.UlongLong, IsSigned Bool) GenericValueRef {
 	return nil
 }
 
 //go:linkname CreateGenericValueOfPointer C.LLVMCreateGenericValueOfPointer
 func CreateGenericValueOfPointer(P unsafe.Pointer) GenericValueRef
 
-// llgo:link (*OpaqueType).CreateGenericValueOfFloat C.LLVMCreateGenericValueOfFloat
-func (self *OpaqueType) CreateGenericValueOfFloat(N c.Double) GenericValueRef {
+// llgo:link TypeRef.CreateGenericValueOfFloat C.LLVMCreateGenericValueOfFloat
+func (self TypeRef) CreateGenericValueOfFloat(N c.Double) GenericValueRef {
 	return nil
 }
 
-// llgo:link (*OpaqueGenericValue).GenericValueIntWidth C.LLVMGenericValueIntWidth
-func (self *OpaqueGenericValue) GenericValueIntWidth() c.Uint {
+// llgo:link GenericValueRef.GenericValueIntWidth C.LLVMGenericValueIntWidth
+func (self GenericValueRef) GenericValueIntWidth() c.Uint {
 	return 0
 }
 
-// llgo:link (*OpaqueGenericValue).GenericValueToInt C.LLVMGenericValueToInt
-func (self *OpaqueGenericValue) GenericValueToInt(IsSigned Bool) c.UlongLong {
+// llgo:link GenericValueRef.GenericValueToInt C.LLVMGenericValueToInt
+func (self GenericValueRef) GenericValueToInt(IsSigned Bool) c.UlongLong {
 	return 0
 }
 
-// llgo:link (*OpaqueGenericValue).GenericValueToPointer C.LLVMGenericValueToPointer
-func (self *OpaqueGenericValue) GenericValueToPointer() unsafe.Pointer {
+// llgo:link GenericValueRef.GenericValueToPointer C.LLVMGenericValueToPointer
+func (self GenericValueRef) GenericValueToPointer() unsafe.Pointer {
 	return nil
 }
 
-// llgo:link (*OpaqueType).GenericValueToFloat C.LLVMGenericValueToFloat
-func (self *OpaqueType) GenericValueToFloat(GenVal GenericValueRef) c.Double {
+// llgo:link TypeRef.GenericValueToFloat C.LLVMGenericValueToFloat
+func (self TypeRef) GenericValueToFloat(GenVal GenericValueRef) c.Double {
 	return 0
 }
 
-// llgo:link (*OpaqueGenericValue).DisposeGenericValue C.LLVMDisposeGenericValue
-func (self *OpaqueGenericValue) DisposeGenericValue() {
+// llgo:link GenericValueRef.DisposeGenericValue C.LLVMDisposeGenericValue
+func (self GenericValueRef) DisposeGenericValue() {
 }
 
-// llgo:link (*OpaqueExecutionEngine).CreateExecutionEngineForModule C.LLVMCreateExecutionEngineForModule
-func (self *OpaqueExecutionEngine) CreateExecutionEngineForModule(M ModuleRef, OutError **c.Char) Bool {
-	return 0
-}
+//go:linkname CreateExecutionEngineForModule C.LLVMCreateExecutionEngineForModule
+func CreateExecutionEngineForModule(OutEE *ExecutionEngineRef, M ModuleRef, OutError **c.Char) Bool
 
-// llgo:link (*OpaqueExecutionEngine).CreateInterpreterForModule C.LLVMCreateInterpreterForModule
-func (self *OpaqueExecutionEngine) CreateInterpreterForModule(M ModuleRef, OutError **c.Char) Bool {
-	return 0
-}
+//go:linkname CreateInterpreterForModule C.LLVMCreateInterpreterForModule
+func CreateInterpreterForModule(OutInterp *ExecutionEngineRef, M ModuleRef, OutError **c.Char) Bool
 
-// llgo:link (*OpaqueExecutionEngine).CreateJITCompilerForModule C.LLVMCreateJITCompilerForModule
-func (self *OpaqueExecutionEngine) CreateJITCompilerForModule(M ModuleRef, OptLevel c.Uint, OutError **c.Char) Bool {
-	return 0
-}
+//go:linkname CreateJITCompilerForModule C.LLVMCreateJITCompilerForModule
+func CreateJITCompilerForModule(OutJIT *ExecutionEngineRef, M ModuleRef, OptLevel c.Uint, OutError **c.Char) Bool
 
 // llgo:link (*MCJITCompilerOptions).Initialize C.LLVMInitializeMCJITCompilerOptions
 func (self *MCJITCompilerOptions) Initialize(SizeOfOptions c.SizeT) {
@@ -120,90 +114,88 @@ func (self *MCJITCompilerOptions) Initialize(SizeOfOptions c.SizeT) {
 //
 // LLVMCreateMCJITCompilerForModule(&jit, mod, 0, 0, &error);
 //
-// llgo:link (*OpaqueExecutionEngine).CreateMCJITCompilerForModule C.LLVMCreateMCJITCompilerForModule
-func (self *OpaqueExecutionEngine) CreateMCJITCompilerForModule(M ModuleRef, Options *MCJITCompilerOptions, SizeOfOptions c.SizeT, OutError **c.Char) Bool {
+//go:linkname CreateMCJITCompilerForModule C.LLVMCreateMCJITCompilerForModule
+func CreateMCJITCompilerForModule(OutJIT *ExecutionEngineRef, M ModuleRef, Options *MCJITCompilerOptions, SizeOfOptions c.SizeT, OutError **c.Char) Bool
+
+// llgo:link ExecutionEngineRef.DisposeExecutionEngine C.LLVMDisposeExecutionEngine
+func (self ExecutionEngineRef) DisposeExecutionEngine() {
+}
+
+// llgo:link ExecutionEngineRef.RunStaticConstructors C.LLVMRunStaticConstructors
+func (self ExecutionEngineRef) RunStaticConstructors() {
+}
+
+// llgo:link ExecutionEngineRef.RunStaticDestructors C.LLVMRunStaticDestructors
+func (self ExecutionEngineRef) RunStaticDestructors() {
+}
+
+// llgo:link ExecutionEngineRef.RunFunctionAsMain C.LLVMRunFunctionAsMain
+func (self ExecutionEngineRef) RunFunctionAsMain(F ValueRef, ArgC c.Uint, ArgV **c.Char, EnvP **c.Char) c.Int {
 	return 0
 }
 
-// llgo:link (*OpaqueExecutionEngine).DisposeExecutionEngine C.LLVMDisposeExecutionEngine
-func (self *OpaqueExecutionEngine) DisposeExecutionEngine() {
+// llgo:link ExecutionEngineRef.RunFunction C.LLVMRunFunction
+func (self ExecutionEngineRef) RunFunction(F ValueRef, NumArgs c.Uint, Args *GenericValueRef) GenericValueRef {
+	return nil
 }
 
-// llgo:link (*OpaqueExecutionEngine).RunStaticConstructors C.LLVMRunStaticConstructors
-func (self *OpaqueExecutionEngine) RunStaticConstructors() {
+// llgo:link ExecutionEngineRef.FreeMachineCodeForFunction C.LLVMFreeMachineCodeForFunction
+func (self ExecutionEngineRef) FreeMachineCodeForFunction(F ValueRef) {
 }
 
-// llgo:link (*OpaqueExecutionEngine).RunStaticDestructors C.LLVMRunStaticDestructors
-func (self *OpaqueExecutionEngine) RunStaticDestructors() {
+// llgo:link ExecutionEngineRef.AddModule C.LLVMAddModule
+func (self ExecutionEngineRef) AddModule(M ModuleRef) {
 }
 
-// llgo:link (*OpaqueExecutionEngine).RunFunctionAsMain C.LLVMRunFunctionAsMain
-func (self *OpaqueExecutionEngine) RunFunctionAsMain(F ValueRef, ArgC c.Uint, ArgV **c.Char, EnvP **c.Char) c.Int {
+// llgo:link ExecutionEngineRef.RemoveModule C.LLVMRemoveModule
+func (self ExecutionEngineRef) RemoveModule(M ModuleRef, OutMod *ModuleRef, OutError **c.Char) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueExecutionEngine).RunFunction C.LLVMRunFunction
-func (self *OpaqueExecutionEngine) RunFunction(F ValueRef, NumArgs c.Uint, Args *GenericValueRef) GenericValueRef {
-	return nil
-}
-
-// llgo:link (*OpaqueExecutionEngine).FreeMachineCodeForFunction C.LLVMFreeMachineCodeForFunction
-func (self *OpaqueExecutionEngine) FreeMachineCodeForFunction(F ValueRef) {
-}
-
-// llgo:link (*OpaqueExecutionEngine).AddModule C.LLVMAddModule
-func (self *OpaqueExecutionEngine) AddModule(M ModuleRef) {
-}
-
-// llgo:link (*OpaqueExecutionEngine).RemoveModule C.LLVMRemoveModule
-func (self *OpaqueExecutionEngine) RemoveModule(M ModuleRef, OutMod *ModuleRef, OutError **c.Char) Bool {
+// llgo:link ExecutionEngineRef.FindFunction C.LLVMFindFunction
+func (self ExecutionEngineRef) FindFunction(Name *c.Char, OutFn *ValueRef) Bool {
 	return 0
 }
 
-// llgo:link (*OpaqueExecutionEngine).FindFunction C.LLVMFindFunction
-func (self *OpaqueExecutionEngine) FindFunction(Name *c.Char, OutFn *ValueRef) Bool {
+// llgo:link ExecutionEngineRef.RecompileAndRelinkFunction C.LLVMRecompileAndRelinkFunction
+func (self ExecutionEngineRef) RecompileAndRelinkFunction(Fn ValueRef) unsafe.Pointer {
+	return nil
+}
+
+// llgo:link ExecutionEngineRef.ExecutionEngineTargetData C.LLVMGetExecutionEngineTargetData
+func (self ExecutionEngineRef) ExecutionEngineTargetData() TargetDataRef {
+	return nil
+}
+
+// llgo:link ExecutionEngineRef.ExecutionEngineTargetMachine C.LLVMGetExecutionEngineTargetMachine
+func (self ExecutionEngineRef) ExecutionEngineTargetMachine() TargetMachineRef {
+	return nil
+}
+
+// llgo:link ExecutionEngineRef.AddGlobalMapping C.LLVMAddGlobalMapping
+func (self ExecutionEngineRef) AddGlobalMapping(Global ValueRef, Addr unsafe.Pointer) {
+}
+
+// llgo:link ExecutionEngineRef.PointerToGlobal C.LLVMGetPointerToGlobal
+func (self ExecutionEngineRef) PointerToGlobal(Global ValueRef) unsafe.Pointer {
+	return nil
+}
+
+// llgo:link ExecutionEngineRef.GlobalValueAddress C.LLVMGetGlobalValueAddress
+func (self ExecutionEngineRef) GlobalValueAddress(Name *c.Char) c.Uint64T {
 	return 0
 }
 
-// llgo:link (*OpaqueExecutionEngine).RecompileAndRelinkFunction C.LLVMRecompileAndRelinkFunction
-func (self *OpaqueExecutionEngine) RecompileAndRelinkFunction(Fn ValueRef) unsafe.Pointer {
-	return nil
-}
-
-// llgo:link (*OpaqueExecutionEngine).ExecutionEngineTargetData C.LLVMGetExecutionEngineTargetData
-func (self *OpaqueExecutionEngine) ExecutionEngineTargetData() TargetDataRef {
-	return nil
-}
-
-// llgo:link (*OpaqueExecutionEngine).ExecutionEngineTargetMachine C.LLVMGetExecutionEngineTargetMachine
-func (self *OpaqueExecutionEngine) ExecutionEngineTargetMachine() TargetMachineRef {
-	return nil
-}
-
-// llgo:link (*OpaqueExecutionEngine).AddGlobalMapping C.LLVMAddGlobalMapping
-func (self *OpaqueExecutionEngine) AddGlobalMapping(Global ValueRef, Addr unsafe.Pointer) {
-}
-
-// llgo:link (*OpaqueExecutionEngine).PointerToGlobal C.LLVMGetPointerToGlobal
-func (self *OpaqueExecutionEngine) PointerToGlobal(Global ValueRef) unsafe.Pointer {
-	return nil
-}
-
-// llgo:link (*OpaqueExecutionEngine).GlobalValueAddress C.LLVMGetGlobalValueAddress
-func (self *OpaqueExecutionEngine) GlobalValueAddress(Name *c.Char) c.Uint64T {
-	return 0
-}
-
-// llgo:link (*OpaqueExecutionEngine).FunctionAddress C.LLVMGetFunctionAddress
-func (self *OpaqueExecutionEngine) FunctionAddress(Name *c.Char) c.Uint64T {
+// llgo:link ExecutionEngineRef.FunctionAddress C.LLVMGetFunctionAddress
+func (self ExecutionEngineRef) FunctionAddress(Name *c.Char) c.Uint64T {
 	return 0
 }
 
 // Returns true on error, false on success. If true is returned then the error
 // message is copied to OutStr and cleared in the ExecutionEngine instance.
 //
-// llgo:link (*OpaqueExecutionEngine).ExecutionEngineGetErrMsg C.LLVMExecutionEngineGetErrMsg
-func (self *OpaqueExecutionEngine) ExecutionEngineGetErrMsg(OutError **c.Char) Bool {
+// llgo:link ExecutionEngineRef.ExecutionEngineGetErrMsg C.LLVMExecutionEngineGetErrMsg
+func (self ExecutionEngineRef) ExecutionEngineGetErrMsg(OutError **c.Char) Bool {
 	return 0
 }
 
@@ -220,8 +212,8 @@ func (self *OpaqueExecutionEngine) ExecutionEngineGetErrMsg(OutError **c.Char) B
 //go:linkname CreateSimpleMCJITMemoryManager C.LLVMCreateSimpleMCJITMemoryManager
 func CreateSimpleMCJITMemoryManager(Opaque unsafe.Pointer, AllocateCodeSection MemoryManagerAllocateCodeSectionCallback, AllocateDataSection MemoryManagerAllocateDataSectionCallback, FinalizeMemory MemoryManagerFinalizeMemoryCallback, Destroy MemoryManagerDestroyCallback) MCJITMemoryManagerRef
 
-// llgo:link (*OpaqueMCJITMemoryManager).DisposeMCJITMemoryManager C.LLVMDisposeMCJITMemoryManager
-func (self *OpaqueMCJITMemoryManager) DisposeMCJITMemoryManager() {
+// llgo:link MCJITMemoryManagerRef.DisposeMCJITMemoryManager C.LLVMDisposeMCJITMemoryManager
+func (self MCJITMemoryManagerRef) DisposeMCJITMemoryManager() {
 }
 
 //go:linkname CreateGDBRegistrationListener C.LLVMCreateGDBRegistrationListener
