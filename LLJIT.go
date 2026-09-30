@@ -169,8 +169,8 @@ func (self OrcLLJITRef) AddObjectFileWithRT(RT OrcResourceTrackerRef, ObjBuffer 
 // Resources associated with the given Module will be tracked by the given
 // JITDylib's default resource tracker.
 //
-// llgo:link OrcLLJITRef.AddLLVMIRModule C.LLVMOrcLLJITAddLLVMIRModule
-func (self OrcLLJITRef) AddLLVMIRModule(JD OrcJITDylibRef, TSM OrcThreadSafeModuleRef) ErrorRef {
+// llgo:link OrcLLJITRef.AddIRModule C.LLVMOrcLLJITAddLLVMIRModule
+func (self OrcLLJITRef) AddIRModule(JD OrcJITDylibRef, TSM OrcThreadSafeModuleRef) ErrorRef {
 	return nil
 }
 
@@ -182,8 +182,8 @@ func (self OrcLLJITRef) AddLLVMIRModule(JD OrcJITDylibRef, TSM OrcThreadSafeModu
 // Resources associated with the given Module will be tracked by ResourceTracker
 // RT.
 //
-// llgo:link OrcLLJITRef.AddLLVMIRModuleWithRT C.LLVMOrcLLJITAddLLVMIRModuleWithRT
-func (self OrcLLJITRef) AddLLVMIRModuleWithRT(JD OrcResourceTrackerRef, TSM OrcThreadSafeModuleRef) ErrorRef {
+// llgo:link OrcLLJITRef.AddIRModuleWithRT C.LLVMOrcLLJITAddLLVMIRModuleWithRT
+func (self OrcLLJITRef) AddIRModuleWithRT(JD OrcResourceTrackerRef, TSM OrcThreadSafeModuleRef) ErrorRef {
 	return nil
 }
 
