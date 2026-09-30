@@ -14,7 +14,7 @@ const BLAKE3_BLOCK_LEN = 64
 const BLAKE3_CHUNK_LEN = 1024
 const BLAKE3_MAX_DEPTH = 54
 
-type LlvmBlake3ChunkState struct {
+type Blake3ChunkState struct {
 	Cv               [8]c.Uint32T
 	ChunkCounter     c.Uint64T
 	Buf              [64]c.Uint8T
@@ -22,44 +22,44 @@ type LlvmBlake3ChunkState struct {
 	BlocksCompressed c.Uint8T
 	Flags            c.Uint8T
 }
-type LlvmBlake3Hasher struct {
+type Blake3Hasher struct {
 	Key        [8]c.Uint32T
-	Chunk      LlvmBlake3ChunkState
+	Chunk      Blake3ChunkState
 	CvStackLen c.Uint8T
 	CvStack    [1760]c.Uint8T
 }
 
-//go:linkname LlvmBlake3Version C.llvm_blake3_version
-func LlvmBlake3Version() *c.Char
+//go:linkname Blake3Version C.llvm_blake3_version
+func Blake3Version() *c.Char
 
-// llgo:link (*LlvmBlake3Hasher).Init C.llvm_blake3_hasher_init
-func (self *LlvmBlake3Hasher) Init() {
+// llgo:link (*Blake3Hasher).Init C.llvm_blake3_hasher_init
+func (self *Blake3Hasher) Init() {
 }
 
-// llgo:link (*LlvmBlake3Hasher).InitKeyed C.llvm_blake3_hasher_init_keyed
-func (self *LlvmBlake3Hasher) InitKeyed(key *c.Uint8T) {
+// llgo:link (*Blake3Hasher).InitKeyed C.llvm_blake3_hasher_init_keyed
+func (self *Blake3Hasher) InitKeyed(key *c.Uint8T) {
 }
 
-// llgo:link (*LlvmBlake3Hasher).InitDeriveKey C.llvm_blake3_hasher_init_derive_key
-func (self *LlvmBlake3Hasher) InitDeriveKey(context *c.Char) {
+// llgo:link (*Blake3Hasher).InitDeriveKey C.llvm_blake3_hasher_init_derive_key
+func (self *Blake3Hasher) InitDeriveKey(context *c.Char) {
 }
 
-// llgo:link (*LlvmBlake3Hasher).InitDeriveKeyRaw C.llvm_blake3_hasher_init_derive_key_raw
-func (self *LlvmBlake3Hasher) InitDeriveKeyRaw(context unsafe.Pointer, context_len c.SizeT) {
+// llgo:link (*Blake3Hasher).InitDeriveKeyRaw C.llvm_blake3_hasher_init_derive_key_raw
+func (self *Blake3Hasher) InitDeriveKeyRaw(context unsafe.Pointer, context_len c.SizeT) {
 }
 
-// llgo:link (*LlvmBlake3Hasher).Update C.llvm_blake3_hasher_update
-func (self *LlvmBlake3Hasher) Update(input unsafe.Pointer, input_len c.SizeT) {
+// llgo:link (*Blake3Hasher).Update C.llvm_blake3_hasher_update
+func (self *Blake3Hasher) Update(input unsafe.Pointer, input_len c.SizeT) {
 }
 
-// llgo:link (*LlvmBlake3Hasher).Finalize C.llvm_blake3_hasher_finalize
-func (self *LlvmBlake3Hasher) Finalize(out *c.Uint8T, out_len c.SizeT) {
+// llgo:link (*Blake3Hasher).Finalize C.llvm_blake3_hasher_finalize
+func (self *Blake3Hasher) Finalize(out *c.Uint8T, out_len c.SizeT) {
 }
 
-// llgo:link (*LlvmBlake3Hasher).FinalizeSeek C.llvm_blake3_hasher_finalize_seek
-func (self *LlvmBlake3Hasher) FinalizeSeek(seek c.Uint64T, out *c.Uint8T, out_len c.SizeT) {
+// llgo:link (*Blake3Hasher).FinalizeSeek C.llvm_blake3_hasher_finalize_seek
+func (self *Blake3Hasher) FinalizeSeek(seek c.Uint64T, out *c.Uint8T, out_len c.SizeT) {
 }
 
-// llgo:link (*LlvmBlake3Hasher).Reset C.llvm_blake3_hasher_reset
-func (self *LlvmBlake3Hasher) Reset() {
+// llgo:link (*Blake3Hasher).Reset C.llvm_blake3_hasher_reset
+func (self *Blake3Hasher) Reset() {
 }
