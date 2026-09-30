@@ -29,7 +29,7 @@ func (self ContextRef) ParseIR(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessa
 //
 // @see llvm::ParseIR()
 //
-// llgo:link ContextRef.ParseIRInContext2 C.LLVMParseIRInContext2
-func (self ContextRef) ParseIRInContext2(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
+// llgo:link ContextRef.ParseIR2 C.LLVMParseIRInContext2
+func (self ContextRef) ParseIR2(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }

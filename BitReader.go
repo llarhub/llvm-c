@@ -24,8 +24,8 @@ func (self ContextRef) ParseBitcode(MemBuf MemoryBufferRef, OutModule *ModuleRef
 	return 0
 }
 
-// llgo:link ContextRef.ParseBitcodeInContext2 C.LLVMParseBitcodeInContext2
-func (self ContextRef) ParseBitcodeInContext2(MemBuf MemoryBufferRef, OutModule *ModuleRef) Bool {
+// llgo:link ContextRef.ParseBitcode2 C.LLVMParseBitcodeInContext2
+func (self ContextRef) ParseBitcode2(MemBuf MemoryBufferRef, OutModule *ModuleRef) Bool {
 	return 0
 }
 

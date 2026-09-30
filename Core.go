@@ -684,8 +684,8 @@ func (self ContextRef) Dispose() {
 //
 // @see DiagnosticInfo::print()
 //
-// llgo:link DiagnosticInfoRef.DiagInfoDescription C.LLVMGetDiagInfoDescription
-func (self DiagnosticInfoRef) DiagInfoDescription() *c.Char {
+// llgo:link DiagnosticInfoRef.Description C.LLVMGetDiagInfoDescription
+func (self DiagnosticInfoRef) Description() *c.Char {
 	return nil
 }
 
@@ -693,8 +693,8 @@ func (self DiagnosticInfoRef) DiagInfoDescription() *c.Char {
 //
 // @see DiagnosticInfo::getSeverity()
 //
-// llgo:link DiagnosticInfoRef.DiagInfoSeverity C.LLVMGetDiagInfoSeverity
-func (self DiagnosticInfoRef) DiagInfoSeverity() DiagnosticSeverity {
+// llgo:link DiagnosticInfoRef.Severity C.LLVMGetDiagInfoSeverity
+func (self DiagnosticInfoRef) Severity() DiagnosticSeverity {
 	return 0
 }
 

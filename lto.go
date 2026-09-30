@@ -227,16 +227,16 @@ func LtoModuleCreateFromFdAtOffset(fd c.Int, path *c.Char, file_size c.SizeT, ma
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoModuleT.LtoModuleDispose C.lto_module_dispose
-func (self LtoModuleT) LtoModuleDispose() {
+// llgo:link LtoModuleT.Dispose C.lto_module_dispose
+func (self LtoModuleT) Dispose() {
 }
 
 // Returns triple string which the object module was compiled under.
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoModuleT.LtoModuleGetTargetTriple C.lto_module_get_target_triple
-func (self LtoModuleT) LtoModuleGetTargetTriple() *c.Char {
+// llgo:link LtoModuleT.TargetTriple C.lto_module_get_target_triple
+func (self LtoModuleT) TargetTriple() *c.Char {
 	return nil
 }
 
@@ -244,16 +244,16 @@ func (self LtoModuleT) LtoModuleGetTargetTriple() *c.Char {
 //
 // \since LTO_API_VERSION=4
 //
-// llgo:link LtoModuleT.LtoModuleSetTargetTriple C.lto_module_set_target_triple
-func (self LtoModuleT) LtoModuleSetTargetTriple(triple *c.Char) {
+// llgo:link LtoModuleT.SetTargetTriple C.lto_module_set_target_triple
+func (self LtoModuleT) SetTargetTriple(triple *c.Char) {
 }
 
 // Returns the number of symbols in the object module.
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoModuleT.LtoModuleGetNumSymbols C.lto_module_get_num_symbols
-func (self LtoModuleT) LtoModuleGetNumSymbols() c.Uint {
+// llgo:link LtoModuleT.NumSymbols C.lto_module_get_num_symbols
+func (self LtoModuleT) NumSymbols() c.Uint {
 	return 0
 }
 
@@ -261,8 +261,8 @@ func (self LtoModuleT) LtoModuleGetNumSymbols() c.Uint {
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoModuleT.LtoModuleGetSymbolName C.lto_module_get_symbol_name
-func (self LtoModuleT) LtoModuleGetSymbolName(index c.Uint) *c.Char {
+// llgo:link LtoModuleT.SymbolName C.lto_module_get_symbol_name
+func (self LtoModuleT) SymbolName(index c.Uint) *c.Char {
 	return nil
 }
 
@@ -270,8 +270,8 @@ func (self LtoModuleT) LtoModuleGetSymbolName(index c.Uint) *c.Char {
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoModuleT.LtoModuleGetSymbolAttribute C.lto_module_get_symbol_attribute
-func (self LtoModuleT) LtoModuleGetSymbolAttribute(index c.Uint) LtoSymbolAttributes {
+// llgo:link LtoModuleT.SymbolAttribute C.lto_module_get_symbol_attribute
+func (self LtoModuleT) SymbolAttribute(index c.Uint) LtoSymbolAttributes {
 	return 0
 }
 
@@ -279,8 +279,8 @@ func (self LtoModuleT) LtoModuleGetSymbolAttribute(index c.Uint) LtoSymbolAttrib
 //
 // \since prior to LTO_API_VERSION=30
 //
-// llgo:link LtoModuleT.LtoModuleGetNumAsmUndefSymbols C.lto_module_get_num_asm_undef_symbols
-func (self LtoModuleT) LtoModuleGetNumAsmUndefSymbols() c.Uint {
+// llgo:link LtoModuleT.NumAsmUndefSymbols C.lto_module_get_num_asm_undef_symbols
+func (self LtoModuleT) NumAsmUndefSymbols() c.Uint {
 	return 0
 }
 
@@ -288,8 +288,8 @@ func (self LtoModuleT) LtoModuleGetNumAsmUndefSymbols() c.Uint {
 //
 // \since prior to LTO_API_VERSION=30
 //
-// llgo:link LtoModuleT.LtoModuleGetAsmUndefSymbolName C.lto_module_get_asm_undef_symbol_name
-func (self LtoModuleT) LtoModuleGetAsmUndefSymbolName(index c.Uint) *c.Char {
+// llgo:link LtoModuleT.AsmUndefSymbolName C.lto_module_get_asm_undef_symbol_name
+func (self LtoModuleT) AsmUndefSymbolName(index c.Uint) *c.Char {
 	return nil
 }
 
@@ -300,8 +300,8 @@ func (self LtoModuleT) LtoModuleGetAsmUndefSymbolName(index c.Uint) *c.Char {
 //
 // \since LTO_API_VERSION=16
 //
-// llgo:link LtoModuleT.LtoModuleGetLinkeropts C.lto_module_get_linkeropts
-func (self LtoModuleT) LtoModuleGetLinkeropts() *c.Char {
+// llgo:link LtoModuleT.Linkeropts C.lto_module_get_linkeropts
+func (self LtoModuleT) Linkeropts() *c.Char {
 	return nil
 }
 
@@ -315,8 +315,8 @@ func (self LtoModuleT) LtoModuleGetLinkeropts() *c.Char {
 //
 // \since LTO_API_VERSION=27
 //
-// llgo:link LtoModuleT.LtoModuleGetMachoCputype C.lto_module_get_macho_cputype
-func (self LtoModuleT) LtoModuleGetMachoCputype(out_cputype *c.Uint, out_cpusubtype *c.Uint) LtoBoolT {
+// llgo:link LtoModuleT.MachoCputype C.lto_module_get_macho_cputype
+func (self LtoModuleT) MachoCputype(out_cputype *c.Uint, out_cpusubtype *c.Uint) LtoBoolT {
 	return false
 }
 
@@ -328,8 +328,8 @@ func (self LtoModuleT) LtoModuleGetMachoCputype(out_cputype *c.Uint, out_cpusubt
 //
 // \since LTO_API_VERSION=29
 //
-// llgo:link LtoModuleT.LtoModuleHasCtorDtor C.lto_module_has_ctor_dtor
-func (self LtoModuleT) LtoModuleHasCtorDtor() LtoBoolT {
+// llgo:link LtoModuleT.HasCtorDtor C.lto_module_has_ctor_dtor
+func (self LtoModuleT) HasCtorDtor() LtoBoolT {
 	return false
 }
 
@@ -339,8 +339,8 @@ func (self LtoModuleT) LtoModuleHasCtorDtor() LtoBoolT {
 //
 // \since LTO_API_VERSION=7
 //
-// llgo:link LtoCodeGenT.LtoCodegenSetDiagnosticHandler C.lto_codegen_set_diagnostic_handler
-func (self LtoCodeGenT) LtoCodegenSetDiagnosticHandler(_llcppg_param2 LtoDiagnosticHandlerT, _llcppg_param3 unsafe.Pointer) {
+// llgo:link LtoCodeGenT.SetDiagnosticHandler C.lto_codegen_set_diagnostic_handler
+func (self LtoCodeGenT) SetDiagnosticHandler(_llcppg_param2 LtoDiagnosticHandlerT, _llcppg_param3 unsafe.Pointer) {
 }
 
 // Instantiates a code generator.
@@ -370,8 +370,8 @@ func LtoCodegenCreateInLocalContext() LtoCodeGenT
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoCodeGenT.LtoCodegenDispose C.lto_codegen_dispose
-func (self LtoCodeGenT) LtoCodegenDispose() {
+// llgo:link LtoCodeGenT.Dispose C.lto_codegen_dispose
+func (self LtoCodeGenT) Dispose() {
 }
 
 // Add an object module to the set of modules for which code will be generated.
@@ -383,8 +383,8 @@ func (self LtoCodeGenT) LtoCodegenDispose() {
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoCodeGenT.LtoCodegenAddModule C.lto_codegen_add_module
-func (self LtoCodeGenT) LtoCodegenAddModule(mod LtoModuleT) LtoBoolT {
+// llgo:link LtoCodeGenT.AddModule C.lto_codegen_add_module
+func (self LtoCodeGenT) AddModule(mod LtoModuleT) LtoBoolT {
 	return false
 }
 
@@ -395,8 +395,8 @@ func (self LtoCodeGenT) LtoCodegenAddModule(mod LtoModuleT) LtoBoolT {
 //
 // \since LTO_API_VERSION=13
 //
-// llgo:link LtoCodeGenT.LtoCodegenSetModule C.lto_codegen_set_module
-func (self LtoCodeGenT) LtoCodegenSetModule(mod LtoModuleT) {
+// llgo:link LtoCodeGenT.SetModule C.lto_codegen_set_module
+func (self LtoCodeGenT) SetModule(mod LtoModuleT) {
 }
 
 // Sets if debug info should be generated.
@@ -404,8 +404,8 @@ func (self LtoCodeGenT) LtoCodegenSetModule(mod LtoModuleT) {
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoCodeGenT.LtoCodegenSetDebugModel C.lto_codegen_set_debug_model
-func (self LtoCodeGenT) LtoCodegenSetDebugModel(_llcppg_param2 LtoDebugModel) LtoBoolT {
+// llgo:link LtoCodeGenT.SetDebugModel C.lto_codegen_set_debug_model
+func (self LtoCodeGenT) SetDebugModel(_llcppg_param2 LtoDebugModel) LtoBoolT {
 	return false
 }
 
@@ -414,8 +414,8 @@ func (self LtoCodeGenT) LtoCodegenSetDebugModel(_llcppg_param2 LtoDebugModel) Lt
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoCodeGenT.LtoCodegenSetPicModel C.lto_codegen_set_pic_model
-func (self LtoCodeGenT) LtoCodegenSetPicModel(_llcppg_param2 LtoCodegenModel) LtoBoolT {
+// llgo:link LtoCodeGenT.SetPicModel C.lto_codegen_set_pic_model
+func (self LtoCodeGenT) SetPicModel(_llcppg_param2 LtoCodegenModel) LtoBoolT {
 	return false
 }
 
@@ -423,8 +423,8 @@ func (self LtoCodeGenT) LtoCodegenSetPicModel(_llcppg_param2 LtoCodegenModel) Lt
 //
 // \since LTO_API_VERSION=4
 //
-// llgo:link LtoCodeGenT.LtoCodegenSetCpu C.lto_codegen_set_cpu
-func (self LtoCodeGenT) LtoCodegenSetCpu(cpu *c.Char) {
+// llgo:link LtoCodeGenT.SetCpu C.lto_codegen_set_cpu
+func (self LtoCodeGenT) SetCpu(cpu *c.Char) {
 }
 
 // Sets the location of the assembler tool to run. If not set, libLTO
@@ -432,16 +432,16 @@ func (self LtoCodeGenT) LtoCodegenSetCpu(cpu *c.Char) {
 //
 // \since LTO_API_VERSION=3
 //
-// llgo:link LtoCodeGenT.LtoCodegenSetAssemblerPath C.lto_codegen_set_assembler_path
-func (self LtoCodeGenT) LtoCodegenSetAssemblerPath(path *c.Char) {
+// llgo:link LtoCodeGenT.SetAssemblerPath C.lto_codegen_set_assembler_path
+func (self LtoCodeGenT) SetAssemblerPath(path *c.Char) {
 }
 
 // Sets extra arguments that libLTO should pass to the assembler.
 //
 // \since LTO_API_VERSION=4
 //
-// llgo:link LtoCodeGenT.LtoCodegenSetAssemblerArgs C.lto_codegen_set_assembler_args
-func (self LtoCodeGenT) LtoCodegenSetAssemblerArgs(args **c.Char, nargs c.Int) {
+// llgo:link LtoCodeGenT.SetAssemblerArgs C.lto_codegen_set_assembler_args
+func (self LtoCodeGenT) SetAssemblerArgs(args **c.Char, nargs c.Int) {
 }
 
 // Adds to a list of all global symbols that must exist in the final generated
@@ -450,8 +450,8 @@ func (self LtoCodeGenT) LtoCodegenSetAssemblerArgs(args **c.Char, nargs c.Int) {
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoCodeGenT.LtoCodegenAddMustPreserveSymbol C.lto_codegen_add_must_preserve_symbol
-func (self LtoCodeGenT) LtoCodegenAddMustPreserveSymbol(symbol *c.Char) {
+// llgo:link LtoCodeGenT.AddMustPreserveSymbol C.lto_codegen_add_must_preserve_symbol
+func (self LtoCodeGenT) AddMustPreserveSymbol(symbol *c.Char) {
 }
 
 // Writes a new object file at the specified path that contains the
@@ -460,8 +460,8 @@ func (self LtoCodeGenT) LtoCodegenAddMustPreserveSymbol(symbol *c.Char) {
 //
 // \since LTO_API_VERSION=5
 //
-// llgo:link LtoCodeGenT.LtoCodegenWriteMergedModules C.lto_codegen_write_merged_modules
-func (self LtoCodeGenT) LtoCodegenWriteMergedModules(path *c.Char) LtoBoolT {
+// llgo:link LtoCodeGenT.WriteMergedModules C.lto_codegen_write_merged_modules
+func (self LtoCodeGenT) WriteMergedModules(path *c.Char) LtoBoolT {
 	return false
 }
 
@@ -476,8 +476,8 @@ func (self LtoCodeGenT) LtoCodegenWriteMergedModules(path *c.Char) LtoBoolT {
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoCodeGenT.LtoCodegenCompile C.lto_codegen_compile
-func (self LtoCodeGenT) LtoCodegenCompile(length *c.SizeT) unsafe.Pointer {
+// llgo:link LtoCodeGenT.Compile C.lto_codegen_compile
+func (self LtoCodeGenT) Compile(length *c.SizeT) unsafe.Pointer {
 	return nil
 }
 
@@ -489,8 +489,8 @@ func (self LtoCodeGenT) LtoCodegenCompile(length *c.SizeT) unsafe.Pointer {
 //
 // \since LTO_API_VERSION=5
 //
-// llgo:link LtoCodeGenT.LtoCodegenCompileToFile C.lto_codegen_compile_to_file
-func (self LtoCodeGenT) LtoCodegenCompileToFile(name **c.Char) LtoBoolT {
+// llgo:link LtoCodeGenT.CompileToFile C.lto_codegen_compile_to_file
+func (self LtoCodeGenT) CompileToFile(name **c.Char) LtoBoolT {
 	return false
 }
 
@@ -498,8 +498,8 @@ func (self LtoCodeGenT) LtoCodegenCompileToFile(name **c.Char) LtoBoolT {
 //
 // \since LTO_API_VERSION=12
 //
-// llgo:link LtoCodeGenT.LtoCodegenOptimize C.lto_codegen_optimize
-func (self LtoCodeGenT) LtoCodegenOptimize() LtoBoolT {
+// llgo:link LtoCodeGenT.Optimize C.lto_codegen_optimize
+func (self LtoCodeGenT) Optimize() LtoBoolT {
 	return false
 }
 
@@ -514,8 +514,8 @@ func (self LtoCodeGenT) LtoCodegenOptimize() LtoBoolT {
 //
 // \since LTO_API_VERSION=12
 //
-// llgo:link LtoCodeGenT.LtoCodegenCompileOptimized C.lto_codegen_compile_optimized
-func (self LtoCodeGenT) LtoCodegenCompileOptimized(length *c.SizeT) unsafe.Pointer {
+// llgo:link LtoCodeGenT.CompileOptimized C.lto_codegen_compile_optimized
+func (self LtoCodeGenT) CompileOptimized(length *c.SizeT) unsafe.Pointer {
 	return nil
 }
 
@@ -550,8 +550,8 @@ func LtoSetDebugOptions(options **c.Char, number c.Int)
 //
 // \since prior to LTO_API_VERSION=3
 //
-// llgo:link LtoCodeGenT.LtoCodegenDebugOptions C.lto_codegen_debug_options
-func (self LtoCodeGenT) LtoCodegenDebugOptions(_llcppg_param2 *c.Char) {
+// llgo:link LtoCodeGenT.DebugOptions C.lto_codegen_debug_options
+func (self LtoCodeGenT) DebugOptions(_llcppg_param2 *c.Char) {
 }
 
 // Same as the previous function, but takes every option separately through an
@@ -559,8 +559,8 @@ func (self LtoCodeGenT) LtoCodegenDebugOptions(_llcppg_param2 *c.Char) {
 //
 // \since prior to LTO_API_VERSION=26
 //
-// llgo:link LtoCodeGenT.LtoCodegenDebugOptionsArray C.lto_codegen_debug_options_array
-func (self LtoCodeGenT) LtoCodegenDebugOptionsArray(_llcppg_param2 **c.Char, number c.Int) {
+// llgo:link LtoCodeGenT.DebugOptionsArray C.lto_codegen_debug_options_array
+func (self LtoCodeGenT) DebugOptionsArray(_llcppg_param2 **c.Char, number c.Int) {
 }
 
 // Initializes LLVM disassemblers.
@@ -576,8 +576,8 @@ func LtoInitializeDisassembler()
 //
 // \since LTO_API_VERSION=14
 //
-// llgo:link LtoCodeGenT.LtoCodegenSetShouldInternalize C.lto_codegen_set_should_internalize
-func (self LtoCodeGenT) LtoCodegenSetShouldInternalize(ShouldInternalize LtoBoolT) {
+// llgo:link LtoCodeGenT.SetShouldInternalize C.lto_codegen_set_should_internalize
+func (self LtoCodeGenT) SetShouldInternalize(ShouldInternalize LtoBoolT) {
 }
 
 // Set whether to embed uselists in bitcode.
@@ -587,8 +587,8 @@ func (self LtoCodeGenT) LtoCodegenSetShouldInternalize(ShouldInternalize LtoBool
 //
 // \since LTO_API_VERSION=15
 //
-// llgo:link LtoCodeGenT.LtoCodegenSetShouldEmbedUselists C.lto_codegen_set_should_embed_uselists
-func (self LtoCodeGenT) LtoCodegenSetShouldEmbedUselists(ShouldEmbedUselists LtoBoolT) {
+// llgo:link LtoCodeGenT.SetShouldEmbedUselists C.lto_codegen_set_should_embed_uselists
+func (self LtoCodeGenT) SetShouldEmbedUselists(ShouldEmbedUselists LtoBoolT) {
 }
 
 // Creates an LTO input file from a buffer. The path
@@ -606,8 +606,8 @@ func LtoInputCreate(buffer unsafe.Pointer, buffer_size c.SizeT, path *c.Char) Lt
 //
 // \since LTO_API_VERSION=24
 //
-// llgo:link LtoInputT.LtoInputDispose C.lto_input_dispose
-func (self LtoInputT) LtoInputDispose() {
+// llgo:link LtoInputT.Dispose C.lto_input_dispose
+func (self LtoInputT) Dispose() {
 }
 
 // Returns the number of dependent library specifiers
@@ -615,8 +615,8 @@ func (self LtoInputT) LtoInputDispose() {
 //
 // \since LTO_API_VERSION=24
 //
-// llgo:link LtoInputT.LtoInputGetNumDependentLibraries C.lto_input_get_num_dependent_libraries
-func (self LtoInputT) LtoInputGetNumDependentLibraries() c.Uint {
+// llgo:link LtoInputT.NumDependentLibraries C.lto_input_get_num_dependent_libraries
+func (self LtoInputT) NumDependentLibraries() c.Uint {
 	return 0
 }
 
@@ -626,8 +626,8 @@ func (self LtoInputT) LtoInputGetNumDependentLibraries() c.Uint {
 //
 // \since LTO_API_VERSION=24
 //
-// llgo:link LtoInputT.LtoInputGetDependentLibrary C.lto_input_get_dependent_library
-func (self LtoInputT) LtoInputGetDependentLibrary(index c.SizeT, size *c.SizeT) *c.Char {
+// llgo:link LtoInputT.DependentLibrary C.lto_input_get_dependent_library
+func (self LtoInputT) DependentLibrary(index c.SizeT, size *c.SizeT) *c.Char {
 	return nil
 }
 
@@ -804,8 +804,8 @@ func ThinltoDebugOptions(options **c.Char, number c.Int)
 //
 // \since LTO_API_VERSION=18
 //
-// llgo:link LtoModuleT.LtoModuleIsThinlto C.lto_module_is_thinlto
-func (self LtoModuleT) LtoModuleIsThinlto() LtoBoolT {
+// llgo:link LtoModuleT.IsThinlto C.lto_module_is_thinlto
+func (self LtoModuleT) IsThinlto() LtoBoolT {
 	return false
 }
 

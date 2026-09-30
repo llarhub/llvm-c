@@ -183,8 +183,8 @@ func (self SectionIteratorRef) MoveToContainingSection(Sym SymbolIteratorRef) {
 func (self SymbolIteratorRef) Dispose() {
 }
 
-// llgo:link SymbolIteratorRef.MoveToNextSymbol C.LLVMMoveToNextSymbol
-func (self SymbolIteratorRef) MoveToNextSymbol() {
+// llgo:link SymbolIteratorRef.MoveToNext C.LLVMMoveToNextSymbol
+func (self SymbolIteratorRef) MoveToNext() {
 }
 
 // llgo:link SectionIteratorRef.SectionName C.LLVMGetSectionName
@@ -226,47 +226,47 @@ func (self SectionIteratorRef) IsRelocationIteratorAtEnd(RI RelocationIteratorRe
 	return 0
 }
 
-// llgo:link RelocationIteratorRef.MoveToNextRelocation C.LLVMMoveToNextRelocation
-func (self RelocationIteratorRef) MoveToNextRelocation() {
+// llgo:link RelocationIteratorRef.MoveToNext C.LLVMMoveToNextRelocation
+func (self RelocationIteratorRef) MoveToNext() {
 }
 
-// llgo:link SymbolIteratorRef.SymbolName C.LLVMGetSymbolName
-func (self SymbolIteratorRef) SymbolName() *c.Char {
+// llgo:link SymbolIteratorRef.Name C.LLVMGetSymbolName
+func (self SymbolIteratorRef) Name() *c.Char {
 	return nil
 }
 
-// llgo:link SymbolIteratorRef.SymbolAddress C.LLVMGetSymbolAddress
-func (self SymbolIteratorRef) SymbolAddress() c.Uint64T {
+// llgo:link SymbolIteratorRef.Address C.LLVMGetSymbolAddress
+func (self SymbolIteratorRef) Address() c.Uint64T {
 	return 0
 }
 
-// llgo:link SymbolIteratorRef.SymbolSize C.LLVMGetSymbolSize
-func (self SymbolIteratorRef) SymbolSize() c.Uint64T {
+// llgo:link SymbolIteratorRef.Size C.LLVMGetSymbolSize
+func (self SymbolIteratorRef) Size() c.Uint64T {
 	return 0
 }
 
-// llgo:link RelocationIteratorRef.RelocationOffset C.LLVMGetRelocationOffset
-func (self RelocationIteratorRef) RelocationOffset() c.Uint64T {
+// llgo:link RelocationIteratorRef.Offset C.LLVMGetRelocationOffset
+func (self RelocationIteratorRef) Offset() c.Uint64T {
 	return 0
 }
 
-// llgo:link RelocationIteratorRef.RelocationSymbol C.LLVMGetRelocationSymbol
-func (self RelocationIteratorRef) RelocationSymbol() SymbolIteratorRef {
+// llgo:link RelocationIteratorRef.Symbol C.LLVMGetRelocationSymbol
+func (self RelocationIteratorRef) Symbol() SymbolIteratorRef {
 	return nil
 }
 
-// llgo:link RelocationIteratorRef.RelocationType C.LLVMGetRelocationType
-func (self RelocationIteratorRef) RelocationType() c.Uint64T {
+// llgo:link RelocationIteratorRef.Type C.LLVMGetRelocationType
+func (self RelocationIteratorRef) Type() c.Uint64T {
 	return 0
 }
 
-// llgo:link RelocationIteratorRef.RelocationTypeName C.LLVMGetRelocationTypeName
-func (self RelocationIteratorRef) RelocationTypeName() *c.Char {
+// llgo:link RelocationIteratorRef.TypeName C.LLVMGetRelocationTypeName
+func (self RelocationIteratorRef) TypeName() *c.Char {
 	return nil
 }
 
-// llgo:link RelocationIteratorRef.RelocationValueString C.LLVMGetRelocationValueString
-func (self RelocationIteratorRef) RelocationValueString() *c.Char {
+// llgo:link RelocationIteratorRef.ValueString C.LLVMGetRelocationValueString
+func (self RelocationIteratorRef) ValueString() *c.Char {
 	return nil
 }
 

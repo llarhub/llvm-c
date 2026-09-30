@@ -488,14 +488,14 @@ func (self OrcExecutionSessionRef) Lookup(K OrcLookupKind, SearchOrder OrcCJITDy
 
 // Increments the ref-count for a SymbolStringPool entry.
 //
-// llgo:link OrcSymbolStringPoolEntryRef.OrcRetainSymbolStringPoolEntry C.LLVMOrcRetainSymbolStringPoolEntry
-func (self OrcSymbolStringPoolEntryRef) OrcRetainSymbolStringPoolEntry() {
+// llgo:link OrcSymbolStringPoolEntryRef.Retain C.LLVMOrcRetainSymbolStringPoolEntry
+func (self OrcSymbolStringPoolEntryRef) Retain() {
 }
 
 // Reduces the ref-count for of a SymbolStringPool entry.
 //
-// llgo:link OrcSymbolStringPoolEntryRef.OrcReleaseSymbolStringPoolEntry C.LLVMOrcReleaseSymbolStringPoolEntry
-func (self OrcSymbolStringPoolEntryRef) OrcReleaseSymbolStringPoolEntry() {
+// llgo:link OrcSymbolStringPoolEntryRef.Release C.LLVMOrcReleaseSymbolStringPoolEntry
+func (self OrcSymbolStringPoolEntryRef) Release() {
 }
 
 // Return the c-string for the given symbol. This string will remain valid until
@@ -509,8 +509,8 @@ func (self OrcSymbolStringPoolEntryRef) Str() *c.Char {
 
 // Reduces the ref-count of a ResourceTracker.
 //
-// llgo:link OrcResourceTrackerRef.OrcReleaseResourceTracker C.LLVMOrcReleaseResourceTracker
-func (self OrcResourceTrackerRef) OrcReleaseResourceTracker() {
+// llgo:link OrcResourceTrackerRef.Release C.LLVMOrcReleaseResourceTracker
+func (self OrcResourceTrackerRef) Release() {
 }
 
 // Transfers tracking of all resources associated with resource tracker SrcRT
@@ -531,14 +531,14 @@ func (self OrcResourceTrackerRef) Remove() ErrorRef {
 // ownership has not been passed to a JITDylib (e.g. because some error
 // prevented the client from calling LLVMOrcJITDylibAddGenerator).
 //
-// llgo:link OrcDefinitionGeneratorRef.OrcDisposeDefinitionGenerator C.LLVMOrcDisposeDefinitionGenerator
-func (self OrcDefinitionGeneratorRef) OrcDisposeDefinitionGenerator() {
+// llgo:link OrcDefinitionGeneratorRef.Dispose C.LLVMOrcDisposeDefinitionGenerator
+func (self OrcDefinitionGeneratorRef) Dispose() {
 }
 
 // Dispose of a MaterializationUnit.
 //
-// llgo:link OrcMaterializationUnitRef.OrcDisposeMaterializationUnit C.LLVMOrcDisposeMaterializationUnit
-func (self OrcMaterializationUnitRef) OrcDisposeMaterializationUnit() {
+// llgo:link OrcMaterializationUnitRef.Dispose C.LLVMOrcDisposeMaterializationUnit
+func (self OrcMaterializationUnitRef) Dispose() {
 }
 
 // Create a custom MaterializationUnit.
@@ -634,8 +634,8 @@ func (self OrcLazyCallThroughManagerRef) OrcLazyReexports(ISM OrcIndirectStubsMa
 // LLVMOrcMaterializationResponsibilityNotifyEmitted) or failed (via
 // LLVMOrcMaterializationResponsibilityFailMaterialization).
 //
-// llgo:link OrcMaterializationResponsibilityRef.OrcDisposeMaterializationResponsibility C.LLVMOrcDisposeMaterializationResponsibility
-func (self OrcMaterializationResponsibilityRef) OrcDisposeMaterializationResponsibility() {
+// llgo:link OrcMaterializationResponsibilityRef.Dispose C.LLVMOrcDisposeMaterializationResponsibility
+func (self OrcMaterializationResponsibilityRef) Dispose() {
 }
 
 // Returns the target JITDylib that these symbols are being materialized into.
@@ -989,15 +989,15 @@ func OrcCreateNewThreadSafeContext() OrcThreadSafeContextRef
 // ThreadSafeModules) will keep the underlying data alive as long as it is
 // needed.
 //
-// llgo:link ContextRef.OrcCreateNewThreadSafeContextFromLLVM C.LLVMOrcCreateNewThreadSafeContextFromLLVMContext
-func (self ContextRef) OrcCreateNewThreadSafeContextFromLLVM() OrcThreadSafeContextRef {
+// llgo:link ContextRef.OrcCreateNewThreadSafeContext C.LLVMOrcCreateNewThreadSafeContextFromLLVMContext
+func (self ContextRef) OrcCreateNewThreadSafeContext() OrcThreadSafeContextRef {
 	return nil
 }
 
 // Dispose of a ThreadSafeContext.
 //
-// llgo:link OrcThreadSafeContextRef.OrcDisposeThreadSafeContext C.LLVMOrcDisposeThreadSafeContext
-func (self OrcThreadSafeContextRef) OrcDisposeThreadSafeContext() {
+// llgo:link OrcThreadSafeContextRef.Dispose C.LLVMOrcDisposeThreadSafeContext
+func (self OrcThreadSafeContextRef) Dispose() {
 }
 
 // Create a ThreadSafeModule wrapper around the given LLVM module. This takes
@@ -1018,8 +1018,8 @@ func (self ModuleRef) OrcCreateNewThreadSafe(TSCtx OrcThreadSafeContextRef) OrcT
 // not been passed to LLJIT (e.g. because some error prevented the client from
 // adding this to the JIT).
 //
-// llgo:link OrcThreadSafeModuleRef.OrcDisposeThreadSafeModule C.LLVMOrcDisposeThreadSafeModule
-func (self OrcThreadSafeModuleRef) OrcDisposeThreadSafeModule() {
+// llgo:link OrcThreadSafeModuleRef.Dispose C.LLVMOrcDisposeThreadSafeModule
+func (self OrcThreadSafeModuleRef) Dispose() {
 }
 
 // Apply the given function to the module contained in this ThreadSafeModule.
@@ -1054,8 +1054,8 @@ func (self TargetMachineRef) OrcJITTargetMachineBuilderCreateFrom() OrcJITTarget
 
 // Dispose of a JITTargetMachineBuilder.
 //
-// llgo:link OrcJITTargetMachineBuilderRef.OrcDisposeJITTargetMachineBuilder C.LLVMOrcDisposeJITTargetMachineBuilder
-func (self OrcJITTargetMachineBuilderRef) OrcDisposeJITTargetMachineBuilder() {
+// llgo:link OrcJITTargetMachineBuilderRef.Dispose C.LLVMOrcDisposeJITTargetMachineBuilder
+func (self OrcJITTargetMachineBuilderRef) Dispose() {
 }
 
 // Returns the target triple for the given JITTargetMachineBuilder as a string.
@@ -1116,8 +1116,8 @@ func (self OrcObjectLayerRef) Emit(R OrcMaterializationResponsibilityRef, ObjBuf
 
 // Dispose of an ObjectLayer.
 //
-// llgo:link OrcObjectLayerRef.OrcDisposeObjectLayer C.LLVMOrcDisposeObjectLayer
-func (self OrcObjectLayerRef) OrcDisposeObjectLayer() {
+// llgo:link OrcObjectLayerRef.Dispose C.LLVMOrcDisposeObjectLayer
+func (self OrcObjectLayerRef) Dispose() {
 }
 
 // llgo:link OrcIRTransformLayerRef.Emit C.LLVMOrcIRTransformLayerEmit
@@ -1147,8 +1147,8 @@ func OrcCreateLocalIndirectStubsManager(TargetTriple *c.Char) OrcIndirectStubsMa
 
 // Dispose of an IndirectStubsManager.
 //
-// llgo:link OrcIndirectStubsManagerRef.OrcDisposeIndirectStubsManager C.LLVMOrcDisposeIndirectStubsManager
-func (self OrcIndirectStubsManagerRef) OrcDisposeIndirectStubsManager() {
+// llgo:link OrcIndirectStubsManagerRef.Dispose C.LLVMOrcDisposeIndirectStubsManager
+func (self OrcIndirectStubsManagerRef) Dispose() {
 }
 
 //go:linkname OrcCreateLocalLazyCallThroughManager C.LLVMOrcCreateLocalLazyCallThroughManager
@@ -1156,8 +1156,8 @@ func OrcCreateLocalLazyCallThroughManager(TargetTriple *c.Char, ES OrcExecutionS
 
 // Dispose of an LazyCallThroughManager.
 //
-// llgo:link OrcLazyCallThroughManagerRef.OrcDisposeLazyCallThroughManager C.LLVMOrcDisposeLazyCallThroughManager
-func (self OrcLazyCallThroughManagerRef) OrcDisposeLazyCallThroughManager() {
+// llgo:link OrcLazyCallThroughManagerRef.Dispose C.LLVMOrcDisposeLazyCallThroughManager
+func (self OrcLazyCallThroughManagerRef) Dispose() {
 }
 
 // Create a DumpObjects instance.
@@ -1178,8 +1178,8 @@ func OrcCreateDumpObjects(DumpDir *c.Char, IdentifierOverride *c.Char) OrcDumpOb
 
 // Dispose of a DumpObjects instance.
 //
-// llgo:link OrcDumpObjectsRef.OrcDisposeDumpObjects C.LLVMOrcDisposeDumpObjects
-func (self OrcDumpObjectsRef) OrcDisposeDumpObjects() {
+// llgo:link OrcDumpObjectsRef.Dispose C.LLVMOrcDisposeDumpObjects
+func (self OrcDumpObjectsRef) Dispose() {
 }
 
 // Dump the contents of the given MemoryBuffer.
