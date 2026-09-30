@@ -19,8 +19,8 @@ func (self MemoryBufferRef) ParseBitcode2(OutModule *ModuleRef) Bool {
 	return 0
 }
 
-// llgo:link ContextRef.ParseBitcodeIn C.LLVMParseBitcodeInContext
-func (self ContextRef) ParseBitcodeIn(MemBuf MemoryBufferRef, OutModule *ModuleRef, OutMessage **c.Char) Bool {
+// llgo:link ContextRef.ParseBitcode C.LLVMParseBitcodeInContext
+func (self ContextRef) ParseBitcode(MemBuf MemoryBufferRef, OutModule *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }
 
@@ -34,8 +34,8 @@ func (self ContextRef) ParseBitcodeInContext2(MemBuf MemoryBufferRef, OutModule 
 // Optionally returns a human-readable error message via OutMessage.
 // This is deprecated. Use LLVMGetBitcodeModuleInContext2.
 //
-// llgo:link ContextRef.BitcodeModuleIn C.LLVMGetBitcodeModuleInContext
-func (self ContextRef) BitcodeModuleIn(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
+// llgo:link ContextRef.BitcodeModule C.LLVMGetBitcodeModuleInContext
+func (self ContextRef) BitcodeModule(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }
 

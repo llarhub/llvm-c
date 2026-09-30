@@ -118,8 +118,8 @@ func (self TargetDataRef) IntPtrTypeForAS(AS c.Uint) TypeRef {
 // Returns the integer type that is the same size as a pointer on a target.
 // See the method llvm::DataLayout::getIntPtrType.
 //
-// llgo:link ContextRef.IntPtrTypeIn C.LLVMIntPtrTypeInContext
-func (self ContextRef) IntPtrTypeIn(TD TargetDataRef) TypeRef {
+// llgo:link ContextRef.IntPtrType C.LLVMIntPtrTypeInContext
+func (self ContextRef) IntPtrType(TD TargetDataRef) TypeRef {
 	return nil
 }
 
@@ -127,8 +127,8 @@ func (self ContextRef) IntPtrTypeIn(TD TargetDataRef) TypeRef {
 // This version allows the address space to be specified.
 // See the method llvm::DataLayout::getIntPtrType.
 //
-// llgo:link ContextRef.IntPtrTypeForASIn C.LLVMIntPtrTypeForASInContext
-func (self ContextRef) IntPtrTypeForASIn(TD TargetDataRef, AS c.Uint) TypeRef {
+// llgo:link ContextRef.IntPtrTypeForAS C.LLVMIntPtrTypeForASInContext
+func (self ContextRef) IntPtrTypeForAS(TD TargetDataRef, AS c.Uint) TypeRef {
 	return nil
 }
 

@@ -14,8 +14,8 @@ import "github.com/goplus/lib/c"
 //
 // @see llvm::ParseIR()
 //
-// llgo:link ContextRef.ParseIRIn C.LLVMParseIRInContext
-func (self ContextRef) ParseIRIn(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
+// llgo:link ContextRef.ParseIR C.LLVMParseIRInContext
+func (self ContextRef) ParseIR(MemBuf MemoryBufferRef, OutM *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }
 

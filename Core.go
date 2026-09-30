@@ -698,8 +698,8 @@ func (self DiagnosticInfoRef) DiagInfoSeverity() DiagnosticSeverity {
 	return 0
 }
 
-// llgo:link ContextRef.MDKindIDIn C.LLVMGetMDKindIDInContext
-func (self ContextRef) MDKindIDIn(Name *c.Char, SLen c.Uint) c.Uint {
+// llgo:link ContextRef.MDKindID C.LLVMGetMDKindIDInContext
+func (self ContextRef) MDKindID(Name *c.Char, SLen c.Uint) c.Uint {
 	return 0
 }
 
@@ -1443,38 +1443,38 @@ func (self TypeRef) PrintTypeToString() *c.Char {
 
 // Obtain an integer type from a context with specified bit width.
 //
-// llgo:link ContextRef.Int1TypeIn C.LLVMInt1TypeInContext
-func (self ContextRef) Int1TypeIn() TypeRef {
+// llgo:link ContextRef.Int1Type C.LLVMInt1TypeInContext
+func (self ContextRef) Int1Type() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.Int8TypeIn C.LLVMInt8TypeInContext
-func (self ContextRef) Int8TypeIn() TypeRef {
+// llgo:link ContextRef.Int8Type C.LLVMInt8TypeInContext
+func (self ContextRef) Int8Type() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.Int16TypeIn C.LLVMInt16TypeInContext
-func (self ContextRef) Int16TypeIn() TypeRef {
+// llgo:link ContextRef.Int16Type C.LLVMInt16TypeInContext
+func (self ContextRef) Int16Type() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.Int32TypeIn C.LLVMInt32TypeInContext
-func (self ContextRef) Int32TypeIn() TypeRef {
+// llgo:link ContextRef.Int32Type C.LLVMInt32TypeInContext
+func (self ContextRef) Int32Type() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.Int64TypeIn C.LLVMInt64TypeInContext
-func (self ContextRef) Int64TypeIn() TypeRef {
+// llgo:link ContextRef.Int64Type C.LLVMInt64TypeInContext
+func (self ContextRef) Int64Type() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.Int128TypeIn C.LLVMInt128TypeInContext
-func (self ContextRef) Int128TypeIn() TypeRef {
+// llgo:link ContextRef.Int128Type C.LLVMInt128TypeInContext
+func (self ContextRef) Int128Type() TypeRef {
 	return nil
 }
 
-// llgo:link ContextRef.IntTypeIn C.LLVMIntTypeInContext
-func (self ContextRef) IntTypeIn(NumBits c.Uint) TypeRef {
+// llgo:link ContextRef.IntType C.LLVMIntTypeInContext
+func (self ContextRef) IntType(NumBits c.Uint) TypeRef {
 	return nil
 }
 
@@ -1509,51 +1509,51 @@ func (self TypeRef) IntTypeWidth() c.Uint {
 
 // Obtain a 16-bit floating point type from a context.
 //
-// llgo:link ContextRef.HalfTypeIn C.LLVMHalfTypeInContext
-func (self ContextRef) HalfTypeIn() TypeRef {
+// llgo:link ContextRef.HalfType C.LLVMHalfTypeInContext
+func (self ContextRef) HalfType() TypeRef {
 	return nil
 }
 
 // Obtain a 16-bit brain floating point type from a context.
 //
-// llgo:link ContextRef.BFloatTypeIn C.LLVMBFloatTypeInContext
-func (self ContextRef) BFloatTypeIn() TypeRef {
+// llgo:link ContextRef.BFloatType C.LLVMBFloatTypeInContext
+func (self ContextRef) BFloatType() TypeRef {
 	return nil
 }
 
 // Obtain a 32-bit floating point type from a context.
 //
-// llgo:link ContextRef.FloatTypeIn C.LLVMFloatTypeInContext
-func (self ContextRef) FloatTypeIn() TypeRef {
+// llgo:link ContextRef.FloatType C.LLVMFloatTypeInContext
+func (self ContextRef) FloatType() TypeRef {
 	return nil
 }
 
 // Obtain a 64-bit floating point type from a context.
 //
-// llgo:link ContextRef.DoubleTypeIn C.LLVMDoubleTypeInContext
-func (self ContextRef) DoubleTypeIn() TypeRef {
+// llgo:link ContextRef.DoubleType C.LLVMDoubleTypeInContext
+func (self ContextRef) DoubleType() TypeRef {
 	return nil
 }
 
 // Obtain a 80-bit floating point type (X87) from a context.
 //
-// llgo:link ContextRef.X86FP80TypeIn C.LLVMX86FP80TypeInContext
-func (self ContextRef) X86FP80TypeIn() TypeRef {
+// llgo:link ContextRef.X86FP80Type C.LLVMX86FP80TypeInContext
+func (self ContextRef) X86FP80Type() TypeRef {
 	return nil
 }
 
 // Obtain a 128-bit floating point type (112-bit mantissa) from a
 // context.
 //
-// llgo:link ContextRef.FP128TypeIn C.LLVMFP128TypeInContext
-func (self ContextRef) FP128TypeIn() TypeRef {
+// llgo:link ContextRef.FP128Type C.LLVMFP128TypeInContext
+func (self ContextRef) FP128Type() TypeRef {
 	return nil
 }
 
 // Obtain a 128-bit floating point type (two 64-bits) from a context.
 //
-// llgo:link ContextRef.PPCFP128TypeIn C.LLVMPPCFP128TypeInContext
-func (self ContextRef) PPCFP128TypeIn() TypeRef {
+// llgo:link ContextRef.PPCFP128Type C.LLVMPPCFP128TypeInContext
+func (self ContextRef) PPCFP128Type() TypeRef {
 	return nil
 }
 
@@ -1634,8 +1634,8 @@ func (self TypeRef) ParamTypes(Dest *TypeRef) {
 //
 // @see llvm::StructType::create()
 //
-// llgo:link ContextRef.StructTypeIn C.LLVMStructTypeInContext
-func (self ContextRef) StructTypeIn(ElementTypes *TypeRef, ElementCount c.Uint, Packed Bool) TypeRef {
+// llgo:link ContextRef.StructType C.LLVMStructTypeInContext
+func (self ContextRef) StructType(ElementTypes *TypeRef, ElementCount c.Uint, Packed Bool) TypeRef {
 	return nil
 }
 
@@ -1833,8 +1833,8 @@ func (self TypeRef) PointerTypeIsOpaque() Bool {
 //
 // @see llvm::PointerType::get()
 //
-// llgo:link ContextRef.PointerTypeIn C.LLVMPointerTypeInContext
-func (self ContextRef) PointerTypeIn(AddressSpace c.Uint) TypeRef {
+// llgo:link ContextRef.PointerType C.LLVMPointerTypeInContext
+func (self ContextRef) PointerType(AddressSpace c.Uint) TypeRef {
 	return nil
 }
 
@@ -1925,36 +1925,36 @@ func (self ValueRef) ConstantPtrAuthAddrDiscriminator() ValueRef {
 
 // Create a void type in a context.
 //
-// llgo:link ContextRef.VoidTypeIn C.LLVMVoidTypeInContext
-func (self ContextRef) VoidTypeIn() TypeRef {
+// llgo:link ContextRef.VoidType C.LLVMVoidTypeInContext
+func (self ContextRef) VoidType() TypeRef {
 	return nil
 }
 
 // Create a label type in a context.
 //
-// llgo:link ContextRef.LabelTypeIn C.LLVMLabelTypeInContext
-func (self ContextRef) LabelTypeIn() TypeRef {
+// llgo:link ContextRef.LabelType C.LLVMLabelTypeInContext
+func (self ContextRef) LabelType() TypeRef {
 	return nil
 }
 
 // Create a X86 AMX type in a context.
 //
-// llgo:link ContextRef.X86AMXTypeIn C.LLVMX86AMXTypeInContext
-func (self ContextRef) X86AMXTypeIn() TypeRef {
+// llgo:link ContextRef.X86AMXType C.LLVMX86AMXTypeInContext
+func (self ContextRef) X86AMXType() TypeRef {
 	return nil
 }
 
 // Create a token type in a context.
 //
-// llgo:link ContextRef.TokenTypeIn C.LLVMTokenTypeInContext
-func (self ContextRef) TokenTypeIn() TypeRef {
+// llgo:link ContextRef.TokenType C.LLVMTokenTypeInContext
+func (self ContextRef) TokenType() TypeRef {
 	return nil
 }
 
 // Create a metadata type in a context.
 //
-// llgo:link ContextRef.MetadataTypeIn C.LLVMMetadataTypeInContext
-func (self ContextRef) MetadataTypeIn() TypeRef {
+// llgo:link ContextRef.MetadataType C.LLVMMetadataTypeInContext
+func (self ContextRef) MetadataType() TypeRef {
 	return nil
 }
 
@@ -1972,8 +1972,8 @@ func X86AMXType() TypeRef
 
 // Create a target extension type in LLVM context.
 //
-// llgo:link ContextRef.TargetExtTypeIn C.LLVMTargetExtTypeInContext
-func (self ContextRef) TargetExtTypeIn(Name *c.Char, TypeParams *TypeRef, TypeParamCount c.Uint, IntParams *c.Uint, IntParamCount c.Uint) TypeRef {
+// llgo:link ContextRef.TargetExtType C.LLVMTargetExtTypeInContext
+func (self ContextRef) TargetExtType(Name *c.Char, TypeParams *TypeRef, TypeParamCount c.Uint, IntParams *c.Uint, IntParamCount c.Uint) TypeRef {
 	return nil
 }
 
@@ -2844,8 +2844,8 @@ func (self ValueRef) ConstRealGetDouble(losesInfo *Bool) c.Double {
 // accurate LLVMConstStringInContext2
 // @see llvm::ConstantDataArray::getString()
 //
-// llgo:link ContextRef.ConstStringIn C.LLVMConstStringInContext
-func (self ContextRef) ConstStringIn(Str *c.Char, Length c.Uint, DontNullTerminate Bool) ValueRef {
+// llgo:link ContextRef.ConstString C.LLVMConstStringInContext
+func (self ContextRef) ConstString(Str *c.Char, Length c.Uint, DontNullTerminate Bool) ValueRef {
 	return nil
 }
 
@@ -2903,8 +2903,8 @@ func (self ValueRef) RawDataValues(SizeInBytes *c.SizeT) *c.Char {
 //
 // @see llvm::ConstantStruct::getAnon()
 //
-// llgo:link ContextRef.ConstStructIn C.LLVMConstStructInContext
-func (self ContextRef) ConstStructIn(ConstantVals *ValueRef, Count c.Uint, Packed Bool) ValueRef {
+// llgo:link ContextRef.ConstStruct C.LLVMConstStructInContext
+func (self ContextRef) ConstStruct(ConstantVals *ValueRef, Count c.Uint, Packed Bool) ValueRef {
 	return nil
 }
 
@@ -4006,8 +4006,8 @@ func (self ValueRef) ReplaceMDNodeOperandWith(Index c.Uint, Replacement Metadata
 
 // Deprecated: Use LLVMMDStringInContext2 instead.
 //
-// llgo:link ContextRef.MDStringIn C.LLVMMDStringInContext
-func (self ContextRef) MDStringIn(Str *c.Char, SLen c.Uint) ValueRef {
+// llgo:link ContextRef.MDString C.LLVMMDStringInContext
+func (self ContextRef) MDString(Str *c.Char, SLen c.Uint) ValueRef {
 	return nil
 }
 
@@ -4018,8 +4018,8 @@ func MDString(Str *c.Char, SLen c.Uint) ValueRef
 
 // Deprecated: Use LLVMMDNodeInContext2 instead.
 //
-// llgo:link ContextRef.MDNodeIn C.LLVMMDNodeInContext
-func (self ContextRef) MDNodeIn(Vals *ValueRef, Count c.Uint) ValueRef {
+// llgo:link ContextRef.MDNode C.LLVMMDNodeInContext
+func (self ContextRef) MDNode(Vals *ValueRef, Count c.Uint) ValueRef {
 	return nil
 }
 
@@ -4223,8 +4223,8 @@ func (self ValueRef) AppendExistingBasicBlock(BB BasicBlockRef) {
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link ContextRef.CreateBasicBlockIn C.LLVMCreateBasicBlockInContext
-func (self ContextRef) CreateBasicBlockIn(Name *c.Char) BasicBlockRef {
+// llgo:link ContextRef.CreateBasicBlock C.LLVMCreateBasicBlockInContext
+func (self ContextRef) CreateBasicBlock(Name *c.Char) BasicBlockRef {
 	return nil
 }
 
@@ -4232,8 +4232,8 @@ func (self ContextRef) CreateBasicBlockIn(Name *c.Char) BasicBlockRef {
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link ContextRef.AppendBasicBlockIn C.LLVMAppendBasicBlockInContext
-func (self ContextRef) AppendBasicBlockIn(Fn ValueRef, Name *c.Char) BasicBlockRef {
+// llgo:link ContextRef.AppendBasicBlock C.LLVMAppendBasicBlockInContext
+func (self ContextRef) AppendBasicBlock(Fn ValueRef, Name *c.Char) BasicBlockRef {
 	return nil
 }
 
@@ -4254,8 +4254,8 @@ func (self ValueRef) AppendBasicBlock(Name *c.Char) BasicBlockRef {
 //
 // @see llvm::BasicBlock::Create()
 //
-// llgo:link ContextRef.InsertBasicBlockIn C.LLVMInsertBasicBlockInContext
-func (self ContextRef) InsertBasicBlockIn(BB BasicBlockRef, Name *c.Char) BasicBlockRef {
+// llgo:link ContextRef.InsertBasicBlock C.LLVMInsertBasicBlockInContext
+func (self ContextRef) InsertBasicBlock(BB BasicBlockRef, Name *c.Char) BasicBlockRef {
 	return nil
 }
 
@@ -4991,8 +4991,8 @@ func (self ValueRef) Indices() *c.Uint {
 //
 // @{
 //
-// llgo:link ContextRef.CreateBuilderIn C.LLVMCreateBuilderInContext
-func (self ContextRef) CreateBuilderIn() BuilderRef {
+// llgo:link ContextRef.CreateBuilder C.LLVMCreateBuilderInContext
+func (self ContextRef) CreateBuilder() BuilderRef {
 	return nil
 }
 
