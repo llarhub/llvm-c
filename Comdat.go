@@ -53,11 +53,19 @@ func (self ValueRef) Comdat() ComdatRef {
 func (self ValueRef) SetComdat(C ComdatRef) {
 }
 
+// Get the conflict resolution selection kind for the Comdat.
+//
+// @see llvm::Comdat::getSelectionKind()
+//
 // llgo:link ComdatRef.SelectionKind C.LLVMGetComdatSelectionKind
 func (self ComdatRef) SelectionKind() ComdatSelectionKind {
 	return 0
 }
 
+// Set the conflict resolution selection kind for the Comdat.
+//
+// @see llvm::Comdat::setSelectionKind()
+//
 // llgo:link ComdatRef.SetComdatSelectionKind C.LLVMSetComdatSelectionKind
 func (self ComdatRef) SetComdatSelectionKind(Kind ComdatSelectionKind) {
 }

@@ -24,6 +24,8 @@ type MCJITCompilerOptions struct {
 	MCJMM              MCJITMemoryManagerRef
 }
 
+// ===-- Operations on memory managers -------------------------------------===
+//
 // llgo:type C
 type MemoryManagerAllocateCodeSectionCallback = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 c.UintptrT, _llcppg_param3 c.Uint, _llcppg_param4 c.Uint, _llcppg_param5 *c.Char) *c.Uint8T
 
@@ -48,6 +50,8 @@ func LinkInMCJIT()
 //go:linkname LinkInInterpreter C.LLVMLinkInInterpreter
 func LinkInInterpreter()
 
+// ===-- Operations on generic values --------------------------------------===
+//
 // llgo:link TypeRef.CreateGenericValueOfInt C.LLVMCreateGenericValueOfInt
 func (self TypeRef) CreateGenericValueOfInt(N c.UlongLong, IsSigned Bool) GenericValueRef {
 	return nil
@@ -85,6 +89,8 @@ func (self TypeRef) GenericValueToFloat(GenVal GenericValueRef) c.Double {
 func (self GenericValueRef) Dispose() {
 }
 
+// ===-- Operations on execution engines -----------------------------------===
+//
 //go:linkname CreateExecutionEngineForModule C.LLVMCreateExecutionEngineForModule
 func CreateExecutionEngineForModule(OutEE *ExecutionEngineRef, M ModuleRef, OutError **c.Char) Bool
 
@@ -216,6 +222,8 @@ func CreateSimpleMCJITMemoryManager(Opaque unsafe.Pointer, AllocateCodeSection M
 func (self MCJITMemoryManagerRef) Dispose() {
 }
 
+// ===-- JIT Event Listener functions -------------------------------------===
+//
 //go:linkname CreateGDBRegistrationListener C.LLVMCreateGDBRegistrationListener
 func CreateGDBRegistrationListener() JITEventListenerRef
 

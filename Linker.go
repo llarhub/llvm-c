@@ -7,16 +7,21 @@ import (
 	_ "unsafe"
 )
 
-// @defgroup LLVMCCoreLinker Linker
-// @ingroup LLVMCCore
-//
-// @{
+// This enum is provided for backwards-compatibility only. It has no effect.
 type LinkerMode c.Uint
 
 const (
-	LinkerDestroySource          LinkerMode = 0
+	// This is the default behavior.
+	LinkerDestroySource LinkerMode = 0
+	// This option has been deprecated and
+	// should not be used.
 	LinkerPreserveSource_Removed LinkerMode = 1
 )
 
+// Links the source module into the destination module. The source module is
+// destroyed.
+// The return value is true if an error occurred, false otherwise.
+// Use the diagnostic handler to get any diagnostic message.
+//
 //go:linkname LinkModules2 C.LLVMLinkModules2
 func LinkModules2(Dest ModuleRef, Src ModuleRef) Bool

@@ -38,6 +38,7 @@ const (
 	DIFlagTypePassByValue     DIFlags = 4194304
 	DIFlagTypePassByReference DIFlags = 8388608
 	DIFlagEnumClass           DIFlags = 16777216
+	// Deprecated.
 	DIFlagFixedEnum           DIFlags = 16777216
 	DIFlagThunk               DIFlags = 33554432
 	DIFlagNonTrivial          DIFlags = 67108864
@@ -52,69 +53,122 @@ const (
 type DWARFSourceLanguage c.Uint
 
 const (
-	DWARFSourceLanguageC89                 DWARFSourceLanguage = 0
-	DWARFSourceLanguageC                   DWARFSourceLanguage = 1
-	DWARFSourceLanguageAda83               DWARFSourceLanguage = 2
-	DWARFSourceLanguageCPlusPlus           DWARFSourceLanguage = 3
-	DWARFSourceLanguageCobol74             DWARFSourceLanguage = 4
-	DWARFSourceLanguageCobol85             DWARFSourceLanguage = 5
-	DWARFSourceLanguageFortran77           DWARFSourceLanguage = 6
-	DWARFSourceLanguageFortran90           DWARFSourceLanguage = 7
-	DWARFSourceLanguagePascal83            DWARFSourceLanguage = 8
-	DWARFSourceLanguageModula2             DWARFSourceLanguage = 9
-	DWARFSourceLanguageJava                DWARFSourceLanguage = 10
-	DWARFSourceLanguageC99                 DWARFSourceLanguage = 11
-	DWARFSourceLanguageAda95               DWARFSourceLanguage = 12
-	DWARFSourceLanguageFortran95           DWARFSourceLanguage = 13
-	DWARFSourceLanguagePLI                 DWARFSourceLanguage = 14
-	DWARFSourceLanguageObjC                DWARFSourceLanguage = 15
-	DWARFSourceLanguageObjCPlusPlus        DWARFSourceLanguage = 16
-	DWARFSourceLanguageUPC                 DWARFSourceLanguage = 17
-	DWARFSourceLanguageD                   DWARFSourceLanguage = 18
-	DWARFSourceLanguagePython              DWARFSourceLanguage = 19
-	DWARFSourceLanguageOpenCL              DWARFSourceLanguage = 20
-	DWARFSourceLanguageGo                  DWARFSourceLanguage = 21
-	DWARFSourceLanguageModula3             DWARFSourceLanguage = 22
-	DWARFSourceLanguageHaskell             DWARFSourceLanguage = 23
-	DWARFSourceLanguageCPlusPlus03         DWARFSourceLanguage = 24
-	DWARFSourceLanguageCPlusPlus11         DWARFSourceLanguage = 25
-	DWARFSourceLanguageOCaml               DWARFSourceLanguage = 26
-	DWARFSourceLanguageRust                DWARFSourceLanguage = 27
-	DWARFSourceLanguageC11                 DWARFSourceLanguage = 28
-	DWARFSourceLanguageSwift               DWARFSourceLanguage = 29
-	DWARFSourceLanguageJulia               DWARFSourceLanguage = 30
-	DWARFSourceLanguageDylan               DWARFSourceLanguage = 31
-	DWARFSourceLanguageCPlusPlus14         DWARFSourceLanguage = 32
-	DWARFSourceLanguageFortran03           DWARFSourceLanguage = 33
-	DWARFSourceLanguageFortran08           DWARFSourceLanguage = 34
-	DWARFSourceLanguageRenderScript        DWARFSourceLanguage = 35
-	DWARFSourceLanguageBLISS               DWARFSourceLanguage = 36
-	DWARFSourceLanguageKotlin              DWARFSourceLanguage = 37
-	DWARFSourceLanguageZig                 DWARFSourceLanguage = 38
-	DWARFSourceLanguageCrystal             DWARFSourceLanguage = 39
-	DWARFSourceLanguageCPlusPlus17         DWARFSourceLanguage = 40
-	DWARFSourceLanguageCPlusPlus20         DWARFSourceLanguage = 41
-	DWARFSourceLanguageC17                 DWARFSourceLanguage = 42
-	DWARFSourceLanguageFortran18           DWARFSourceLanguage = 43
-	DWARFSourceLanguageAda2005             DWARFSourceLanguage = 44
-	DWARFSourceLanguageAda2012             DWARFSourceLanguage = 45
-	DWARFSourceLanguageHIP                 DWARFSourceLanguage = 46
-	DWARFSourceLanguageAssembly            DWARFSourceLanguage = 47
-	DWARFSourceLanguageCSharp              DWARFSourceLanguage = 48
-	DWARFSourceLanguageMojo                DWARFSourceLanguage = 49
-	DWARFSourceLanguageGLSL                DWARFSourceLanguage = 50
-	DWARFSourceLanguageGLSL_ES             DWARFSourceLanguage = 51
-	DWARFSourceLanguageHLSL                DWARFSourceLanguage = 52
-	DWARFSourceLanguageOpenCL_CPP          DWARFSourceLanguage = 53
-	DWARFSourceLanguageCPPForOpenCL        DWARFSourceLanguage = 54
-	DWARFSourceLanguageSYCL                DWARFSourceLanguage = 55
-	DWARFSourceLanguageRuby                DWARFSourceLanguage = 56
-	DWARFSourceLanguageMove                DWARFSourceLanguage = 57
-	DWARFSourceLanguageHylo                DWARFSourceLanguage = 58
-	DWARFSourceLanguageMetal               DWARFSourceLanguage = 59
-	DWARFSourceLanguageMips_Assembler      DWARFSourceLanguage = 60
+	DWARFSourceLanguageC89       DWARFSourceLanguage = 0
+	DWARFSourceLanguageC         DWARFSourceLanguage = 1
+	DWARFSourceLanguageAda83     DWARFSourceLanguage = 2
+	DWARFSourceLanguageCPlusPlus DWARFSourceLanguage = 3
+	DWARFSourceLanguageCobol74   DWARFSourceLanguage = 4
+	DWARFSourceLanguageCobol85   DWARFSourceLanguage = 5
+	DWARFSourceLanguageFortran77 DWARFSourceLanguage = 6
+	DWARFSourceLanguageFortran90 DWARFSourceLanguage = 7
+	DWARFSourceLanguagePascal83  DWARFSourceLanguage = 8
+	DWARFSourceLanguageModula2   DWARFSourceLanguage = 9
+	// New in DWARF v3:
+	DWARFSourceLanguageJava DWARFSourceLanguage = 10
+	// New in DWARF v3:
+	DWARFSourceLanguageC99 DWARFSourceLanguage = 11
+	// New in DWARF v3:
+	DWARFSourceLanguageAda95 DWARFSourceLanguage = 12
+	// New in DWARF v3:
+	DWARFSourceLanguageFortran95 DWARFSourceLanguage = 13
+	// New in DWARF v3:
+	DWARFSourceLanguagePLI DWARFSourceLanguage = 14
+	// New in DWARF v3:
+	DWARFSourceLanguageObjC DWARFSourceLanguage = 15
+	// New in DWARF v3:
+	DWARFSourceLanguageObjCPlusPlus DWARFSourceLanguage = 16
+	// New in DWARF v3:
+	DWARFSourceLanguageUPC DWARFSourceLanguage = 17
+	// New in DWARF v3:
+	DWARFSourceLanguageD DWARFSourceLanguage = 18
+	// New in DWARF v4:
+	DWARFSourceLanguagePython DWARFSourceLanguage = 19
+	// New in DWARF v5:
+	DWARFSourceLanguageOpenCL DWARFSourceLanguage = 20
+	// New in DWARF v5:
+	DWARFSourceLanguageGo DWARFSourceLanguage = 21
+	// New in DWARF v5:
+	DWARFSourceLanguageModula3 DWARFSourceLanguage = 22
+	// New in DWARF v5:
+	DWARFSourceLanguageHaskell DWARFSourceLanguage = 23
+	// New in DWARF v5:
+	DWARFSourceLanguageCPlusPlus03 DWARFSourceLanguage = 24
+	// New in DWARF v5:
+	DWARFSourceLanguageCPlusPlus11 DWARFSourceLanguage = 25
+	// New in DWARF v5:
+	DWARFSourceLanguageOCaml DWARFSourceLanguage = 26
+	// New in DWARF v5:
+	DWARFSourceLanguageRust DWARFSourceLanguage = 27
+	// New in DWARF v5:
+	DWARFSourceLanguageC11 DWARFSourceLanguage = 28
+	// New in DWARF v5:
+	DWARFSourceLanguageSwift DWARFSourceLanguage = 29
+	// New in DWARF v5:
+	DWARFSourceLanguageJulia DWARFSourceLanguage = 30
+	// New in DWARF v5:
+	DWARFSourceLanguageDylan DWARFSourceLanguage = 31
+	// New in DWARF v5:
+	DWARFSourceLanguageCPlusPlus14 DWARFSourceLanguage = 32
+	// New in DWARF v5:
+	DWARFSourceLanguageFortran03 DWARFSourceLanguage = 33
+	// New in DWARF v5:
+	DWARFSourceLanguageFortran08 DWARFSourceLanguage = 34
+	// New in DWARF v5:
+	DWARFSourceLanguageRenderScript DWARFSourceLanguage = 35
+	// New in DWARF v5:
+	DWARFSourceLanguageBLISS DWARFSourceLanguage = 36
+	// New in DWARF v5:
+	DWARFSourceLanguageKotlin DWARFSourceLanguage = 37
+	// New in DWARF v5:
+	DWARFSourceLanguageZig DWARFSourceLanguage = 38
+	// New in DWARF v5:
+	DWARFSourceLanguageCrystal DWARFSourceLanguage = 39
+	// New in DWARF v5:
+	DWARFSourceLanguageCPlusPlus17 DWARFSourceLanguage = 40
+	// New in DWARF v5:
+	DWARFSourceLanguageCPlusPlus20 DWARFSourceLanguage = 41
+	// New in DWARF v5:
+	DWARFSourceLanguageC17 DWARFSourceLanguage = 42
+	// New in DWARF v5:
+	DWARFSourceLanguageFortran18 DWARFSourceLanguage = 43
+	// New in DWARF v5:
+	DWARFSourceLanguageAda2005 DWARFSourceLanguage = 44
+	// New in DWARF v5:
+	DWARFSourceLanguageAda2012 DWARFSourceLanguage = 45
+	// New in DWARF v5:
+	DWARFSourceLanguageHIP DWARFSourceLanguage = 46
+	// New in DWARF v5:
+	DWARFSourceLanguageAssembly DWARFSourceLanguage = 47
+	// New in DWARF v5:
+	DWARFSourceLanguageCSharp DWARFSourceLanguage = 48
+	// New in DWARF v5:
+	DWARFSourceLanguageMojo DWARFSourceLanguage = 49
+	// New in DWARF v5:
+	DWARFSourceLanguageGLSL DWARFSourceLanguage = 50
+	// New in DWARF v5:
+	DWARFSourceLanguageGLSL_ES DWARFSourceLanguage = 51
+	// New in DWARF v5:
+	DWARFSourceLanguageHLSL DWARFSourceLanguage = 52
+	// New in DWARF v5:
+	DWARFSourceLanguageOpenCL_CPP DWARFSourceLanguage = 53
+	// New in DWARF v5:
+	DWARFSourceLanguageCPPForOpenCL DWARFSourceLanguage = 54
+	// New in DWARF v5:
+	DWARFSourceLanguageSYCL DWARFSourceLanguage = 55
+	// New in DWARF v5:
+	DWARFSourceLanguageRuby DWARFSourceLanguage = 56
+	// New in DWARF v5:
+	DWARFSourceLanguageMove DWARFSourceLanguage = 57
+	// New in DWARF v5:
+	DWARFSourceLanguageHylo DWARFSourceLanguage = 58
+	// New in DWARF v5:
+	DWARFSourceLanguageMetal DWARFSourceLanguage = 59
+	// Vendor extensions:
+	DWARFSourceLanguageMips_Assembler DWARFSourceLanguage = 60
+	// Vendor extensions:
 	DWARFSourceLanguageGOOGLE_RenderScript DWARFSourceLanguage = 61
-	DWARFSourceLanguageBORLAND_Delphi      DWARFSourceLanguage = 62
+	// Vendor extensions:
+	DWARFSourceLanguageBORLAND_Delphi DWARFSourceLanguage = 62
 )
 
 // The amount of debug information to emit.
@@ -127,6 +181,9 @@ const (
 )
 
 // The kind of metadata nodes.
+//
+// NOTE: New entries should always be appended instead of matching the order
+// in Metadata.def.
 const (
 	MDStringMetadataKind                     = 0
 	ConstantAsMetadataMetadataKind           = 1
@@ -168,8 +225,6 @@ const (
 	DIFixedPointTypeMetadataKind             = 37
 )
 
-type MetadataKind = c.Uint
-
 // The kind of checksum to emit.
 type ChecksumKind c.Uint
 
@@ -178,9 +233,6 @@ const (
 	CSK_SHA1   ChecksumKind = 1
 	CSK_SHA256 ChecksumKind = 2
 )
-
-// An LLVM DWARF type encoding.
-type DWARFTypeEncoding = c.Uint
 
 // Describes the kind of macro declaration used for LLVMDIBuilderCreateMacro.
 // @see llvm::dwarf::MacinfoRecordType
@@ -194,6 +246,11 @@ const (
 	DWARFMacinfoRecordTypeEndFile   DWARFMacinfoRecordType = 4
 	DWARFMacinfoRecordTypeVendorExt DWARFMacinfoRecordType = 255
 )
+
+type MetadataKind = c.Uint
+
+// An LLVM DWARF type encoding.
+type DWARFTypeEncoding = c.Uint
 
 // The current debug metadata version number.
 //

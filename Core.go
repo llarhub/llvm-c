@@ -12,74 +12,142 @@ import (
 type Opcode c.Uint
 
 const (
-	Ret            Opcode = 1
-	Br             Opcode = 2
-	Switch         Opcode = 3
-	IndirectBr     Opcode = 4
-	Invoke         Opcode = 5
-	Unreachable    Opcode = 7
-	CallBr         Opcode = 67
-	FNeg           Opcode = 66
-	Add            Opcode = 8
-	FAdd           Opcode = 9
-	Sub            Opcode = 10
-	FSub           Opcode = 11
-	Mul            Opcode = 12
-	FMul           Opcode = 13
-	UDiv           Opcode = 14
-	SDiv           Opcode = 15
-	FDiv           Opcode = 16
-	URem           Opcode = 17
-	SRem           Opcode = 18
-	FRem           Opcode = 19
-	Shl            Opcode = 20
-	LShr           Opcode = 21
-	AShr           Opcode = 22
-	And            Opcode = 23
-	Or             Opcode = 24
-	Xor            Opcode = 25
-	Alloca         Opcode = 26
-	Load           Opcode = 27
-	Store          Opcode = 28
-	GetElementPtr  Opcode = 29
-	Trunc          Opcode = 30
-	ZExt           Opcode = 31
-	SExt           Opcode = 32
-	FPToUI         Opcode = 33
-	FPToSI         Opcode = 34
-	UIToFP         Opcode = 35
-	SIToFP         Opcode = 36
-	FPTrunc        Opcode = 37
-	FPExt          Opcode = 38
-	PtrToInt       Opcode = 39
-	PtrToAddr      Opcode = 69
-	IntToPtr       Opcode = 40
-	BitCast        Opcode = 41
-	AddrSpaceCast  Opcode = 60
-	ICmp           Opcode = 42
-	FCmp           Opcode = 43
-	PHI            Opcode = 44
-	Call           Opcode = 45
-	Select         Opcode = 46
-	UserOp1        Opcode = 47
-	UserOp2        Opcode = 48
-	VAArg          Opcode = 49
+	// Terminator Instructions
+	Ret Opcode = 1
+	// Terminator Instructions
+	Br Opcode = 2
+	// Terminator Instructions
+	Switch Opcode = 3
+	// Terminator Instructions
+	IndirectBr Opcode = 4
+	// Terminator Instructions
+	Invoke Opcode = 5
+	// removed 6 due to API changes
+	Unreachable Opcode = 7
+	// removed 6 due to API changes
+	CallBr Opcode = 67
+	// Standard Unary Operators
+	FNeg Opcode = 66
+	// Standard Binary Operators
+	Add Opcode = 8
+	// Standard Binary Operators
+	FAdd Opcode = 9
+	// Standard Binary Operators
+	Sub Opcode = 10
+	// Standard Binary Operators
+	FSub Opcode = 11
+	// Standard Binary Operators
+	Mul Opcode = 12
+	// Standard Binary Operators
+	FMul Opcode = 13
+	// Standard Binary Operators
+	UDiv Opcode = 14
+	// Standard Binary Operators
+	SDiv Opcode = 15
+	// Standard Binary Operators
+	FDiv Opcode = 16
+	// Standard Binary Operators
+	URem Opcode = 17
+	// Standard Binary Operators
+	SRem Opcode = 18
+	// Standard Binary Operators
+	FRem Opcode = 19
+	// Logical Operators
+	Shl Opcode = 20
+	// Logical Operators
+	LShr Opcode = 21
+	// Logical Operators
+	AShr Opcode = 22
+	// Logical Operators
+	And Opcode = 23
+	// Logical Operators
+	Or Opcode = 24
+	// Logical Operators
+	Xor Opcode = 25
+	// Memory Operators
+	Alloca Opcode = 26
+	// Memory Operators
+	Load Opcode = 27
+	// Memory Operators
+	Store Opcode = 28
+	// Memory Operators
+	GetElementPtr Opcode = 29
+	// Cast Operators
+	Trunc Opcode = 30
+	// Cast Operators
+	ZExt Opcode = 31
+	// Cast Operators
+	SExt Opcode = 32
+	// Cast Operators
+	FPToUI Opcode = 33
+	// Cast Operators
+	FPToSI Opcode = 34
+	// Cast Operators
+	UIToFP Opcode = 35
+	// Cast Operators
+	SIToFP Opcode = 36
+	// Cast Operators
+	FPTrunc Opcode = 37
+	// Cast Operators
+	FPExt Opcode = 38
+	// Cast Operators
+	PtrToInt Opcode = 39
+	// Cast Operators
+	PtrToAddr Opcode = 69
+	// Cast Operators
+	IntToPtr Opcode = 40
+	// Cast Operators
+	BitCast Opcode = 41
+	// Cast Operators
+	AddrSpaceCast Opcode = 60
+	// Other Operators
+	ICmp Opcode = 42
+	// Other Operators
+	FCmp Opcode = 43
+	// Other Operators
+	PHI Opcode = 44
+	// Other Operators
+	Call Opcode = 45
+	// Other Operators
+	Select Opcode = 46
+	// Other Operators
+	UserOp1 Opcode = 47
+	// Other Operators
+	UserOp2 Opcode = 48
+	// Other Operators
+	VAArg Opcode = 49
+	// Other Operators
 	ExtractElement Opcode = 50
-	InsertElement  Opcode = 51
-	ShuffleVector  Opcode = 52
-	ExtractValue   Opcode = 53
-	InsertValue    Opcode = 54
-	Freeze         Opcode = 68
-	Fence          Opcode = 55
-	AtomicCmpXchg  Opcode = 56
-	AtomicRMW      Opcode = 57
-	Resume         Opcode = 58
-	LandingPad     Opcode = 59
-	CleanupRet     Opcode = 61
-	CatchRet       Opcode = 62
-	CatchPad       Opcode = 63
-	CleanupPad     Opcode = 64
-	CatchSwitch    Opcode = 65
+	// Other Operators
+	InsertElement Opcode = 51
+	// Other Operators
+	ShuffleVector Opcode = 52
+	// Other Operators
+	ExtractValue Opcode = 53
+	// Other Operators
+	InsertValue Opcode = 54
+	// Other Operators
+	Freeze Opcode = 68
+	// Atomic operators
+	Fence Opcode = 55
+	// Atomic operators
+	AtomicCmpXchg Opcode = 56
+	// Atomic operators
+	AtomicRMW Opcode = 57
+	// Exception Handling Operators
+	Resume Opcode = 58
+	// Exception Handling Operators
+	LandingPad Opcode = 59
+	// Exception Handling Operators
+	CleanupRet Opcode = 61
+	// Exception Handling Operators
+	CatchRet Opcode = 62
+	// Exception Handling Operators
+	CatchPad Opcode = 63
+	// Exception Handling Operators
+	CleanupPad Opcode = 64
+	// Exception Handling Operators
+	CatchSwitch Opcode = 65
 )
 
 type TypeKind c.Uint
@@ -114,6 +182,7 @@ const (
 	// < Fixed width SIMD vector type
 	VectorTypeKind TypeKind = 13
 	// < Metadata
+	// 15 previously used by LLVMX86_MMXTypeKind
 	MetadataTypeKind TypeKind = 14
 	// < Tokens
 	TokenTypeKind TypeKind = 16
@@ -515,11 +584,12 @@ const (
 // Attribute index are either LLVMAttributeReturnIndex,
 // LLVMAttributeFunctionIndex or a parameter number from 1 to N.
 const (
-	AttributeReturnIndex   = 0
+	AttributeReturnIndex = 0
+	// ISO C restricts enumerator values to range of 'int'
+	// (4294967295 is too large)
+	// LLVMAttributeFunctionIndex = ~0U,
 	AttributeFunctionIndex = -1
 )
-
-type AttributeIndex = c.Uint
 
 // Tail call kind for LLVMSetTailCallKind and LLVMGetTailCallKind.
 //
@@ -545,24 +615,12 @@ const (
 	FastMathNone            = 0
 	FastMathAll             = 127
 )
-
-// Flags to indicate what fast-math-style optimizations are allowed
-// on operations.
-//
-// See https://llvm.org/docs/LangRef.html#fast-math-flags
-type FastMathFlags = c.Uint
-
 const (
 	GEPFlagInBounds = 1
 	GEPFlagNUSW     = 2
 	GEPFlagNUW      = 4
 )
 
-// Flags that constrain the allowed wrap semantics of a getelementptr
-// instruction.
-//
-// See https://llvm.org/docs/LangRef.html#getelementptr-instruction
-type GEPNoWrapFlags = c.Uint
 type DbgRecordKind c.Uint
 
 const (
@@ -571,6 +629,20 @@ const (
 	DbgRecordValue   DbgRecordKind = 2
 	DbgRecordAssign  DbgRecordKind = 3
 )
+
+type AttributeIndex = c.Uint
+
+// Flags to indicate what fast-math-style optimizations are allowed
+// on operations.
+//
+// See https://llvm.org/docs/LangRef.html#fast-math-flags
+type FastMathFlags = c.Uint
+
+// Flags that constrain the allowed wrap semantics of a getelementptr
+// instruction.
+//
+// See https://llvm.org/docs/LangRef.html#getelementptr-instruction
+type GEPNoWrapFlags = c.Uint
 
 // @defgroup LLVMCCoreContext Contexts
 //
@@ -603,6 +675,8 @@ func Shutdown()
 //go:linkname GetVersion C.LLVMGetVersion
 func GetVersion(Major *c.Uint, Minor *c.Uint, Patch *c.Uint)
 
+// ===-- Error handling ----------------------------------------------------===
+//
 //go:linkname CreateMessage C.LLVMCreateMessage
 func CreateMessage(Message *c.Char) *c.Char
 
@@ -5133,6 +5207,8 @@ func (self BuilderRef) CurrentDebugLocation() ValueRef {
 	return nil
 }
 
+// Terminators
+//
 // llgo:link BuilderRef.BuildRetVoid C.LLVMBuildRetVoid
 func (self BuilderRef) BuildRetVoid() ValueRef {
 	return nil
@@ -5188,6 +5264,8 @@ func (self BuilderRef) BuildUnreachable() ValueRef {
 	return nil
 }
 
+// Exception Handling
+//
 // llgo:link BuilderRef.BuildResume C.LLVMBuildResume
 func (self BuilderRef) BuildResume(Exn ValueRef) ValueRef {
 	return nil
@@ -5223,40 +5301,58 @@ func (self BuilderRef) BuildCatchSwitch(ParentPad ValueRef, UnwindBB BasicBlockR
 	return nil
 }
 
+// Add a case to the switch instruction
+//
 // llgo:link ValueRef.AddCase C.LLVMAddCase
 func (self ValueRef) AddCase(OnVal ValueRef, Dest BasicBlockRef) {
 }
 
+// Add a destination to the indirectbr instruction
+//
 // llgo:link ValueRef.AddDestination C.LLVMAddDestination
 func (self ValueRef) AddDestination(Dest BasicBlockRef) {
 }
 
+// Get the number of clauses on the landingpad instruction
+//
 // llgo:link ValueRef.NumClauses C.LLVMGetNumClauses
 func (self ValueRef) NumClauses() c.Uint {
 	return 0
 }
 
+// Get the value of the clause at index Idx on the landingpad instruction
+//
 // llgo:link ValueRef.Clause C.LLVMGetClause
 func (self ValueRef) Clause(Idx c.Uint) ValueRef {
 	return self
 }
 
+// Add a catch or filter clause to the landingpad instruction
+//
 //go:linkname AddClause C.LLVMAddClause
 func AddClause(LandingPad ValueRef, ClauseVal ValueRef)
 
+// Get the 'cleanup' flag in the landingpad instruction
+//
 // llgo:link ValueRef.IsCleanup C.LLVMIsCleanup
 func (self ValueRef) IsCleanup() Bool {
 	return 0
 }
 
+// Set the 'cleanup' flag in the landingpad instruction
+//
 // llgo:link ValueRef.SetCleanup C.LLVMSetCleanup
 func (self ValueRef) SetCleanup(Val Bool) {
 }
 
+// Add a destination to the catchswitch instruction
+//
 // llgo:link ValueRef.AddHandler C.LLVMAddHandler
 func (self ValueRef) AddHandler(Dest BasicBlockRef) {
 }
 
+// Get the number of handlers on the catchswitch instruction
+//
 // llgo:link ValueRef.NumHandlers C.LLVMGetNumHandlers
 func (self ValueRef) NumHandlers() c.Uint {
 	return 0
@@ -5276,11 +5372,15 @@ func (self ValueRef) NumHandlers() c.Uint {
 func (self ValueRef) Handlers(Handlers *BasicBlockRef) {
 }
 
+// Get the number of funcletpad arguments.
+//
 // llgo:link ValueRef.ArgOperand C.LLVMGetArgOperand
 func (self ValueRef) ArgOperand(i c.Uint) ValueRef {
 	return self
 }
 
+// Set a funcletpad argument at the given index.
+//
 // llgo:link ValueRef.SetArgOperand C.LLVMSetArgOperand
 func (self ValueRef) SetArgOperand(i c.Uint, value ValueRef) {
 }
@@ -5305,6 +5405,8 @@ func (self ValueRef) ParentCatchSwitch() ValueRef {
 //go:linkname SetParentCatchSwitch C.LLVMSetParentCatchSwitch
 func SetParentCatchSwitch(CatchPad ValueRef, CatchSwitch ValueRef)
 
+// Arithmetic
+//
 // llgo:link BuilderRef.BuildAdd C.LLVMBuildAdd
 func (self BuilderRef) BuildAdd(LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
@@ -5554,6 +5656,8 @@ func (self ValueRef) IsDisjoint() Bool {
 func (self ValueRef) SetIsDisjoint(IsDisjoint Bool) {
 }
 
+// Memory
+//
 // llgo:link BuilderRef.BuildMalloc C.LLVMBuildMalloc
 func (self BuilderRef) BuildMalloc(Ty TypeRef, Name *c.Char) ValueRef {
 	return nil
@@ -5690,6 +5794,8 @@ func (self ValueRef) AtomicRMWBinOp() AtomicRMWBinOp {
 func (self ValueRef) SetAtomicRMWBinOp(BinOp AtomicRMWBinOp) {
 }
 
+// Casts
+//
 // llgo:link BuilderRef.BuildTrunc C.LLVMBuildTrunc
 func (self BuilderRef) BuildTrunc(Val ValueRef, DestTy TypeRef, Name *c.Char) ValueRef {
 	return nil
@@ -5802,6 +5908,8 @@ func (self ValueRef) CastOpcode(SrcIsSigned Bool, DestTy TypeRef, DestIsSigned B
 	return 0
 }
 
+// Comparisons
+//
 // llgo:link BuilderRef.BuildICmp C.LLVMBuildICmp
 func (self BuilderRef) BuildICmp(Op IntPredicate, LHS ValueRef, RHS ValueRef, Name *c.Char) ValueRef {
 	return nil
@@ -5812,6 +5920,8 @@ func (self BuilderRef) BuildFCmp(Op RealPredicate, LHS ValueRef, RHS ValueRef, N
 	return nil
 }
 
+// Miscellaneous instructions
+//
 // llgo:link BuilderRef.BuildPhi C.LLVMBuildPhi
 func (self BuilderRef) BuildPhi(Ty TypeRef, Name *c.Char) ValueRef {
 	return nil

@@ -14,6 +14,8 @@ const BLAKE3_BLOCK_LEN = 64
 const BLAKE3_CHUNK_LEN = 1024
 const BLAKE3_MAX_DEPTH = 54
 
+// This struct is a private implementation detail. It has to be here because
+// it's part of llvm_blake3_hasher below.
 type Blake3ChunkState struct {
 	Cv               [8]c.Uint32T
 	ChunkCounter     c.Uint64T

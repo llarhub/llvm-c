@@ -4,20 +4,6 @@ package llvm
 
 import "github.com/goplus/lib/c"
 
-type OpaqueSectionIterator struct {
-}
-
-// @defgroup LLVMCObject Object file reading and writing
-// @ingroup LLVMC
-//
-// @{
-type SectionIteratorRef = *OpaqueSectionIterator
-type OpaqueSymbolIterator struct {
-}
-type SymbolIteratorRef = *OpaqueSymbolIterator
-type OpaqueRelocationIterator struct {
-}
-type RelocationIteratorRef = *OpaqueRelocationIterator
 type BinaryType c.Uint
 
 const (
@@ -57,6 +43,17 @@ const (
 	BinaryTypeDXcontainer BinaryType = 16
 )
 
+type OpaqueSectionIterator struct {
+}
+
+// Opaque type wrappers
+type SectionIteratorRef = *OpaqueSectionIterator
+type OpaqueSymbolIterator struct {
+}
+type SymbolIteratorRef = *OpaqueSymbolIterator
+type OpaqueRelocationIterator struct {
+}
+type RelocationIteratorRef = *OpaqueRelocationIterator
 type OpaqueObjectFile struct {
 }
 
@@ -114,6 +111,16 @@ func (self BinaryRef) Type() BinaryType {
 	return 0
 }
 
+// For a Mach-O universal binary file, retrieves the object file corresponding
+// to the given architecture if it is present as a slice.
+//
+// If NULL is returned, the \p ErrorMessage parameter is populated with the
+// error's description.  It is then the caller's responsibility to free this
+// message by calling \c LLVMDisposeMessage.
+//
+// It is the responsiblity of the caller to free the returned object file by
+// calling \c LLVMDisposeBinary.
+//
 // llgo:link BinaryRef.MachOUniversalBinaryCopyObjectForArch C.LLVMMachOUniversalBinaryCopyObjectForArch
 func (self BinaryRef) MachOUniversalBinaryCopyObjectForArch(Arch *c.Char, ArchLen c.SizeT, ErrorMessage **c.Char) BinaryRef {
 	return self
@@ -171,14 +178,16 @@ func (self BinaryRef) ObjectFileIsSymbolIteratorAtEnd(SI SymbolIteratorRef) Bool
 func (self SectionIteratorRef) Dispose() {
 }
 
-// llgo:link SectionIteratorRef.MoveToNextSection C.LLVMMoveToNextSection
-func (self SectionIteratorRef) MoveToNextSection() {
+// llgo:link SectionIteratorRef.MoveToNext C.LLVMMoveToNextSection
+func (self SectionIteratorRef) MoveToNext() {
 }
 
-// llgo:link SectionIteratorRef.MoveToContainingSection C.LLVMMoveToContainingSection
-func (self SectionIteratorRef) MoveToContainingSection(Sym SymbolIteratorRef) {
+// llgo:link SectionIteratorRef.MoveToContaining C.LLVMMoveToContainingSection
+func (self SectionIteratorRef) MoveToContaining(Sym SymbolIteratorRef) {
 }
 
+// ObjectFile Symbol iterators
+//
 // llgo:link SymbolIteratorRef.Dispose C.LLVMDisposeSymbolIterator
 func (self SymbolIteratorRef) Dispose() {
 }
@@ -187,31 +196,35 @@ func (self SymbolIteratorRef) Dispose() {
 func (self SymbolIteratorRef) MoveToNext() {
 }
 
-// llgo:link SectionIteratorRef.SectionName C.LLVMGetSectionName
-func (self SectionIteratorRef) SectionName() *c.Char {
+// SectionRef accessors
+//
+// llgo:link SectionIteratorRef.Name C.LLVMGetSectionName
+func (self SectionIteratorRef) Name() *c.Char {
 	return nil
 }
 
-// llgo:link SectionIteratorRef.SectionSize C.LLVMGetSectionSize
-func (self SectionIteratorRef) SectionSize() c.Uint64T {
+// llgo:link SectionIteratorRef.Size C.LLVMGetSectionSize
+func (self SectionIteratorRef) Size() c.Uint64T {
 	return 0
 }
 
-// llgo:link SectionIteratorRef.SectionContents C.LLVMGetSectionContents
-func (self SectionIteratorRef) SectionContents() *c.Char {
+// llgo:link SectionIteratorRef.Contents C.LLVMGetSectionContents
+func (self SectionIteratorRef) Contents() *c.Char {
 	return nil
 }
 
-// llgo:link SectionIteratorRef.SectionAddress C.LLVMGetSectionAddress
-func (self SectionIteratorRef) SectionAddress() c.Uint64T {
+// llgo:link SectionIteratorRef.Address C.LLVMGetSectionAddress
+func (self SectionIteratorRef) Address() c.Uint64T {
 	return 0
 }
 
-// llgo:link SectionIteratorRef.SectionContainsSymbol C.LLVMGetSectionContainsSymbol
-func (self SectionIteratorRef) SectionContainsSymbol(Sym SymbolIteratorRef) Bool {
+// llgo:link SectionIteratorRef.ContainsSymbol C.LLVMGetSectionContainsSymbol
+func (self SectionIteratorRef) ContainsSymbol(Sym SymbolIteratorRef) Bool {
 	return 0
 }
 
+// Section Relocation iterators
+//
 // llgo:link SectionIteratorRef.Relocations C.LLVMGetRelocations
 func (self SectionIteratorRef) Relocations() RelocationIteratorRef {
 	return nil
@@ -230,6 +243,8 @@ func (self SectionIteratorRef) IsRelocationIteratorAtEnd(RI RelocationIteratorRe
 func (self RelocationIteratorRef) MoveToNext() {
 }
 
+// SymbolRef accessors
+//
 // llgo:link SymbolIteratorRef.Name C.LLVMGetSymbolName
 func (self SymbolIteratorRef) Name() *c.Char {
 	return nil
@@ -245,6 +260,8 @@ func (self SymbolIteratorRef) Size() c.Uint64T {
 	return 0
 }
 
+// RelocationRef accessors
+//
 // llgo:link RelocationIteratorRef.Offset C.LLVMGetRelocationOffset
 func (self RelocationIteratorRef) Offset() c.Uint64T {
 	return 0
@@ -260,6 +277,9 @@ func (self RelocationIteratorRef) Type() c.Uint64T {
 	return 0
 }
 
+// NOTE: Caller takes ownership of returned string of the two
+// following functions.
+//
 // llgo:link RelocationIteratorRef.TypeName C.LLVMGetRelocationTypeName
 func (self RelocationIteratorRef) TypeName() *c.Char {
 	return nil

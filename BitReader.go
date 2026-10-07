@@ -4,21 +4,27 @@ package llvm
 
 import "github.com/goplus/lib/c"
 
-// @defgroup LLVMCBitReader Bit Reader
-// @ingroup LLVMC
+// Builds a module from the bitcode in the specified memory buffer, returning a
+// reference to the module via the OutModule parameter. Returns 0 on success.
+// Optionally returns a human-readable error message via OutMessage.
 //
-// @{
+// This is deprecated. Use LLVMParseBitcode2.
 //
 // llgo:link MemoryBufferRef.ParseBitcode C.LLVMParseBitcode
 func (self MemoryBufferRef) ParseBitcode(OutModule *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
 }
 
+// Builds a module from the bitcode in the specified memory buffer, returning a
+// reference to the module via the OutModule parameter. Returns 0 on success.
+//
 // llgo:link MemoryBufferRef.ParseBitcode2 C.LLVMParseBitcode2
 func (self MemoryBufferRef) ParseBitcode2(OutModule *ModuleRef) Bool {
 	return 0
 }
 
+// This is deprecated. Use LLVMParseBitcodeInContext2.
+//
 // llgo:link ContextRef.ParseBitcode C.LLVMParseBitcodeInContext
 func (self ContextRef) ParseBitcode(MemBuf MemoryBufferRef, OutModule *ModuleRef, OutMessage **c.Char) Bool {
 	return 0
@@ -52,6 +58,8 @@ func (self ContextRef) BitcodeModuleInContext2(MemBuf MemoryBufferRef, OutM *Mod
 	return 0
 }
 
+// This is deprecated. Use LLVMGetBitcodeModule2.
+//
 // llgo:link MemoryBufferRef.BitcodeModule C.LLVMGetBitcodeModule
 func (self MemoryBufferRef) BitcodeModule(OutM *ModuleRef, OutMessage **c.Char) Bool {
 	return 0

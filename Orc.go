@@ -7,12 +7,6 @@ import (
 	"unsafe"
 )
 
-// Represents an address in the executor process.
-type OrcJITTargetAddress = c.Uint64T
-
-// Represents an address in the executor process.
-type OrcExecutorAddress = c.Uint64T
-
 // Represents generic linkage flags for a symbol definition.
 type JITSymbolGenericFlags c.Uint
 
@@ -23,6 +17,43 @@ const (
 	JITSymbolGenericFlagsCallable                       JITSymbolGenericFlags = 4
 	JITSymbolGenericFlagsMaterializationSideEffectsOnly JITSymbolGenericFlags = 8
 )
+
+// Lookup kind. This can be used by definition generators when deciding whether
+// to produce a definition for a requested symbol.
+//
+// This enum should be kept in sync with llvm::orc::LookupKind.
+type OrcLookupKind c.Uint
+
+const (
+	OrcLookupKindStatic OrcLookupKind = 0
+	OrcLookupKindDLSym  OrcLookupKind = 1
+)
+
+// JITDylib lookup flags. This can be used by definition generators when
+// deciding whether to produce a definition for a requested symbol.
+//
+// This enum should be kept in sync with llvm::orc::JITDylibLookupFlags.
+type OrcJITDylibLookupFlags c.Uint
+
+const (
+	OrcJITDylibLookupFlagsMatchExportedSymbolsOnly OrcJITDylibLookupFlags = 0
+	OrcJITDylibLookupFlagsMatchAllSymbols          OrcJITDylibLookupFlags = 1
+)
+
+// Symbol lookup flags for lookup sets. This should be kept in sync with
+// llvm::orc::SymbolLookupFlags.
+type OrcSymbolLookupFlags c.Uint
+
+const (
+	OrcSymbolLookupFlagsRequiredSymbol         OrcSymbolLookupFlags = 0
+	OrcSymbolLookupFlagsWeaklyReferencedSymbol OrcSymbolLookupFlags = 1
+)
+
+// Represents an address in the executor process.
+type OrcJITTargetAddress = c.Uint64T
+
+// Represents an address in the executor process.
+type OrcExecutorAddress = c.Uint64T
 
 // Represents target specific flags for a symbol definition.
 type JITSymbolTargetFlags = c.Uint8T
@@ -124,28 +155,6 @@ type OrcCSymbolDependenceGroup struct {
 	NumDependencies c.SizeT
 }
 
-// Lookup kind. This can be used by definition generators when deciding whether
-// to produce a definition for a requested symbol.
-//
-// This enum should be kept in sync with llvm::orc::LookupKind.
-type OrcLookupKind c.Uint
-
-const (
-	OrcLookupKindStatic OrcLookupKind = 0
-	OrcLookupKindDLSym  OrcLookupKind = 1
-)
-
-// JITDylib lookup flags. This can be used by definition generators when
-// deciding whether to produce a definition for a requested symbol.
-//
-// This enum should be kept in sync with llvm::orc::JITDylibLookupFlags.
-type OrcJITDylibLookupFlags c.Uint
-
-const (
-	OrcJITDylibLookupFlagsMatchExportedSymbolsOnly OrcJITDylibLookupFlags = 0
-	OrcJITDylibLookupFlagsMatchAllSymbols          OrcJITDylibLookupFlags = 1
-)
-
 // An element type for a JITDylib search order.
 type OrcCJITDylibSearchOrderElement struct {
 	JD            OrcJITDylibRef
@@ -157,15 +166,6 @@ type OrcCJITDylibSearchOrderElement struct {
 // The list is terminated with an element containing a null pointer for the JD
 // field.
 type OrcCJITDylibSearchOrder = *OrcCJITDylibSearchOrderElement
-
-// Symbol lookup flags for lookup sets. This should be kept in sync with
-// llvm::orc::SymbolLookupFlags.
-type OrcSymbolLookupFlags c.Uint
-
-const (
-	OrcSymbolLookupFlagsRequiredSymbol         OrcSymbolLookupFlags = 0
-	OrcSymbolLookupFlagsWeaklyReferencedSymbol OrcSymbolLookupFlags = 1
-)
 
 // An element type for a symbol lookup set.
 type OrcCLookupSetElement struct {

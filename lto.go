@@ -10,12 +10,11 @@ import (
 
 const LTO_API_VERSION = 30
 
-type LtoBoolT = bool
-
 // \since prior to LTO_API_VERSION=3
 type LtoSymbolAttributes c.Uint
 
 const (
+	// log2 of alignment
 	LTO_SYMBOL_ALIGNMENT_MASK              LtoSymbolAttributes = 31
 	LTO_SYMBOL_PERMISSIONS_MASK            LtoSymbolAttributes = 224
 	LTO_SYMBOL_PERMISSIONS_CODE            LtoSymbolAttributes = 160
@@ -55,6 +54,20 @@ const (
 	LTO_CODEGEN_PIC_MODEL_DEFAULT        LtoCodegenModel = 3
 )
 
+// Diagnostic severity.
+//
+// \since LTO_API_VERSION=7
+type LtoCodegenDiagnosticSeverityT c.Uint
+
+const (
+	LTO_DS_ERROR   LtoCodegenDiagnosticSeverityT = 0
+	LTO_DS_WARNING LtoCodegenDiagnosticSeverityT = 1
+	// Added in LTO_API_VERSION=10.
+	LTO_DS_REMARK LtoCodegenDiagnosticSeverityT = 3
+	LTO_DS_NOTE   LtoCodegenDiagnosticSeverityT = 2
+)
+
+type LtoBoolT = bool
 type OpaqueLTOModule struct {
 }
 
@@ -70,18 +83,6 @@ type OpaqueThinLTOCodeGenerator struct {
 
 // opaque reference to a thin code generator
 type ThinltoCodeGenT = *OpaqueThinLTOCodeGenerator
-
-// Diagnostic severity.
-//
-// \since LTO_API_VERSION=7
-type LtoCodegenDiagnosticSeverityT c.Uint
-
-const (
-	LTO_DS_ERROR   LtoCodegenDiagnosticSeverityT = 0
-	LTO_DS_WARNING LtoCodegenDiagnosticSeverityT = 1
-	LTO_DS_REMARK  LtoCodegenDiagnosticSeverityT = 3
-	LTO_DS_NOTE    LtoCodegenDiagnosticSeverityT = 2
-)
 
 // Diagnostic handler type.
 // \p severity defines the severity.

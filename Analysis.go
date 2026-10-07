@@ -11,21 +11,34 @@ import "github.com/goplus/lib/c"
 type VerifierFailureAction c.Uint
 
 const (
+	// verifier will print to stderr and abort()
 	AbortProcessAction VerifierFailureAction = 0
+	// verifier will print to stderr and return 1
 	PrintMessageAction VerifierFailureAction = 1
+	// verifier will just return 1
 	ReturnStatusAction VerifierFailureAction = 2
 )
 
+// Verifies that a module is valid, taking the specified action if not.
+// Optionally returns a human-readable description of any invalid constructs.
+// OutMessage must be disposed with LLVMDisposeMessage.
+//
 // llgo:link ModuleRef.Verify C.LLVMVerifyModule
 func (self ModuleRef) Verify(Action VerifierFailureAction, OutMessage **c.Char) Bool {
 	return 0
 }
 
+// Verifies that a single function is valid, taking the specified action. Useful
+// for debugging.
+//
 // llgo:link ValueRef.VerifyFunction C.LLVMVerifyFunction
 func (self ValueRef) VerifyFunction(Action VerifierFailureAction) Bool {
 	return 0
 }
 
+// Open up a ghostview window that displays the CFG of the current function.
+// Useful for debugging.
+//
 // llgo:link ValueRef.ViewFunctionCFG C.LLVMViewFunctionCFG
 func (self ValueRef) ViewFunctionCFG() {
 }
