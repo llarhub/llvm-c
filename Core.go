@@ -13,226 +13,130 @@ type Opcode c.Uint
 
 const (
 	// Terminator Instructions
-	Ret Opcode = 1
-	// Terminator Instructions
-	Br Opcode = 2
-	// Terminator Instructions
-	Switch Opcode = 3
-	// Terminator Instructions
+	Ret        Opcode = 1
+	Br         Opcode = 2
+	Switch     Opcode = 3
 	IndirectBr Opcode = 4
-	// Terminator Instructions
-	Invoke Opcode = 5
+	Invoke     Opcode = 5
 	// removed 6 due to API changes
 	Unreachable Opcode = 7
-	// removed 6 due to API changes
-	CallBr Opcode = 67
+	CallBr      Opcode = 67
 	// Standard Unary Operators
 	FNeg Opcode = 66
 	// Standard Binary Operators
-	Add Opcode = 8
-	// Standard Binary Operators
+	Add  Opcode = 8
 	FAdd Opcode = 9
-	// Standard Binary Operators
-	Sub Opcode = 10
-	// Standard Binary Operators
+	Sub  Opcode = 10
 	FSub Opcode = 11
-	// Standard Binary Operators
-	Mul Opcode = 12
-	// Standard Binary Operators
+	Mul  Opcode = 12
 	FMul Opcode = 13
-	// Standard Binary Operators
 	UDiv Opcode = 14
-	// Standard Binary Operators
 	SDiv Opcode = 15
-	// Standard Binary Operators
 	FDiv Opcode = 16
-	// Standard Binary Operators
 	URem Opcode = 17
-	// Standard Binary Operators
 	SRem Opcode = 18
-	// Standard Binary Operators
 	FRem Opcode = 19
 	// Logical Operators
-	Shl Opcode = 20
-	// Logical Operators
+	Shl  Opcode = 20
 	LShr Opcode = 21
-	// Logical Operators
 	AShr Opcode = 22
-	// Logical Operators
-	And Opcode = 23
-	// Logical Operators
-	Or Opcode = 24
-	// Logical Operators
-	Xor Opcode = 25
+	And  Opcode = 23
+	Or   Opcode = 24
+	Xor  Opcode = 25
 	// Memory Operators
-	Alloca Opcode = 26
-	// Memory Operators
-	Load Opcode = 27
-	// Memory Operators
-	Store Opcode = 28
-	// Memory Operators
+	Alloca        Opcode = 26
+	Load          Opcode = 27
+	Store         Opcode = 28
 	GetElementPtr Opcode = 29
 	// Cast Operators
-	Trunc Opcode = 30
-	// Cast Operators
-	ZExt Opcode = 31
-	// Cast Operators
-	SExt Opcode = 32
-	// Cast Operators
-	FPToUI Opcode = 33
-	// Cast Operators
-	FPToSI Opcode = 34
-	// Cast Operators
-	UIToFP Opcode = 35
-	// Cast Operators
-	SIToFP Opcode = 36
-	// Cast Operators
-	FPTrunc Opcode = 37
-	// Cast Operators
-	FPExt Opcode = 38
-	// Cast Operators
-	PtrToInt Opcode = 39
-	// Cast Operators
-	PtrToAddr Opcode = 69
-	// Cast Operators
-	IntToPtr Opcode = 40
-	// Cast Operators
-	BitCast Opcode = 41
-	// Cast Operators
+	Trunc         Opcode = 30
+	ZExt          Opcode = 31
+	SExt          Opcode = 32
+	FPToUI        Opcode = 33
+	FPToSI        Opcode = 34
+	UIToFP        Opcode = 35
+	SIToFP        Opcode = 36
+	FPTrunc       Opcode = 37
+	FPExt         Opcode = 38
+	PtrToInt      Opcode = 39
+	PtrToAddr     Opcode = 69
+	IntToPtr      Opcode = 40
+	BitCast       Opcode = 41
 	AddrSpaceCast Opcode = 60
 	// Other Operators
-	ICmp Opcode = 42
-	// Other Operators
-	FCmp Opcode = 43
-	// Other Operators
-	PHI Opcode = 44
-	// Other Operators
-	Call Opcode = 45
-	// Other Operators
-	Select Opcode = 46
-	// Other Operators
-	UserOp1 Opcode = 47
-	// Other Operators
-	UserOp2 Opcode = 48
-	// Other Operators
-	VAArg Opcode = 49
-	// Other Operators
+	ICmp           Opcode = 42
+	FCmp           Opcode = 43
+	PHI            Opcode = 44
+	Call           Opcode = 45
+	Select         Opcode = 46
+	UserOp1        Opcode = 47
+	UserOp2        Opcode = 48
+	VAArg          Opcode = 49
 	ExtractElement Opcode = 50
-	// Other Operators
-	InsertElement Opcode = 51
-	// Other Operators
-	ShuffleVector Opcode = 52
-	// Other Operators
-	ExtractValue Opcode = 53
-	// Other Operators
-	InsertValue Opcode = 54
-	// Other Operators
-	Freeze Opcode = 68
+	InsertElement  Opcode = 51
+	ShuffleVector  Opcode = 52
+	ExtractValue   Opcode = 53
+	InsertValue    Opcode = 54
+	Freeze         Opcode = 68
 	// Atomic operators
-	Fence Opcode = 55
-	// Atomic operators
+	Fence         Opcode = 55
 	AtomicCmpXchg Opcode = 56
-	// Atomic operators
-	AtomicRMW Opcode = 57
+	AtomicRMW     Opcode = 57
 	// Exception Handling Operators
-	Resume Opcode = 58
-	// Exception Handling Operators
-	LandingPad Opcode = 59
-	// Exception Handling Operators
-	CleanupRet Opcode = 61
-	// Exception Handling Operators
-	CatchRet Opcode = 62
-	// Exception Handling Operators
-	CatchPad Opcode = 63
-	// Exception Handling Operators
-	CleanupPad Opcode = 64
-	// Exception Handling Operators
+	Resume      Opcode = 58
+	LandingPad  Opcode = 59
+	CleanupRet  Opcode = 61
+	CatchRet    Opcode = 62
+	CatchPad    Opcode = 63
+	CleanupPad  Opcode = 64
 	CatchSwitch Opcode = 65
 )
 
 type TypeKind c.Uint
 
 const (
-	// < type with no size
-	VoidTypeKind TypeKind = 0
-	// < 16 bit floating point type
-	HalfTypeKind TypeKind = 1
-	// < 32 bit floating point type
-	FloatTypeKind TypeKind = 2
-	// < 64 bit floating point type
-	DoubleTypeKind TypeKind = 3
-	// < 80 bit floating point type (X87)
-	X86_FP80TypeKind TypeKind = 4
-	// < 128 bit floating point type (112-bit mantissa)
-	FP128TypeKind TypeKind = 5
-	// < 128 bit floating point type (two 64-bits)
+	VoidTypeKind      TypeKind = 0
+	HalfTypeKind      TypeKind = 1
+	FloatTypeKind     TypeKind = 2
+	DoubleTypeKind    TypeKind = 3
+	X86_FP80TypeKind  TypeKind = 4
+	FP128TypeKind     TypeKind = 5
 	PPC_FP128TypeKind TypeKind = 6
-	// < Labels
-	LabelTypeKind TypeKind = 7
-	// < Arbitrary bit width integers
-	IntegerTypeKind TypeKind = 8
-	// < Functions
-	FunctionTypeKind TypeKind = 9
-	// < Structures
-	StructTypeKind TypeKind = 10
-	// < Arrays
-	ArrayTypeKind TypeKind = 11
-	// < Pointers
-	PointerTypeKind TypeKind = 12
-	// < Fixed width SIMD vector type
-	VectorTypeKind TypeKind = 13
-	// < Metadata
+	LabelTypeKind     TypeKind = 7
+	IntegerTypeKind   TypeKind = 8
+	FunctionTypeKind  TypeKind = 9
+	StructTypeKind    TypeKind = 10
+	ArrayTypeKind     TypeKind = 11
+	PointerTypeKind   TypeKind = 12
+	VectorTypeKind    TypeKind = 13
+	MetadataTypeKind  TypeKind = 14
 	// 15 previously used by LLVMX86_MMXTypeKind
-	MetadataTypeKind TypeKind = 14
-	// < Tokens
-	TokenTypeKind TypeKind = 16
-	// < Scalable SIMD vector type
+	TokenTypeKind          TypeKind = 16
 	ScalableVectorTypeKind TypeKind = 17
-	// < 16 bit brain floating point type
-	BFloatTypeKind TypeKind = 18
-	// < X86 AMX
-	X86_AMXTypeKind TypeKind = 19
-	// < Target extension type
-	TargetExtTypeKind TypeKind = 20
+	BFloatTypeKind         TypeKind = 18
+	X86_AMXTypeKind        TypeKind = 19
+	TargetExtTypeKind      TypeKind = 20
 )
 
 type Linkage c.Uint
 
 const (
-	// < Externally visible function
 	ExternalLinkage            Linkage = 0
 	AvailableExternallyLinkage Linkage = 1
-	// < Keep one copy of function when linking (inline)
-	LinkOnceAnyLinkage Linkage = 2
-	// < Same, but only replaced by something
-	// equivalent.
-	LinkOnceODRLinkage Linkage = 3
-	// < Obsolete
+	LinkOnceAnyLinkage         Linkage = 2
+	LinkOnceODRLinkage         Linkage = 3
 	LinkOnceODRAutoHideLinkage Linkage = 4
-	// < Keep one copy of function when linking (weak)
-	WeakAnyLinkage Linkage = 5
-	// < Same, but only replaced by something
-	// equivalent.
-	WeakODRLinkage Linkage = 6
-	// < Special purpose, only applies to global arrays
-	AppendingLinkage Linkage = 7
-	// < Rename collisions when linking (static
-	// functions)
-	InternalLinkage Linkage = 8
-	// < Like Internal, but omit from symbol table
-	PrivateLinkage Linkage = 9
-	// < Obsolete
-	DLLImportLinkage Linkage = 10
-	// < Obsolete
-	DLLExportLinkage Linkage = 11
-	// < ExternalWeak linkage description
-	ExternalWeakLinkage Linkage = 12
-	// < Obsolete
-	GhostLinkage Linkage = 13
-	// < Tentative definitions
-	CommonLinkage Linkage = 14
-	// < Like Private, but linker removes.
-	LinkerPrivateLinkage Linkage = 15
+	WeakAnyLinkage             Linkage = 5
+	WeakODRLinkage             Linkage = 6
+	AppendingLinkage           Linkage = 7
+	InternalLinkage            Linkage = 8
+	PrivateLinkage             Linkage = 9
+	DLLImportLinkage           Linkage = 10
+	DLLExportLinkage           Linkage = 11
+	ExternalWeakLinkage        Linkage = 12
+	GhostLinkage               Linkage = 13
+	CommonLinkage              Linkage = 14
+	LinkerPrivateLinkage       Linkage = 15
 	// < Like LinkerPrivate, but is weak.
 	LinkerPrivateWeakLinkage Linkage = 16
 )
@@ -240,10 +144,8 @@ const (
 type Visibility c.Uint
 
 const (
-	// < The GV is visible
 	DefaultVisibility Visibility = 0
-	// < The GV is hidden
-	HiddenVisibility Visibility = 1
+	HiddenVisibility  Visibility = 1
 	// < The GV is protected
 	ProtectedVisibility Visibility = 2
 )
@@ -251,9 +153,7 @@ const (
 type UnnamedAddr c.Uint
 
 const (
-	// < Address of the GV is significant.
-	NoUnnamedAddr UnnamedAddr = 0
-	// < Address of the GV is locally insignificant.
+	NoUnnamedAddr    UnnamedAddr = 0
 	LocalUnnamedAddr UnnamedAddr = 1
 	// < Address of the GV is globally insignificant.
 	GlobalUnnamedAddr UnnamedAddr = 2
@@ -262,8 +162,7 @@ const (
 type DLLStorageClass c.Uint
 
 const (
-	DefaultStorageClass DLLStorageClass = 0
-	// < Function to be imported from DLL.
+	DefaultStorageClass   DLLStorageClass = 0
 	DLLImportStorageClass DLLStorageClass = 1
 	// < Function to be accessible from DLL.
 	DLLExportStorageClass DLLStorageClass = 2
@@ -351,23 +250,14 @@ const (
 type IntPredicate c.Uint
 
 const (
-	// < equal
-	IntEQ IntPredicate = 32
-	// < not equal
-	IntNE IntPredicate = 33
-	// < unsigned greater than
+	IntEQ  IntPredicate = 32
+	IntNE  IntPredicate = 33
 	IntUGT IntPredicate = 34
-	// < unsigned greater or equal
 	IntUGE IntPredicate = 35
-	// < unsigned less than
 	IntULT IntPredicate = 36
-	// < unsigned less or equal
 	IntULE IntPredicate = 37
-	// < signed greater than
 	IntSGT IntPredicate = 38
-	// < signed greater or equal
 	IntSGE IntPredicate = 39
-	// < signed less than
 	IntSLT IntPredicate = 40
 	// < signed less or equal
 	IntSLE IntPredicate = 41
@@ -376,36 +266,21 @@ const (
 type RealPredicate c.Uint
 
 const (
-	// < Always false (always folded)
 	RealPredicateFalse RealPredicate = 0
-	// < True if ordered and equal
-	RealOEQ RealPredicate = 1
-	// < True if ordered and greater than
-	RealOGT RealPredicate = 2
-	// < True if ordered and greater than or equal
-	RealOGE RealPredicate = 3
-	// < True if ordered and less than
-	RealOLT RealPredicate = 4
-	// < True if ordered and less than or equal
-	RealOLE RealPredicate = 5
-	// < True if ordered and operands are unequal
-	RealONE RealPredicate = 6
-	// < True if ordered (no nans)
-	RealORD RealPredicate = 7
-	// < True if unordered: isnan(X) | isnan(Y)
-	RealUNO RealPredicate = 8
-	// < True if unordered or equal
-	RealUEQ RealPredicate = 9
-	// < True if unordered or greater than
-	RealUGT RealPredicate = 10
-	// < True if unordered, greater than, or equal
-	RealUGE RealPredicate = 11
-	// < True if unordered or less than
-	RealULT RealPredicate = 12
-	// < True if unordered, less than, or equal
-	RealULE RealPredicate = 13
-	// < True if unordered or not equal
-	RealUNE RealPredicate = 14
+	RealOEQ            RealPredicate = 1
+	RealOGT            RealPredicate = 2
+	RealOGE            RealPredicate = 3
+	RealOLT            RealPredicate = 4
+	RealOLE            RealPredicate = 5
+	RealONE            RealPredicate = 6
+	RealORD            RealPredicate = 7
+	RealUNO            RealPredicate = 8
+	RealUEQ            RealPredicate = 9
+	RealUGT            RealPredicate = 10
+	RealUGE            RealPredicate = 11
+	RealULT            RealPredicate = 12
+	RealULE            RealPredicate = 13
+	RealUNE            RealPredicate = 14
 	// < Always true (always folded)
 	RealPredicateTrue RealPredicate = 15
 )
@@ -423,27 +298,11 @@ const (
 type AtomicOrdering c.Uint
 
 const (
-	// < A load or store which is not atomic
-	AtomicOrderingNotAtomic AtomicOrdering = 0
-	// < Lowest level of atomicity, guarantees
-	// somewhat sane results, lock free.
-	AtomicOrderingUnordered AtomicOrdering = 1
-	// < guarantees that if you take all the
-	// operations affecting a specific address,
-	// a consistent ordering exists
-	AtomicOrderingMonotonic AtomicOrdering = 2
-	// < Acquire provides a barrier of the sort
-	// necessary to acquire a lock to access other
-	// memory with normal loads and stores.
-	AtomicOrderingAcquire AtomicOrdering = 4
-	// < Release is similar to Acquire, but with
-	// a barrier of the sort necessary to release
-	// a lock.
-	AtomicOrderingRelease AtomicOrdering = 5
-	// < provides both an Acquire and a
-	// Release barrier (for fences and
-	// operations which both read and write
-	// memory).
+	AtomicOrderingNotAtomic      AtomicOrdering = 0
+	AtomicOrderingUnordered      AtomicOrdering = 1
+	AtomicOrderingMonotonic      AtomicOrdering = 2
+	AtomicOrderingAcquire        AtomicOrdering = 4
+	AtomicOrderingRelease        AtomicOrdering = 5
 	AtomicOrderingAcquireRelease AtomicOrdering = 6
 	// < provides Acquire semantics
 	// for loads and Release
@@ -459,68 +318,26 @@ const (
 type AtomicRMWBinOp c.Uint
 
 const (
-	// < Set the new value and return the one old
-	AtomicRMWBinOpXchg AtomicRMWBinOp = 0
-	// < Add a value and return the old one
-	AtomicRMWBinOpAdd AtomicRMWBinOp = 1
-	// < Subtract a value and return the old one
-	AtomicRMWBinOpSub AtomicRMWBinOp = 2
-	// < And a value and return the old one
-	AtomicRMWBinOpAnd AtomicRMWBinOp = 3
-	// < Not-And a value and return the old one
-	AtomicRMWBinOpNand AtomicRMWBinOp = 4
-	// < OR a value and return the old one
-	AtomicRMWBinOpOr AtomicRMWBinOp = 5
-	// < Xor a value and return the old one
-	AtomicRMWBinOpXor AtomicRMWBinOp = 6
-	// < Sets the value if it's greater than the
-	// original using a signed comparison and return
-	// the old one
-	AtomicRMWBinOpMax AtomicRMWBinOp = 7
-	// < Sets the value if it's Smaller than the
-	// original using a signed comparison and return
-	// the old one
-	AtomicRMWBinOpMin AtomicRMWBinOp = 8
-	// < Sets the value if it's greater than the
-	// original using an unsigned comparison and return
-	// the old one
-	AtomicRMWBinOpUMax AtomicRMWBinOp = 9
-	// < Sets the value if it's greater than the
-	// original using an unsigned comparison and return
-	// the old one
-	AtomicRMWBinOpUMin AtomicRMWBinOp = 10
-	// < Add a floating point value and return the
-	// old one
-	AtomicRMWBinOpFAdd AtomicRMWBinOp = 11
-	// < Subtract a floating point value and return the
-	// old one
-	AtomicRMWBinOpFSub AtomicRMWBinOp = 12
-	// < Sets the value if it's greater than the
-	// original using an floating point comparison and
-	// return the old one
-	AtomicRMWBinOpFMax AtomicRMWBinOp = 13
-	// < Sets the value if it's smaller than the
-	// original using an floating point comparison and
-	// return the old one
-	AtomicRMWBinOpFMin AtomicRMWBinOp = 14
-	// < Increments the value, wrapping back to zero
-	// when incremented above input value
+	AtomicRMWBinOpXchg     AtomicRMWBinOp = 0
+	AtomicRMWBinOpAdd      AtomicRMWBinOp = 1
+	AtomicRMWBinOpSub      AtomicRMWBinOp = 2
+	AtomicRMWBinOpAnd      AtomicRMWBinOp = 3
+	AtomicRMWBinOpNand     AtomicRMWBinOp = 4
+	AtomicRMWBinOpOr       AtomicRMWBinOp = 5
+	AtomicRMWBinOpXor      AtomicRMWBinOp = 6
+	AtomicRMWBinOpMax      AtomicRMWBinOp = 7
+	AtomicRMWBinOpMin      AtomicRMWBinOp = 8
+	AtomicRMWBinOpUMax     AtomicRMWBinOp = 9
+	AtomicRMWBinOpUMin     AtomicRMWBinOp = 10
+	AtomicRMWBinOpFAdd     AtomicRMWBinOp = 11
+	AtomicRMWBinOpFSub     AtomicRMWBinOp = 12
+	AtomicRMWBinOpFMax     AtomicRMWBinOp = 13
+	AtomicRMWBinOpFMin     AtomicRMWBinOp = 14
 	AtomicRMWBinOpUIncWrap AtomicRMWBinOp = 15
-	// < Decrements the value, wrapping back to
-	// the input value when decremented below zero
 	AtomicRMWBinOpUDecWrap AtomicRMWBinOp = 16
-	// <Subtracts the value only if no unsigned
-	// overflow
 	AtomicRMWBinOpUSubCond AtomicRMWBinOp = 17
-	// <Subtracts the value, clamping to zero
-	AtomicRMWBinOpUSubSat AtomicRMWBinOp = 18
-	// < Sets the value if it's greater than the
-	// original using an floating point comparison and
-	// return the old one
+	AtomicRMWBinOpUSubSat  AtomicRMWBinOp = 18
 	AtomicRMWBinOpFMaximum AtomicRMWBinOp = 19
-	// < Sets the value if it's smaller than the
-	// original using an floating point comparison and
-	// return the old one
 	AtomicRMWBinOpFMinimum AtomicRMWBinOp = 20
 )
 
@@ -644,16 +461,6 @@ type FastMathFlags = c.Uint
 // See https://llvm.org/docs/LangRef.html#getelementptr-instruction
 type GEPNoWrapFlags = c.Uint
 
-// @defgroup LLVMCCoreContext Contexts
-//
-// Contexts are execution states for the core LLVM IR system.
-//
-// Most types are tied to a context instance. Multiple contexts can
-// exist simultaneously. A single context is not thread safe. However,
-// different contexts can execute on different threads simultaneously.
-//
-// @{
-//
 // llgo:type C
 type DiagnosticHandler = func(_llcppg_param1 DiagnosticInfoRef, _llcppg_param2 unsafe.Pointer)
 
@@ -675,8 +482,6 @@ func Shutdown()
 //go:linkname GetVersion C.LLVMGetVersion
 func GetVersion(Major *c.Uint, Minor *c.Uint, Patch *c.Uint)
 
-// ===-- Error handling ----------------------------------------------------===
-//
 //go:linkname CreateMessage C.LLVMCreateMessage
 func CreateMessage(Message *c.Char) *c.Char
 
@@ -2875,10 +2680,6 @@ func (self TypeRef) ConstRealOfStringAndSize(Text *c.Char, SLen c.Uint) ValueRef
 	return nil
 }
 
-// Obtain a constant for a floating point value from array of 64 bit values.
-// The length of the array N must be ceildiv(bits, 64), where bits is the
-// scalar size in bits of the floating-point type.
-//
 // llgo:link TypeRef.ConstFPFromBits C.LLVMConstFPFromBits
 func (self TypeRef) ConstFPFromBits(N *c.Uint64T) ValueRef {
 	return nil
@@ -3140,6 +2941,11 @@ func (self TypeRef) ConstGEP2(ConstantVal ValueRef, ConstantIndices *ValueRef, N
 	return nil
 }
 
+// Creates a constant GetElementPtr expression. Similar to LLVMConstGEP2, but
+// allows specifying the no-wrap flags.
+//
+// @see llvm::ConstantExpr::getGetElementPtr()
+//
 // llgo:link TypeRef.ConstInBoundsGEP2 C.LLVMConstInBoundsGEP2
 func (self TypeRef) ConstInBoundsGEP2(ConstantVal ValueRef, ConstantIndices *ValueRef, NumIndices c.Uint) ValueRef {
 	return nil
@@ -3229,15 +3035,6 @@ func (self TypeRef) ConstInlineAsm(AsmString *c.Char, Constraints *c.Char, HasSi
 	return nil
 }
 
-// @defgroup LLVMCCoreValueConstantGlobals Global Values
-//
-// This group contains functions that operate on global values. Functions in
-// this group relate to functions in the llvm::GlobalValue class tree.
-//
-// @see llvm::GlobalValue
-//
-// @{
-//
 // llgo:link ValueRef.GlobalParent C.LLVMGetGlobalParent
 func (self ValueRef) GlobalParent() ModuleRef {
 	return nil
@@ -5058,18 +4855,14 @@ func (self ValueRef) Indices() *c.Uint {
 	return nil
 }
 
-// @defgroup LLVMCCoreInstructionBuilder Instruction Builders
-//
-// An instruction builder represents a point within a basic block and is
-// the exclusive means of building instructions using the C interface.
-//
-// @{
-//
 // llgo:link ContextRef.CreateBuilder C.LLVMCreateBuilderInContext
 func (self ContextRef) CreateBuilder() BuilderRef {
 	return nil
 }
 
+// Set the builder position before Instr but after any attached debug records,
+// or if Instr is null set the position to the end of Block.
+//
 //go:linkname CreateBuilder C.LLVMCreateBuilder
 func CreateBuilder() BuilderRef
 
@@ -5726,6 +5519,11 @@ func (self BuilderRef) BuildGEP2(Ty TypeRef, Pointer ValueRef, Indices *ValueRef
 	return nil
 }
 
+// Creates a GetElementPtr instruction. Similar to LLVMBuildGEP2, but allows
+// specifying the no-wrap flags.
+//
+// @see llvm::IRBuilder::CreateGEP()
+//
 // llgo:link BuilderRef.BuildInBoundsGEP2 C.LLVMBuildInBoundsGEP2
 func (self BuilderRef) BuildInBoundsGEP2(Ty TypeRef, Pointer ValueRef, Indices *ValueRef, NumIndices c.Uint, Name *c.Char) ValueRef {
 	return nil
@@ -5746,6 +5544,8 @@ func (self BuilderRef) BuildStructGEP2(Ty TypeRef, Pointer ValueRef, Idx c.Uint,
 	return nil
 }
 
+// Deprecated: Use LLVMBuildGlobalString instead, which has identical behavior.
+//
 // llgo:link BuilderRef.BuildGlobalString C.LLVMBuildGlobalString
 func (self BuilderRef) BuildGlobalString(Str *c.Char, Name *c.Char) ValueRef {
 	return nil
@@ -6108,10 +5908,6 @@ func (self ModuleRef) CreateModuleProviderForExisting() ModuleProviderRef {
 func (self ModuleProviderRef) Dispose() {
 }
 
-// @defgroup LLVMCCoreMemoryBuffers Memory Buffers
-//
-// @{
-//
 //go:linkname CreateMemoryBufferWithContentsOfFile C.LLVMCreateMemoryBufferWithContentsOfFile
 func CreateMemoryBufferWithContentsOfFile(Path *c.Char, OutMemBuf *MemoryBufferRef, OutMessage **c.Char) Bool
 

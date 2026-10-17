@@ -7,6 +7,7 @@ import (
 	"unsafe"
 )
 
+// 0 -> 1: Bitstream remarks support.
 const REMARKS_API_VERSION = 1
 
 // The type of the emitted remark.
@@ -22,6 +23,14 @@ const (
 	RemarkTypeFailure           RemarkType = 6
 )
 
+type RemarkOpaqueArg struct {
+}
+type RemarkOpaqueDebugLoc struct {
+}
+type RemarkOpaqueEntry struct {
+}
+type RemarkOpaqueParser struct {
+}
 type RemarkOpaqueString struct {
 }
 
@@ -30,15 +39,11 @@ type RemarkOpaqueString struct {
 //
 // \since REMARKS_API_VERSION=0
 type RemarkStringRef = *RemarkOpaqueString
-type RemarkOpaqueDebugLoc struct {
-}
 
 // DebugLoc containing File, Line and Column.
 //
 // \since REMARKS_API_VERSION=0
 type RemarkDebugLocRef = *RemarkOpaqueDebugLoc
-type RemarkOpaqueArg struct {
-}
 
 // Element of the "Args" list. The key might give more information about what
 // the semantics of the value are, e.g. "Callee" will tell you that the value
@@ -46,15 +51,11 @@ type RemarkOpaqueArg struct {
 //
 // \since REMARKS_API_VERSION=0
 type RemarkArgRef = *RemarkOpaqueArg
-type RemarkOpaqueEntry struct {
-}
 
 // A remark emitted by the compiler.
 //
 // \since REMARKS_API_VERSION=0
 type RemarkEntryRef = *RemarkOpaqueEntry
-type RemarkOpaqueParser struct {
-}
 type RemarkParserRef = *RemarkOpaqueParser
 
 // Returns the buffer holding the string.

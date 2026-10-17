@@ -7,55 +7,38 @@ import "github.com/goplus/lib/c"
 type BinaryType c.Uint
 
 const (
-	// < Archive file.
-	BinaryTypeArchive BinaryType = 0
-	// < Mach-O Universal Binary file.
+	BinaryTypeArchive              BinaryType = 0
 	BinaryTypeMachOUniversalBinary BinaryType = 1
-	// < COFF Import file.
-	BinaryTypeCOFFImportFile BinaryType = 2
-	// < LLVM IR.
-	BinaryTypeIR BinaryType = 3
-	// < Windows resource (.res) file.
-	BinaryTypeWinRes BinaryType = 4
-	// < COFF Object file.
-	BinaryTypeCOFF BinaryType = 5
-	// < ELF 32-bit, little endian.
-	BinaryTypeELF32L BinaryType = 6
-	// < ELF 32-bit, big endian.
-	BinaryTypeELF32B BinaryType = 7
-	// < ELF 64-bit, little endian.
-	BinaryTypeELF64L BinaryType = 8
-	// < ELF 64-bit, big endian.
-	BinaryTypeELF64B BinaryType = 9
-	// < MachO 32-bit, little endian.
-	BinaryTypeMachO32L BinaryType = 10
-	// < MachO 32-bit, big endian.
-	BinaryTypeMachO32B BinaryType = 11
-	// < MachO 64-bit, little endian.
-	BinaryTypeMachO64L BinaryType = 12
-	// < MachO 64-bit, big endian.
-	BinaryTypeMachO64B BinaryType = 13
-	// < Web Assembly.
-	BinaryTypeWasm BinaryType = 14
-	// < Offloading fatbinary.
-	BinaryTypeOffload BinaryType = 15
-	// < DirectX Binary Container.
-	BinaryTypeDXcontainer BinaryType = 16
+	BinaryTypeCOFFImportFile       BinaryType = 2
+	BinaryTypeIR                   BinaryType = 3
+	BinaryTypeWinRes               BinaryType = 4
+	BinaryTypeCOFF                 BinaryType = 5
+	BinaryTypeELF32L               BinaryType = 6
+	BinaryTypeELF32B               BinaryType = 7
+	BinaryTypeELF64L               BinaryType = 8
+	BinaryTypeELF64B               BinaryType = 9
+	BinaryTypeMachO32L             BinaryType = 10
+	BinaryTypeMachO32B             BinaryType = 11
+	BinaryTypeMachO64L             BinaryType = 12
+	BinaryTypeMachO64B             BinaryType = 13
+	BinaryTypeWasm                 BinaryType = 14
+	BinaryTypeOffload              BinaryType = 15
+	BinaryTypeDXcontainer          BinaryType = 16
 )
 
+type OpaqueObjectFile struct {
+}
+type OpaqueRelocationIterator struct {
+}
 type OpaqueSectionIterator struct {
+}
+type OpaqueSymbolIterator struct {
 }
 
 // Opaque type wrappers
 type SectionIteratorRef = *OpaqueSectionIterator
-type OpaqueSymbolIterator struct {
-}
 type SymbolIteratorRef = *OpaqueSymbolIterator
-type OpaqueRelocationIterator struct {
-}
 type RelocationIteratorRef = *OpaqueRelocationIterator
-type OpaqueObjectFile struct {
-}
 
 // Deprecated: Use LLVMBinaryRef instead.
 type ObjectFileRef = *OpaqueObjectFile
@@ -272,6 +255,9 @@ func (self RelocationIteratorRef) Symbol() SymbolIteratorRef {
 	return nil
 }
 
+// NOTE: Caller takes ownership of returned string of the two
+// following functions.
+//
 // llgo:link RelocationIteratorRef.Type C.LLVMGetRelocationType
 func (self RelocationIteratorRef) Type() c.Uint64T {
 	return 0

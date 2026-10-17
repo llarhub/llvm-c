@@ -7,54 +7,81 @@ import (
 	"unsafe"
 )
 
+// The operand VariantKinds for symbolic disassembly.
 const Disassembler_VariantKind_None = 0
-const Disassembler_VariantKind_ARM_HI16 = 1
-const Disassembler_VariantKind_ARM_LO16 = 2
-const Disassembler_VariantKind_ARM64_PAGE = 1
-const Disassembler_VariantKind_ARM64_PAGEOFF = 2
-const Disassembler_VariantKind_ARM64_GOTPAGE = 3
-const Disassembler_VariantKind_ARM64_GOTPAGEOFF = 4
-const Disassembler_VariantKind_ARM64_TLVP = 5
-const Disassembler_VariantKind_ARM64_TLVOFF = 6
+
+// The ARM target VariantKinds.
+const (
+	Disassembler_VariantKind_ARM_HI16 = 1
+	// :lower16:
+	Disassembler_VariantKind_ARM_LO16 = 2
+)
+
+// The ARM64 target VariantKinds.
+const (
+	Disassembler_VariantKind_ARM64_PAGE = 1
+	// @pageoff
+	Disassembler_VariantKind_ARM64_PAGEOFF = 2
+	// @gotpage
+	Disassembler_VariantKind_ARM64_GOTPAGE = 3
+	// @gotpageoff
+	Disassembler_VariantKind_ARM64_GOTPAGEOFF = 4
+	// @tvlppage
+	Disassembler_VariantKind_ARM64_TLVP = 5
+	// @tvlppageoff
+	Disassembler_VariantKind_ARM64_TLVOFF = 6
+)
+
+// No input reference type or no output reference type.
 const Disassembler_ReferenceType_InOut_None = 0
+
+// The input reference is from a branch instruction.
 const Disassembler_ReferenceType_In_Branch = 1
+
+// The input reference is from a PC relative load instruction.
 const Disassembler_ReferenceType_In_PCrel_Load = 2
+
+// The input reference is from an ARM64::ADRP instruction.
 const Disassembler_ReferenceType_In_ARM64_ADRP = 4294967297
+
+// The input reference is from an ARM64::ADDXri instruction.
 const Disassembler_ReferenceType_In_ARM64_ADDXri = 4294967298
+
+// The input reference is from an ARM64::LDRXui instruction.
 const Disassembler_ReferenceType_In_ARM64_LDRXui = 4294967299
+
+// The input reference is from an ARM64::LDRXl instruction.
 const Disassembler_ReferenceType_In_ARM64_LDRXl = 4294967300
+
+// The input reference is from an ARM64::ADR instruction.
 const Disassembler_ReferenceType_In_ARM64_ADR = 4294967301
+
+// The output reference is to as symbol stub.
 const Disassembler_ReferenceType_Out_SymbolStub = 1
+
+// The output reference is to a symbol address in a literal pool.
 const Disassembler_ReferenceType_Out_LitPool_SymAddr = 2
+
+// The output reference is to a cstring address in a literal pool.
 const Disassembler_ReferenceType_Out_LitPool_CstrAddr = 3
+
+// The output reference is to a Objective-C CoreFoundation string.
 const Disassembler_ReferenceType_Out_Objc_CFString_Ref = 4
+
+// The output reference is to a Objective-C message.
 const Disassembler_ReferenceType_Out_Objc_Message = 5
+
+// The output reference is to a Objective-C message ref.
 const Disassembler_ReferenceType_Out_Objc_Message_Ref = 6
+
+// The output reference is to a Objective-C selector ref.
 const Disassembler_ReferenceType_Out_Objc_Selector_Ref = 7
+
+// The output reference is to a Objective-C class ref.
 const Disassembler_ReferenceType_Out_Objc_Class_Ref = 8
+
+// The output reference is to a C++ symbol name.
 const Disassembler_ReferenceType_DeMangled_Name = 9
-
-// An opaque reference to a disassembler context.
-type DisasmContextRef uintptr
-
-// The type for the operand information call back function.  This is called to
-// get the symbolic information for an operand of an instruction.  Typically
-// this is from the relocation information, symbol table, etc.  That block of
-// information is saved when the disassembler context is created and passed to
-// the call back in the DisInfo parameter.  The instruction containing operand
-// is at the PC parameter.  For some instruction sets, there can be more than
-// one operand with symbolic information.  To determine the symbolic operand
-// information for each operand, the bytes for the specific operand in the
-// instruction are specified by the Offset parameter and its byte widith is the
-// OpSize parameter.  For instructions sets with fixed widths and one symbolic
-// operand per instruction, the Offset parameter will be zero and InstSize
-// parameter will be the instruction width.  The information is returned in
-// TagBuf and is Triple specific with its specific information defined by the
-// value of TagType for that Triple.  If symbolic information is returned the
-// function * returns 1, otherwise it returns 0.
-//
-// llgo:type C
-type OpInfoCallback = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 c.Uint64T, _llcppg_param3 c.Uint64T, _llcppg_param4 c.Uint64T, _llcppg_param5 c.Uint64T, _llcppg_param6 c.Int, _llcppg_param7 unsafe.Pointer) c.Int
 
 // The initial support in LLVM MC for the most general form of a relocatable
 // expression is "AddSymbol - SubtractSymbol + Offset".  For some Darwin targets
@@ -85,6 +112,28 @@ type OpInfo1 struct {
 	Value          c.Uint64T
 	VariantKind    c.Uint64T
 }
+
+// An opaque reference to a disassembler context.
+type DisasmContextRef uintptr
+
+// The type for the operand information call back function.  This is called to
+// get the symbolic information for an operand of an instruction.  Typically
+// this is from the relocation information, symbol table, etc.  That block of
+// information is saved when the disassembler context is created and passed to
+// the call back in the DisInfo parameter.  The instruction containing operand
+// is at the PC parameter.  For some instruction sets, there can be more than
+// one operand with symbolic information.  To determine the symbolic operand
+// information for each operand, the bytes for the specific operand in the
+// instruction are specified by the Offset parameter and its byte widith is the
+// OpSize parameter.  For instructions sets with fixed widths and one symbolic
+// operand per instruction, the Offset parameter will be zero and InstSize
+// parameter will be the instruction width.  The information is returned in
+// TagBuf and is Triple specific with its specific information defined by the
+// value of TagType for that Triple.  If symbolic information is returned the
+// function * returns 1, otherwise it returns 0.
+//
+// llgo:type C
+type OpInfoCallback = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 c.Uint64T, _llcppg_param3 c.Uint64T, _llcppg_param4 c.Uint64T, _llcppg_param5 c.Uint64T, _llcppg_param6 c.Int, _llcppg_param7 unsafe.Pointer) c.Int
 
 // The type for the symbol lookup function.  This may be called by the
 // disassembler for things like adding a comment for a PC plus a constant

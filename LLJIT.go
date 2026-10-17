@@ -7,6 +7,11 @@ import (
 	"unsafe"
 )
 
+type OrcOpaqueLLJIT struct {
+}
+type OrcOpaqueLLJITBuilder struct {
+}
+
 // A function for constructing an ObjectLinkingLayer instance to be used
 // by an LLJIT instance.
 //
@@ -21,13 +26,9 @@ import (
 //
 // llgo:type C
 type OrcLLJITBuilderObjectLinkingLayerCreatorFunction = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 OrcExecutionSessionRef, _llcppg_param3 *c.Char) OrcObjectLayerRef
-type OrcOpaqueLLJITBuilder struct {
-}
 
 // A reference to an orc::LLJITBuilder instance.
 type OrcLLJITBuilderRef = *OrcOpaqueLLJITBuilder
-type OrcOpaqueLLJIT struct {
-}
 
 // A reference to an orc::LLJIT instance.
 type OrcLLJITRef = *OrcOpaqueLLJIT

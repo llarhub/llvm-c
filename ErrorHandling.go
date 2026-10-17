@@ -7,10 +7,6 @@ import (
 	_ "unsafe"
 )
 
-// @addtogroup LLVMCError
-//
-// @{
-//
 // llgo:type C
 type FatalErrorHandler = func(_llcppg_param1 *c.Char)
 

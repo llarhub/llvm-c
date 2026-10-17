@@ -7,11 +7,22 @@ import (
 	"unsafe"
 )
 
+// The option to produce marked up assembly.
 const Disassembler_Option_UseMarkup = 1
+
+// The option to print immediates as hex.
 const Disassembler_Option_PrintImmHex = 2
+
+// The option use the other assembler printer variant
 const Disassembler_Option_AsmPrinterVariant = 4
+
+// The option to set comment on instructions
 const Disassembler_Option_SetInstrComments = 8
+
+// The option to print latency information alongside instructions
 const Disassembler_Option_PrintLatency = 16
+
+// The option to print in color
 const Disassembler_Option_Color = 32
 
 // Create a disassembler for the TripleName.  Symbolic disassembly is supported

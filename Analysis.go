@@ -4,16 +4,10 @@ package llvm
 
 import "github.com/goplus/lib/c"
 
-// @defgroup LLVMCAnalysis Analysis
-// @ingroup LLVMC
-//
-// @{
 type VerifierFailureAction c.Uint
 
 const (
-	// verifier will print to stderr and abort()
 	AbortProcessAction VerifierFailureAction = 0
-	// verifier will print to stderr and return 1
 	PrintMessageAction VerifierFailureAction = 1
 	// verifier will just return 1
 	ReturnStatusAction VerifierFailureAction = 2

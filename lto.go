@@ -14,7 +14,6 @@ const LTO_API_VERSION = 30
 type LtoSymbolAttributes c.Uint
 
 const (
-	// log2 of alignment
 	LTO_SYMBOL_ALIGNMENT_MASK              LtoSymbolAttributes = 31
 	LTO_SYMBOL_PERMISSIONS_MASK            LtoSymbolAttributes = 224
 	LTO_SYMBOL_PERMISSIONS_CODE            LtoSymbolAttributes = 160
@@ -62,24 +61,32 @@ type LtoCodegenDiagnosticSeverityT c.Uint
 const (
 	LTO_DS_ERROR   LtoCodegenDiagnosticSeverityT = 0
 	LTO_DS_WARNING LtoCodegenDiagnosticSeverityT = 1
-	// Added in LTO_API_VERSION=10.
-	LTO_DS_REMARK LtoCodegenDiagnosticSeverityT = 3
-	LTO_DS_NOTE   LtoCodegenDiagnosticSeverityT = 2
+	LTO_DS_REMARK  LtoCodegenDiagnosticSeverityT = 3
+	LTO_DS_NOTE    LtoCodegenDiagnosticSeverityT = 2
 )
 
-type LtoBoolT = bool
+// Type to wrap a single object returned by ThinLTO.
+//
+// \since LTO_API_VERSION=18
+type LTOObjectBuffer struct {
+	Buffer *c.Char
+	Size   c.SizeT
+}
+type OpaqueLTOCodeGenerator struct {
+}
+type OpaqueLTOInput struct {
+}
 type OpaqueLTOModule struct {
 }
+type OpaqueThinLTOCodeGenerator struct {
+}
+type LtoBoolT = bool
 
 // opaque reference to a loaded object module
 type LtoModuleT = *OpaqueLTOModule
-type OpaqueLTOCodeGenerator struct {
-}
 
 // opaque reference to a code generator
 type LtoCodeGenT = *OpaqueLTOCodeGenerator
-type OpaqueThinLTOCodeGenerator struct {
-}
 
 // opaque reference to a thin code generator
 type ThinltoCodeGenT = *OpaqueThinLTOCodeGenerator
@@ -94,19 +101,9 @@ type ThinltoCodeGenT = *OpaqueThinLTOCodeGenerator
 //
 // llgo:type C
 type LtoDiagnosticHandlerT = func(_llcppg_param1 LtoCodegenDiagnosticSeverityT, _llcppg_param2 *c.Char, _llcppg_param3 unsafe.Pointer)
-type OpaqueLTOInput struct {
-}
 
 // Opaque reference to an LTO input file
 type LtoInputT = *OpaqueLTOInput
-
-// Type to wrap a single object returned by ThinLTO.
-//
-// \since LTO_API_VERSION=18
-type LTOObjectBuffer struct {
-	Buffer *c.Char
-	Size   c.SizeT
-}
 
 // Returns a printable string.
 //

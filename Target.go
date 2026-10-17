@@ -7,10 +7,6 @@ import (
 	_ "unsafe"
 )
 
-// @defgroup LLVMCTarget Target information
-// @ingroup LLVMC
-//
-// @{
 type ByteOrdering c.Uint
 
 const (
@@ -20,9 +16,9 @@ const (
 
 type OpaqueTargetData struct {
 }
-type TargetDataRef = *OpaqueTargetData
 type OpaqueTargetLibraryInfotData struct {
 }
+type TargetDataRef = *OpaqueTargetData
 type TargetLibraryInfoRef = *OpaqueTargetLibraryInfotData
 
 // Obtain the data layout for a module.

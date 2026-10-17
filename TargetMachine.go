@@ -55,18 +55,14 @@ const (
 	GlobalISelAbortDisableWithDiag GlobalISelAbortMode = 2
 )
 
-type OpaqueTargetMachineOptions struct {
-}
-
-// @addtogroup LLVMCTarget
-//
-// @{
-type TargetMachineOptionsRef = *OpaqueTargetMachineOptions
 type OpaqueTargetMachine struct {
 }
-type TargetMachineRef = *OpaqueTargetMachine
+type OpaqueTargetMachineOptions struct {
+}
 type Target struct {
 }
+type TargetMachineOptionsRef = *OpaqueTargetMachineOptions
+type TargetMachineRef = *OpaqueTargetMachine
 type TargetRef = *Target
 
 // Returns the first llvm::Target in the registered targets list.
@@ -81,7 +77,6 @@ func (self TargetRef) Next() TargetRef {
 	return self
 }
 
-// ===-- Target ------------------------------------------------------------===
 // Finds the target corresponding to the given name and stores it in \p T.
 // Returns 0 on success.
 //
@@ -130,8 +125,6 @@ func (self TargetRef) HasAsmBackend() Bool {
 	return 0
 }
 
-// ===-- Target Machine ----------------------------------------------------===
-//
 // Create a new set of options for an llvm::TargetMachine.
 //
 // The returned option structure must be released with
@@ -289,7 +282,6 @@ func (self TargetMachineRef) EmitToMemoryBuffer(M ModuleRef, codegen CodeGenFile
 	return 0
 }
 
-// ===-- Triple ------------------------------------------------------------===
 // Get a triple for the host machine as a string. The result needs to be
 // disposed with LLVMDisposeMessage.
 //

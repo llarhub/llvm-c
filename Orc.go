@@ -18,6 +18,62 @@ const (
 	JITSymbolGenericFlagsMaterializationSideEffectsOnly JITSymbolGenericFlags = 8
 )
 
+// Represents the linkage flags for a symbol definition.
+type JITSymbolFlags struct {
+	GenericFlags c.Uint8T
+	TargetFlags  c.Uint8T
+}
+
+// Represents an evaluated symbol address and flags.
+type JITEvaluatedSymbol struct {
+	Address OrcExecutorAddress
+	Flags   JITSymbolFlags
+}
+
+// Represents a pair of a symbol name and LLVMJITSymbolFlags.
+type OrcCSymbolFlagsMapPair struct {
+	Name  OrcSymbolStringPoolEntryRef
+	Flags JITSymbolFlags
+}
+
+// Represents a pair of a symbol name and an evaluated symbol.
+type OrcCSymbolMapPair struct {
+	Name OrcSymbolStringPoolEntryRef
+	Sym  JITEvaluatedSymbol
+}
+
+// Represents a SymbolAliasMapEntry
+type OrcCSymbolAliasMapEntry struct {
+	Name  OrcSymbolStringPoolEntryRef
+	Flags JITSymbolFlags
+}
+
+// Represents a pair of a symbol name and SymbolAliasMapEntry.
+type OrcCSymbolAliasMapPair struct {
+	Name  OrcSymbolStringPoolEntryRef
+	Entry OrcCSymbolAliasMapEntry
+}
+
+// Represents a list of LLVMOrcSymbolStringPoolEntryRef and the associated
+// length.
+type OrcCSymbolsList struct {
+	Symbols *OrcSymbolStringPoolEntryRef
+	Length  c.SizeT
+}
+
+// Represents a pair of a JITDylib and LLVMOrcCSymbolsList.
+type OrcCDependenceMapPair struct {
+	JD    OrcJITDylibRef
+	Names OrcCSymbolsList
+}
+
+// A set of symbols that share dependencies.
+type OrcCSymbolDependenceGroup struct {
+	Symbols         OrcCSymbolsList
+	Dependencies    OrcCDependenceMapPairs
+	NumDependencies c.SizeT
+}
+
 // Lookup kind. This can be used by definition generators when deciding whether
 // to produce a definition for a requested symbol.
 //
@@ -40,6 +96,12 @@ const (
 	OrcJITDylibLookupFlagsMatchAllSymbols          OrcJITDylibLookupFlags = 1
 )
 
+// An element type for a JITDylib search order.
+type OrcCJITDylibSearchOrderElement struct {
+	JD            OrcJITDylibRef
+	JDLookupFlags OrcJITDylibLookupFlags
+}
+
 // Symbol lookup flags for lookup sets. This should be kept in sync with
 // llvm::orc::SymbolLookupFlags.
 type OrcSymbolLookupFlags c.Uint
@@ -48,6 +110,50 @@ const (
 	OrcSymbolLookupFlagsRequiredSymbol         OrcSymbolLookupFlags = 0
 	OrcSymbolLookupFlagsWeaklyReferencedSymbol OrcSymbolLookupFlags = 1
 )
+
+// An element type for a symbol lookup set.
+type OrcCLookupSetElement struct {
+	Name        OrcSymbolStringPoolEntryRef
+	LookupFlags OrcSymbolLookupFlags
+}
+type OrcOpaqueDefinitionGenerator struct {
+}
+type OrcOpaqueDumpObjects struct {
+}
+type OrcOpaqueExecutionSession struct {
+}
+type OrcOpaqueIRTransformLayer struct {
+}
+type OrcOpaqueIndirectStubsManager struct {
+}
+type OrcOpaqueJITDylib struct {
+}
+type OrcOpaqueJITTargetMachineBuilder struct {
+}
+type OrcOpaqueLazyCallThroughManager struct {
+}
+type OrcOpaqueLookupState struct {
+}
+type OrcOpaqueMaterializationResponsibility struct {
+}
+type OrcOpaqueMaterializationUnit struct {
+}
+type OrcOpaqueObjectLayer struct {
+}
+type OrcOpaqueObjectLinkingLayer struct {
+}
+type OrcOpaqueObjectTransformLayer struct {
+}
+type OrcOpaqueResourceTracker struct {
+}
+type OrcOpaqueSymbolStringPool struct {
+}
+type OrcOpaqueSymbolStringPoolEntry struct {
+}
+type OrcOpaqueThreadSafeContext struct {
+}
+type OrcOpaqueThreadSafeModule struct {
+}
 
 // Represents an address in the executor process.
 type OrcJITTargetAddress = c.Uint64T
@@ -58,20 +164,6 @@ type OrcExecutorAddress = c.Uint64T
 // Represents target specific flags for a symbol definition.
 type JITSymbolTargetFlags = c.Uint8T
 
-// Represents the linkage flags for a symbol definition.
-type JITSymbolFlags struct {
-	GenericFlags c.Uint8T
-	TargetFlags  c.Uint8T
-}
-
-// Represents an evaluated symbol address and flags.
-type JITEvaluatedSymbol struct {
-	Address OrcExecutorAddress
-	Flags   JITSymbolFlags
-}
-type OrcOpaqueExecutionSession struct {
-}
-
 // A reference to an orc::ExecutionSession instance.
 type OrcExecutionSessionRef = *OrcOpaqueExecutionSession
 
@@ -79,99 +171,37 @@ type OrcExecutionSessionRef = *OrcOpaqueExecutionSession
 //
 // llgo:type C
 type OrcErrorReporterFunction = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 ErrorRef)
-type OrcOpaqueSymbolStringPool struct {
-}
 
 // A reference to an orc::SymbolStringPool.
 type OrcSymbolStringPoolRef = *OrcOpaqueSymbolStringPool
-type OrcOpaqueSymbolStringPoolEntry struct {
-}
 
 // A reference to an orc::SymbolStringPool table entry.
 type OrcSymbolStringPoolEntryRef = *OrcOpaqueSymbolStringPoolEntry
-
-// Represents a pair of a symbol name and LLVMJITSymbolFlags.
-type OrcCSymbolFlagsMapPair struct {
-	Name  OrcSymbolStringPoolEntryRef
-	Flags JITSymbolFlags
-}
 
 // Represents a list of (SymbolStringPtr, JITSymbolFlags) pairs that can be used
 // to construct a SymbolFlagsMap.
 type OrcCSymbolFlagsMapPairs = *OrcCSymbolFlagsMapPair
 
-// Represents a pair of a symbol name and an evaluated symbol.
-type OrcCSymbolMapPair struct {
-	Name OrcSymbolStringPoolEntryRef
-	Sym  JITEvaluatedSymbol
-}
-
 // Represents a list of (SymbolStringPtr, JITEvaluatedSymbol) pairs that can be
 // used to construct a SymbolMap.
 type OrcCSymbolMapPairs = *OrcCSymbolMapPair
 
-// Represents a SymbolAliasMapEntry
-type OrcCSymbolAliasMapEntry struct {
-	Name  OrcSymbolStringPoolEntryRef
-	Flags JITSymbolFlags
-}
-
-// Represents a pair of a symbol name and SymbolAliasMapEntry.
-type OrcCSymbolAliasMapPair struct {
-	Name  OrcSymbolStringPoolEntryRef
-	Entry OrcCSymbolAliasMapEntry
-}
-
 // Represents a list of (SymbolStringPtr, (SymbolStringPtr, JITSymbolFlags))
 // pairs that can be used to construct a SymbolFlagsMap.
 type OrcCSymbolAliasMapPairs = *OrcCSymbolAliasMapPair
-type OrcOpaqueJITDylib struct {
-}
 
 // A reference to an orc::JITDylib instance.
 type OrcJITDylibRef = *OrcOpaqueJITDylib
 
-// Represents a list of LLVMOrcSymbolStringPoolEntryRef and the associated
-// length.
-type OrcCSymbolsList struct {
-	Symbols *OrcSymbolStringPoolEntryRef
-	Length  c.SizeT
-}
-
-// Represents a pair of a JITDylib and LLVMOrcCSymbolsList.
-type OrcCDependenceMapPair struct {
-	JD    OrcJITDylibRef
-	Names OrcCSymbolsList
-}
-
 // Represents a list of (JITDylibRef, (LLVMOrcSymbolStringPoolEntryRef*,
 // size_t)) pairs that can be used to construct a SymbolDependenceMap.
 type OrcCDependenceMapPairs = *OrcCDependenceMapPair
-
-// A set of symbols that share dependencies.
-type OrcCSymbolDependenceGroup struct {
-	Symbols         OrcCSymbolsList
-	Dependencies    OrcCDependenceMapPairs
-	NumDependencies c.SizeT
-}
-
-// An element type for a JITDylib search order.
-type OrcCJITDylibSearchOrderElement struct {
-	JD            OrcJITDylibRef
-	JDLookupFlags OrcJITDylibLookupFlags
-}
 
 // A JITDylib search order.
 //
 // The list is terminated with an element containing a null pointer for the JD
 // field.
 type OrcCJITDylibSearchOrder = *OrcCJITDylibSearchOrderElement
-
-// An element type for a symbol lookup set.
-type OrcCLookupSetElement struct {
-	Name        OrcSymbolStringPoolEntryRef
-	LookupFlags OrcSymbolLookupFlags
-}
 
 // A set of symbols to look up / generate.
 //
@@ -183,13 +213,9 @@ type OrcCLookupSetElement struct {
 // course of its life. Clients receiving a copy from a callback are not
 // responsible for managing lifetime or retain counts.
 type OrcCLookupSet = *OrcCLookupSetElement
-type OrcOpaqueMaterializationUnit struct {
-}
 
 // A reference to a uniquely owned orc::MaterializationUnit instance.
 type OrcMaterializationUnitRef = *OrcOpaqueMaterializationUnit
-type OrcOpaqueMaterializationResponsibility struct {
-}
 
 // A reference to a uniquely owned orc::MaterializationResponsibility instance.
 //
@@ -224,18 +250,12 @@ type OrcMaterializationUnitDiscardFunction = func(_llcppg_param1 unsafe.Pointer,
 //
 // llgo:type C
 type OrcMaterializationUnitDestroyFunction = func(_llcppg_param1 unsafe.Pointer)
-type OrcOpaqueResourceTracker struct {
-}
 
 // A reference to an orc::ResourceTracker instance.
 type OrcResourceTrackerRef = *OrcOpaqueResourceTracker
-type OrcOpaqueDefinitionGenerator struct {
-}
 
 // A reference to an orc::DefinitionGenerator.
 type OrcDefinitionGeneratorRef = *OrcOpaqueDefinitionGenerator
-type OrcOpaqueLookupState struct {
-}
 
 // An opaque lookup state object. Instances of this type can be captured to
 // suspend a lookup while a custom generator function attempts to produce a
@@ -296,13 +316,9 @@ type OrcDisposeCAPIDefinitionGeneratorFunction = func(_llcppg_param1 unsafe.Poin
 //
 // llgo:type C
 type OrcSymbolPredicate = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 OrcSymbolStringPoolEntryRef) c.Int
-type OrcOpaqueThreadSafeContext struct {
-}
 
 // A reference to an orc::ThreadSafeContext instance.
 type OrcThreadSafeContextRef = *OrcOpaqueThreadSafeContext
-type OrcOpaqueThreadSafeModule struct {
-}
 
 // A reference to an orc::ThreadSafeModule instance.
 type OrcThreadSafeModuleRef = *OrcOpaqueThreadSafeModule
@@ -312,23 +328,15 @@ type OrcThreadSafeModuleRef = *OrcOpaqueThreadSafeModule
 //
 // llgo:type C
 type OrcGenericIRModuleOperationFunction = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 ModuleRef) ErrorRef
-type OrcOpaqueJITTargetMachineBuilder struct {
-}
 
 // A reference to an orc::JITTargetMachineBuilder instance.
 type OrcJITTargetMachineBuilderRef = *OrcOpaqueJITTargetMachineBuilder
-type OrcOpaqueObjectLayer struct {
-}
 
 // A reference to an orc::ObjectLayer instance.
 type OrcObjectLayerRef = *OrcOpaqueObjectLayer
-type OrcOpaqueObjectLinkingLayer struct {
-}
 
 // A reference to an orc::ObjectLinkingLayer instance.
 type OrcObjectLinkingLayerRef = *OrcOpaqueObjectLinkingLayer
-type OrcOpaqueIRTransformLayer struct {
-}
 
 // A reference to an orc::IRTransformLayer instance.
 type OrcIRTransformLayerRef = *OrcOpaqueIRTransformLayer
@@ -349,8 +357,6 @@ type OrcIRTransformLayerRef = *OrcOpaqueIRTransformLayer
 //
 // llgo:type C
 type OrcIRTransformLayerTransformFunction = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 *OrcThreadSafeModuleRef, _llcppg_param3 OrcMaterializationResponsibilityRef) ErrorRef
-type OrcOpaqueObjectTransformLayer struct {
-}
 
 // A reference to an orc::ObjectTransformLayer instance.
 type OrcObjectTransformLayerRef = *OrcOpaqueObjectTransformLayer
@@ -369,18 +375,12 @@ type OrcObjectTransformLayerRef = *OrcOpaqueObjectTransformLayer
 //
 // llgo:type C
 type OrcObjectTransformLayerTransformFunction = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 *MemoryBufferRef) ErrorRef
-type OrcOpaqueIndirectStubsManager struct {
-}
 
 // A reference to an orc::IndirectStubsManager instance.
 type OrcIndirectStubsManagerRef = *OrcOpaqueIndirectStubsManager
-type OrcOpaqueLazyCallThroughManager struct {
-}
 
 // A reference to an orc::LazyCallThroughManager instance.
 type OrcLazyCallThroughManagerRef = *OrcOpaqueLazyCallThroughManager
-type OrcOpaqueDumpObjects struct {
-}
 
 // A reference to an orc::DumpObjects object.
 //

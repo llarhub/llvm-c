@@ -4,22 +4,14 @@ package llvm
 
 import "github.com/goplus/lib/c"
 
-// @defgroup LLVMCCoreComdat Comdats
-// @ingroup LLVMCCore
-//
-// @{
 type ComdatSelectionKind c.Uint
 
 const (
-	// < The linker may choose any COMDAT.
-	AnyComdatSelectionKind ComdatSelectionKind = 0
-	// < The data referenced by the COMDAT must
-	// < be the same.
+	AnyComdatSelectionKind        ComdatSelectionKind = 0
 	ExactMatchComdatSelectionKind ComdatSelectionKind = 1
-	// < The linker will choose the largest
-	// < COMDAT.
+	// < be the same.
 	LargestComdatSelectionKind ComdatSelectionKind = 2
-	// < No deduplication is performed.
+	// < COMDAT.
 	NoDeduplicateComdatSelectionKind ComdatSelectionKind = 3
 	// < The data referenced by the COMDAT must be
 	// < the same size.

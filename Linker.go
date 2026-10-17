@@ -11,7 +11,6 @@ import (
 type LinkerMode c.Uint
 
 const (
-	// This is the default behavior.
 	LinkerDestroySource LinkerMode = 0
 	// This option has been deprecated and
 	// should not be used.
