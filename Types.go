@@ -92,7 +92,7 @@ type NamedMDNodeRef = *OpaqueNamedMDNode
 // Represents an entry in a Global Object's metadata attachments.
 //
 // This models std::pair<unsigned, MDNode *>
-type ValueMetadataEntry = OpaqueValueMetadataEntry
+type ValueMetadataEntry OpaqueValueMetadataEntry
 
 // Represents an LLVM basic block builder.
 //
@@ -132,7 +132,7 @@ type DiagnosticInfoRef = *OpaqueDiagnosticInfo
 type ComdatRef = *Comdat
 
 // @see llvm::Module::ModuleFlagEntry
-type ModuleFlagEntry = OpaqueModuleFlagEntry
+type ModuleFlagEntry OpaqueModuleFlagEntry
 
 // @see llvm::JITEventListener
 type JITEventListenerRef = *OpaqueJITEventListener

@@ -1184,7 +1184,7 @@ func (self OrcDumpObjectsRef) Dispose() {
 
 // Dump the contents of the given MemoryBuffer.
 //
-// llgo:link OrcDumpObjectsRef.OrcDumpObjects_CallOperator C.LLVMOrcDumpObjects_CallOperator
-func (self OrcDumpObjectsRef) OrcDumpObjects_CallOperator(ObjBuffer *MemoryBufferRef) ErrorRef {
+// llgo:link OrcDumpObjectsRef.CallOperator C.LLVMOrcDumpObjects_CallOperator
+func (self OrcDumpObjectsRef) CallOperator(ObjBuffer *MemoryBufferRef) ErrorRef {
 	return nil
 }
